@@ -8,7 +8,7 @@ from BD.Conexion import *
 from Back.Agenda import *
 import psycopg2
 
-basedatos = Database("postgres", "87b3d9baf", "localhost")
+basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
 ### definir funciones
@@ -92,13 +92,13 @@ try:
                             ### falta programas las funciones
                             facturas = Facturas()
                             while var_control2 == True:
-                                print('Ingrese "1" ')
+                                print('Ingrese "1" generar factura')
                                 print('Ingrese "2" ')
                                 print('Ingrese "3" ')
                                 print('Ingrese "0" para salir al menu principal')
                                 menu2 = int(input("Ingrese la opcion a elegir: "))
                                 if menu2 == 1:
-                                    pass
+                                    facturas.generar_factura()
                                 elif menu2 == 2:
                                     pass
                                 elif menu2 == 3:

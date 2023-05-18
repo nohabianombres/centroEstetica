@@ -1,6 +1,6 @@
 from BD.Conexion import *
 
-basedatos = Database("postgres", "87b3d9baf", "localhost")
+basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
 
 class Usuarios():
