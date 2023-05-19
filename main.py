@@ -93,14 +93,14 @@ try:
                             facturas = Facturas()
                             while var_control2 == True:
                                 print('Ingrese "1" generar factura')
-                                print('Ingrese "2" ')
+                                print('Ingrese "2" generar pago de todas las facturas pendientes ')
                                 print('Ingrese "3" ')
                                 print('Ingrese "0" para salir al menu principal')
                                 menu2 = int(input("Ingrese la opcion a elegir: "))
                                 if menu2 == 1:
                                     facturas.generar_factura_servicios_productos()
                                 elif menu2 == 2:
-                                    pass
+                                    facturas.pagar_facturas_documento()
                                 elif menu2 == 3:
                                     pass
                                 elif menu2 == 0:
