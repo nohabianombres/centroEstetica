@@ -98,7 +98,7 @@ try:
                                 print('Ingrese "0" para salir al menu principal')
                                 menu2 = int(input("Ingrese la opcion a elegir: "))
                                 if menu2 == 1:
-                                    facturas.generar_factura()
+                                    facturas.generar_factura_servicios_productos()
                                 elif menu2 == 2:
                                     pass
                                 elif menu2 == 3:
