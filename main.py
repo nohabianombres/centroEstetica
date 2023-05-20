@@ -94,7 +94,8 @@ try:
                             while var_control2 == True:
                                 print('Ingrese "1" generar factura')
                                 print('Ingrese "2" generar pago de todas las facturas pendientes ')
-                                print('Ingrese "3" ')
+                                print('Ingrese "3" para pagar una factura con su respectivo id:  ')
+                                print('Ingrese "4" para buscar factuas de un cliente: ')
                                 print('Ingrese "0" para salir al menu principal')
                                 menu2 = int(input("Ingrese la opcion a elegir: "))
                                 if menu2 == 1:
@@ -102,7 +103,9 @@ try:
                                 elif menu2 == 2:
                                     facturas.pagar_facturas_documento()
                                 elif menu2 == 3:
-                                    pass
+                                    facturas.pagar_facturas_idFactura()
+                                elif menu2 == 4:
+                                    facturas.buscar_facturas_cliente()
                                 elif menu2 == 0:
                                     print("Regresando al menu principal")
                                     var_control2 = False
