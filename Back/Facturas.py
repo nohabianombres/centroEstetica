@@ -110,14 +110,46 @@ class Facturas():
                                 print("Ocurrió un error al crear la factura:", e)
                                 continue
                         if menu_factura == 1:
-                            while True:
-                                id_producto_factura = int(input("Ingrese ID del producto (0 para crear factura): "))
-                                if id_producto_factura == 0:
+                                id_producto_factura_s = int(input("Ingrese ID del producto (0 para crear factura): "))
+                                if id_producto_factura_s == 0:
                                     break
-                                cantidad_productos_comprar = int(input("Ingrese la cantidad: "))
+                                else:
+                                    cantidad_productos_comprar = int(input("Ingrese la cantidad: "))
+
                                 try:
                                     with conexion.cursor() as cursor:
-                                        cursor.execute("SELECT * FROM inventario WHERE id_producto = %s", (id_producto_factura,))
+                                        cursor.execute("SELECT * FROM inventario WHERE id_producto = %s",
+                                                       (id_producto_factura_s,))
+                                        producto_nueva_factura_s = cursor.fetchone()
+                                        print('aca estuve')
+                                        if producto_nueva_factura_s is None:
+                                            print("El producto no existe")
+                                        else:
+                                            cantidad_disponible = producto_nueva_factura_s[2]
+
+                                            # Obtener las cantidades correspondientes al último valor de id_producto_factura_s
+                                            cantidades_correspondientes = [cantidad for cantidad, id_producto_s in
+                                                                           zip(cantidad_productos, id_productos) if
+                                                                           id_producto_s == id_producto_factura_s]
+                                            print(cantidades_correspondientes)
+
+                                            # Verificar si la cantidad disponible es suficiente
+                                            if cantidad_disponible >= cantidad_productos_comprar + sum(
+                                                    cantidades_correspondientes):
+                                                id_productos.append(id_producto_factura_s)
+                                                nombres_productos.append(producto_nueva_factura_s[1])
+                                                precio_productos.append(producto_nueva_factura_s[3])
+                                                cantidad_productos.append(cantidad_productos_comprar)
+                                                print("Producto agregado")
+                                            else:
+                                                print("No hay suficientes unidades disponibles en el inventario.")
+                                except psycopg2.Error as e:
+                                    print("Ocurrió un error al interactuar con el producto:", e)
+
+                                try:
+                                    with conexion.cursor() as cursor:
+                                        cursor.execute("SELECT * FROM inventario WHERE id_producto = %s",
+                                                       (id_producto_factura_s,))
                                         producto_nueva_factura = cursor.fetchone()
 
                                         if producto_nueva_factura is None:
@@ -126,13 +158,12 @@ class Facturas():
                                             nombres_productos.append(producto_nueva_factura[1])
                                             precio_productos.append(producto_nueva_factura[3])
                                             cantidad_productos.append(cantidad_productos_comprar)
-                                            print("Producto agregado")
                                 except psycopg2.Error as e:
-                                    print("Ocurrió un error al consultar el producto:", e)
+                                    print("Ocurrió un error al consultar el producto en el inventario:", e)
 
-                    print("La factura se creó correctamente")
-
+            print("La factura se creó correctamente")
         except psycopg2.Error as e:
+
             print("No encontro el cliente en ninguna tabla: ", e)
 
 
@@ -141,7 +172,7 @@ class Facturas():
             input('Ingrese el documento del cliente el cual generó el pago de todas sus facturas: '))
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT valor_total FROM facturas WHERE documento_cliente = %s AND pagado = %s", (documento_cliente_pagar, True))
+                cursor.execute("SELECT valor_total FROM facturas WHERE documento_cliente = %s AND pagado = %s", (documento_cliente_pagar, False))
                 valores_totales= cursor.fetchall()
                 valores_totales_list = [valor[0] for valor in valores_totales]
                 print(valores_totales_list)
@@ -154,7 +185,7 @@ class Facturas():
             try:
                 with conexion.cursor() as cursor:
                     consulta = "UPDATE facturas SET pagado = %s WHERE documento_cliente = %s"
-                    cursor.execute(consulta, (False, documento_cliente_pagar))
+                    cursor.execute(consulta, (True, documento_cliente_pagar))
                 conexion.commit()
                 print('Se efectuo el pago de la factura correctamente')
             except psycopg2.Error as e:
