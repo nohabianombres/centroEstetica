@@ -86,30 +86,41 @@ class Facturas():
                     while acceso_menu_factura:
                         menu_factura = int(input("Desea agregar productos a la factura? Marque 1 para agregar, 0 para salir: "))
                         if menu_factura == 0:
-                            with conexion.cursor() as cursor:
-                                for id_producto, cantidad in zip(id_productos, cantidad_productos):
-                                    consulta = "UPDATE inventario SET cantidad = cantidad - %s WHERE id_producto = %s"
-                                    cursor.execute(consulta, (cantidad, id_producto))
-                            conexion.commit()
-                            valor_total = sum(precio * cantidad for precio, cantidad in zip(precio_productos, cantidad_productos)) + sum(precios_servicio)
-                            try:
+
+                            for id_servicio_cobrar in id_servicios_cobrar:
                                 with conexion.cursor() as cursor:
-                                    consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-                                    cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos, precio_productos, cantidad_productos, valor_total))
+                                    cursor.execute("SELECT * FROM servicios WHERE id_servicios = %s", (id_servicio_cobrar,))
+                                    servicios_facturar = cursor.fetchall()
+                                for servicio_facturar in servicios_facturar:
+                                    precios_servicio.append(servicio_facturar[2])
+                                    nombres_servicio.append(servicio_facturar[1])
+                                    print(precios_servicio)
+                                    print(nombres_servicio)
+
+                                with conexion.cursor() as cursor:
+                                    for id_producto, cantidad in zip(id_productos, cantidad_productos):
+                                        consulta = "UPDATE inventario SET cantidad = cantidad - %s WHERE id_producto = %s"
+                                        cursor.execute(consulta, (cantidad, id_producto))
                                 conexion.commit()
+                                valor_total = sum(precio * cantidad for precio, cantidad in zip(precio_productos, cantidad_productos)) + sum(precios_servicio)
                                 try:
                                     with conexion.cursor() as cursor:
-                                        for id_cita_facturar in id_servicios_cobrar:
-                                            consulta = "UPDATE citas SET facturado = %s WHERE id_cita = %s"
-                                            cursor.execute(consulta, (True, id_cita_facturar))
+                                        consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+                                        cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos, precio_productos, cantidad_productos, valor_total))
                                     conexion.commit()
-                                except psycopg2.Error as e:
-                                    print("Ocurrió un error al editar: ", e)
-                                acceso_menu_factura = False
+                                    try:
+                                        with conexion.cursor() as cursor:
+                                            for id_cita_facturar in id_servicios_cobrar:
+                                                consulta = "UPDATE citas SET facturado = %s WHERE id_cita = %s"
+                                                cursor.execute(consulta, (True, id_cita_facturar))
+                                        conexion.commit()
+                                    except psycopg2.Error as e:
+                                        print("Ocurrió un error al editar: ", e)
+                                    acceso_menu_factura = False
 
-                            except psycopg2.Error as e:
-                                print("Ocurrió un error al crear la factura:", e)
-                                continue
+                                except psycopg2.Error as e:
+                                    print("Ocurrió un error al crear la factura:", e)
+                                    continue
                         if menu_factura == 1:
                             id_producto_factura = int(input("Ingrese ID del producto (0 para crear factura): "))
                             if id_producto_factura == 0:
