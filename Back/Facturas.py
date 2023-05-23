@@ -230,7 +230,7 @@ class Facturas():
             print("No encontro el cliente en ninguna tabla: ", e)
 
     def pagar_facturas_documento(self):
-        documento_cliente_pagar = int(input('Ingrese el documento del cliente el cual generó el pago de todas sus facturas: '))
+        documento_cliente_pagar = input('Ingrese el documento del cliente el cual generó el pago de todas sus facturas: ')
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT valor_total FROM facturas WHERE documento_cliente = %s AND pagado = %s", (documento_cliente_pagar, False))
@@ -247,7 +247,20 @@ class Facturas():
                 with conexion.cursor() as cursor:
                     consulta = "UPDATE facturas SET pagado = %s WHERE documento_cliente = %s"
                     cursor.execute(consulta, (True, documento_cliente_pagar))
-                conexion.commit()
+                    conexion.commit()
+                    cursor.execute("SELECT * FROM facturas WHERE documento_cliente = %s ",(documento_cliente_pagar))
+                    facturas_pendientes=cursor.fetchall()
+                    conexion.commit()
+                    facturas_pendientes_list = [factura[1] for factura in facturas_pendientes]
+                    for factura_pendi in facturas_pendientes_list:
+                        consulta = "UPDATE informe_productos SET estado %s WHERE id_factura_pro = %s"
+                        cursor.execute(consulta, (True, factura_pendi))
+                        consulta = "UPDATE informe_servicios SET estado = %s WHERE id_factura_ser = %s"
+                        cursor.execute(consulta, (True, factura_pendi))
+
+
+
+
                 print('Se efectuo el pago de la factura correctamente')
             except psycopg2.Error as e:
                 print("Ocurrió un error al pagar: ", e)
@@ -272,6 +285,10 @@ class Facturas():
         try:
             with conexion.cursor() as cursor:
                     consulta = "UPDATE facturas SET pagado = %s WHERE id_factura = %s"
+                    cursor.execute(consulta, (True, id_factura))
+                    consulta = "UPDATE informe_productos SET estado = %s WHERE id_factura_pro = %s"
+                    cursor.execute(consulta, (True, id_factura))
+                    consulta = "UPDATE informe_servicios SET estado = %s WHERE id_factura_ser = %s"
                     cursor.execute(consulta, (True, id_factura))
             conexion.commit()
             print('Se efectuo el pago de las facturas')

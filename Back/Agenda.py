@@ -39,22 +39,22 @@ class Agendas():
 
                                             cita_con_1 = datetime.strptime(str(cita[1]), '%H:%M:%S')
                                             cita_con_7 = datetime.strptime(str(cita[7]), '%H:%M:%S')
-                                            if hora_cita < cita_con_1 and hora_fin_promedio <cita_con_1:
+                                            if hora_cita <= cita_con_1 and hora_fin_promedio <= cita_con_1:
                                                 pass
-                                            elif hora_cita > cita_con_7 and hora_fin_promedio > cita_con_7:
+                                            elif hora_cita >= cita_con_7 and hora_fin_promedio >= cita_con_7:
                                                 pass
-                                            elif hora_cita > cita_con_1 and hora_cita < cita_con_7:
+                                            elif hora_cita >= cita_con_1 and hora_cita <= cita_con_7:
                                                 var_control = False
-                                            elif hora_fin_promedio > cita_con_1 and hora_fin_promedio < cita_con_7:
+                                            elif hora_fin_promedio >= cita_con_1 and hora_fin_promedio <= cita_con_7:
                                                 var_control = False
                                             else :
                                                 print("ALGO FALLO")
                             except psycopg2.Error as e:
                                 pass
-                            if var_control == True:
-                                try:
+
+                            try:
                                     with conexion.cursor() as cursor:
-                                        cursor.execute("SELECT * FROM usuario WHERE id_usuario=" + str(in_trabajador))
+                                        cursor.execute("SELECT * FROM usuario WHERE usuario=" + str(in_trabajador))
                                         trabajador = cursor.fetchone()
                                         if trabajador:
                                             try:
@@ -63,40 +63,39 @@ class Agendas():
                                                         citas_t = cursor.fetchall()
 
                                                         for cita_t in citas_t:
-                                                            cita_con_1_t = cita_t[1]
-                                                            cita_con_7_t = cita_t[7]
-                                                            if hora_cita < cita_con_1_t and hora_fin_promedio < cita_con_1_t:
+                                                            cita_con_1_t = datetime.strptime(str(cita_t[1]), '%H:%M:%S')
+                                                            cita_con_7_t = datetime.strptime(str(cita_t[7]), '%H:%M:%S')
+                                                            if hora_cita <= cita_con_1_t and hora_fin_promedio <= cita_con_1_t:
                                                                 pass
-                                                            elif hora_cita > cita_con_7_t and hora_fin_promedio > cita_con_7_t:
+                                                            elif hora_cita >= cita_con_7_t and hora_fin_promedio >= cita_con_7_t:
                                                                 pass
-                                                            elif hora_cita > cita_con_1_t and hora_cita < cita_con_7_t:
+                                                            elif hora_cita >= cita_con_1_t and hora_cita <= cita_con_7_t:
                                                                 var_control = False
-                                                            elif hora_fin_promedio > cita_con_1_t and hora_fin_promedio < cita_con_7_t:
+                                                            elif hora_fin_promedio >= cita_con_1_t and hora_fin_promedio <= cita_con_7_t:
                                                                 var_control = False
                                                             else:
                                                                 print("ALGO FALLO")
                                             except psycopg2.Error as e:
                                                 pass
-                                        else:
-                                            print('siga')
-                                except psycopg2.Error as e:
-                                    print("Usuario no existe")
+
+
+                            except psycopg2.Error as e:
+                                print("Usuario no existe")
                         else:
                             print('siga')
-                        if var_control == True:
-
-                            try:
-                                with conexion.cursor() as cursor:
-                                    consulta = "INSERT INTO citas (hora, fecha, documento_fk, servicio_fk, trabajador, hora_aproximada_fin) VALUES (%s, %s, %s, %s, %s, %s);"
-                                    cursor.execute(consulta, (
-                                        in_hora, in_fecha, in_documento, in_servicio, in_trabajador,
-                                        hora_fin_promedio))
+                    if var_control == True:
+                        try:
+                            with conexion.cursor() as cursor:
+                                consulta = "INSERT INTO citas (hora, fecha, documento_fk, servicio_fk, trabajador, hora_aproximada_fin) VALUES (%s, %s, %s, %s, %s, %s);"
+                                cursor.execute(consulta, (
+                                    in_hora, in_fecha, in_documento, in_servicio, in_trabajador,
+                                    hora_fin_promedio))
                                 conexion.commit()
                                 print("Cita creada")
-                            except psycopg2.Error as e:
-                                print("Ocurrio un error : ", e)
-                        else:
-                            print("Alogo paso")
+                        except psycopg2.Error as e:
+                            print("Ocurrio un error : ", e)
+                    else:
+                        print("Algo paso")
 
 
 
