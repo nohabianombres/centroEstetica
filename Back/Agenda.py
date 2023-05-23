@@ -20,7 +20,7 @@ class Agendas():
                         servicio = cursor.fetchone()
                         tiempo_promedio = timedelta(minutes=servicio[3])
                         hora_fin_promedio = hora_cita + tiempo_promedio
-                        hora_fin_promedio_str = hora_fin_promedio.strftime('%H:%M:%S')
+                        #hora_fin_promedio_str = datetime.strptime(hora_fin_promedio,'%H:%M:%S')#
 
                 except psycopg2.Error as e:
                     print("Ocurrió un error al crear la cita: ", e)
@@ -29,76 +29,88 @@ class Agendas():
                     with conexion.cursor() as cursor:
                         cursor.execute("SELECT * FROM clientes WHERE documento=" + str(in_documento))
                         cliente = cursor.fetchone()
-
-                        try:
-                                with conexion.cursor() as cursor:
-                                    cursor.execute("SELECT * FROM citas WHERE fecha=%s AND documento_fk=%s" ,(in_fecha,in_documento))
-                                    citas = cursor.fetchall()
-
-                                    for cita in citas:
-                                        if in_hora < cita[1] and hora_fin_promedio_str < cita[1] :
-                                            None
-                                        elif in_hora > cita[7] and hora_fin_promedio_str > cita [7]:
-                                            None
-                                        elif in_hora > cita[1] and in_hora < cita[7]:
-                                            var_control = False
-                                        elif hora_fin_promedio_str > cita[1] and hora_fin_promedio_str < cita [7]:
-                                            var_control = False
-                                        else :
-                                            print("ALGO FALLO")
-                        except psycopg2.Error as e:
-                            None
-                    if var_control == True:
-                        try:
-                            with conexion.cursor() as cursor:
-                                cursor.execute("SELECT * FROM usuario WHERE id_usuario=" + str(in_trabajador))
-                                cliente = cursor.fetchone()
-
-                                try:
+                        if cliente:
+                            try:
                                     with conexion.cursor() as cursor:
-                                        cursor.execute("SELECT * FROM citas WHERE fecha=%s AND trabajador=%s",(in_fecha, in_trabajador))
+                                        cursor.execute("SELECT * FROM citas WHERE fecha=%s AND documento_fk=%s" ,(in_fecha,in_documento))
                                         citas = cursor.fetchall()
 
                                         for cita in citas:
-                                            if in_hora < cita[1] and hora_fin_promedio_str < cita[1]:
-                                                None
-                                            elif in_hora > cita[7] and hora_fin_promedio_str > cita[7]:
-                                                None
-                                            elif in_hora > cita[1] and in_hora < cita[7]:
+
+                                            cita_con_1 = datetime.strptime(str(cita[1]), '%H:%M:%S')
+                                            cita_con_7 = datetime.strptime(str(cita[7]), '%H:%M:%S')
+                                            if hora_cita < cita_con_1 and hora_fin_promedio <cita_con_1:
+                                                pass
+                                            elif hora_cita > cita_con_7 and hora_fin_promedio > cita_con_7:
+                                                pass
+                                            elif hora_cita > cita_con_1 and hora_cita < cita_con_7:
                                                 var_control = False
-                                            elif hora_fin_promedio_str > cita[1] and hora_fin_promedio_str < cita[7]:
+                                            elif hora_fin_promedio > cita_con_1 and hora_fin_promedio < cita_con_7:
                                                 var_control = False
-                                            else:
+                                            else :
                                                 print("ALGO FALLO")
-
-                                except psycopg2.Error as e:
-                                    None
-                        except psycopg2.Error as e:
-                            print("Usuario no existe")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            except psycopg2.Error as e:
+                                pass
+                            if var_control == True:
+                                try:
+                                    with conexion.cursor() as cursor:
+                                        cursor.execute("SELECT * FROM usuario WHERE id_usuario=" + str(in_trabajador))
+                                        trabajador = cursor.fetchone()
+                                        if trabajador:
                                             try:
-                                                with conexion.cursor() as cursor:
-                                                    consulta = "INSERT INTO citas (hora, fecha, documento_fk, servicio_fk, trabajador, hora_aproximada_fin) VALUES (%s, %s, %s, %s, %s, %s);"
-                                                    cursor.execute(consulta, (
-                                                    in_hora, in_fecha, in_documento, in_servicio, in_trabajador,
-                                                    hora_fin_promedio_str))
-                                                conexion.commit()
-                                                print("Cita creada")
+                                                    with conexion.cursor() as cursor:
+                                                        cursor.execute("SELECT * FROM citas WHERE fecha=%s AND trabajador=%s",(in_fecha, in_trabajador))
+                                                        citas_t = cursor.fetchall()
+
+                                                        for cita_t in citas_t:
+                                                            cita_con_1_t = cita_t[1]
+                                                            cita_con_7_t = cita_t[7]
+                                                            if hora_cita < cita_con_1_t and hora_fin_promedio < cita_con_1_t:
+                                                                pass
+                                                            elif hora_cita > cita_con_7_t and hora_fin_promedio > cita_con_7_t:
+                                                                pass
+                                                            elif hora_cita > cita_con_1_t and hora_cita < cita_con_7_t:
+                                                                var_control = False
+                                                            elif hora_fin_promedio > cita_con_1_t and hora_fin_promedio < cita_con_7_t:
+                                                                var_control = False
+                                                            else:
+                                                                print("ALGO FALLO")
                                             except psycopg2.Error as e:
-                                                print("Ocurrio un error al dar el tiempo fin promedio: ", e)
+                                                pass
+                                        else:
+                                            print('siga')
+                                except psycopg2.Error as e:
+                                    print("Usuario no existe")
+                        else:
+                            print('siga')
+                        if var_control == True:
+
+                            try:
+                                with conexion.cursor() as cursor:
+                                    consulta = "INSERT INTO citas (hora, fecha, documento_fk, servicio_fk, trabajador, hora_aproximada_fin) VALUES (%s, %s, %s, %s, %s, %s);"
+                                    cursor.execute(consulta, (
+                                        in_hora, in_fecha, in_documento, in_servicio, in_trabajador,
+                                        hora_fin_promedio))
+                                conexion.commit()
+                                print("Cita creada")
+                            except psycopg2.Error as e:
+                                print("Ocurrio un error : ", e)
+                        else:
+                            print("Alogo paso")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

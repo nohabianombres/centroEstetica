@@ -29,7 +29,7 @@ class Facturas():
                             cursor.execute("SELECT * FROM clientes WHERE documento=" + str(cliente_cobrar))
                             cliente_facturar = cursor.fetchone()
                             if cliente_facturar:
-                                while acceso_menu_factura:
+                                while acceso_menu_factura == True:
                                     menu_factura = int(input("Desea agregar productos a la factura? Marque 1 para agregar, 0 para salir: "))
                                     if menu_factura == 0:
                                         with conexion.cursor() as cursor:
@@ -75,7 +75,7 @@ class Facturas():
                                     if menu_factura == 1:
                                             id_producto_factura = int(input("Ingrese ID del producto (0 para crear factura): "))
                                             if id_producto_factura == 0:
-                                                break
+                                                acceso_menu_factura = False
                                             try:
                                                 with conexion.cursor() as cursor:
                                                     cursor.execute("SELECT * FROM inventario WHERE id_producto = %s", (id_producto_factura,))
@@ -199,7 +199,7 @@ class Facturas():
                         if menu_factura == 1:
                             id_producto_factura = int(input("Ingrese ID del producto (0 para crear factura): "))
                             if id_producto_factura == 0:
-                                break
+                                acceso_menu_factura = False
                             try:
                                 with conexion.cursor() as cursor:
                                     cursor.execute("SELECT * FROM inventario WHERE id_producto = %s",
