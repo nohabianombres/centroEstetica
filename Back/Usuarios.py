@@ -1,4 +1,5 @@
 from BD.Conexion import *
+from datetime import datetime
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
@@ -55,8 +56,52 @@ class Trabajadores(Usuarios):
             print("Ocurrio un error al consultar: ", e)
 
 
-    def inicializar_servicio(self):
+    def inicializar_finalizar_cita_(self):
+        documento_cliente = int(input('Ingrese el documento del cliente: '))
+        try:
+            with conexion.cursor() as cursor:
+                cursor.execute("SELECT * FROM citas WHERE documento_fk = %s AND facturado = %s", (documento_cliente, False))
+                citas_pendientes = cursor.fetchall()
+                print(citas_pendientes)
+                for cita_pendiente in citas_pendientes:
+                    print(cita_pendiente)
+                    cita_ejercer = int(input('Ingrese el id de la cita (1 columna): '))
+                    if cita_pendiente[0] == cita_ejercer:
+                        hora_actual = datetime.now().strftime('%H:%M:%S')
+                        try:
+                            with conexion.cursor() as cursor:
+                                consulta = "UPDATE citas SET hora_inicio = %s WHERE id_cita = %s"
+                                cursor.execute(consulta, (hora_actual, cita_ejercer))
+                            conexion.commit()
+                            print("Hora de inicio agregada")
+                        except psycopg2.Error as e:
+                            print("Ocurrió un error al editar: ", e)
+                    else:
+                        print('Pero porque eres asi')
+                        continue
+                    acceso_hora_fin = int(input('Ingrese el uno 1 si quiere finalizar cita '))
+                    if acceso_hora_fin == 1:
+                        hora_actual_2 = datetime.now().strftime('%H:%M:%S')
+                        try:
+                            with conexion.cursor() as cursor:
+                                consulta = "UPDATE citas SET hora_fin = %s WHERE id_cita = %s"
+                                cursor.execute(consulta, (hora_actual_2, cita_ejercer))
+                            conexion.commit()
+                            print("Hora de fin agregada")
+                        except psycopg2.Error as e:
+                            print("Ocurrió un error al editar: ", e)
+                    else:
+                        print("Lo que ingreso no es valido")
+        except psycopg2.Error as e:
+            print("Ocurrió un error al consultar: ", e)
+
+
+
         pass
+
+
+
+
 
     def finalizar_servicio(self):
         pass

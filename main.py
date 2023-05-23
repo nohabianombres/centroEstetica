@@ -157,8 +157,28 @@ try:
                                     print("valor no valido")
 
                         if menu == 6:
-                            pass
-                            ##por hacer informes
+                            informe = Informe()
+                            while var_control2 == True:
+                                print('Ingrese "1" para ver informe de facturas')
+                                print('Ingrese "2" para ver cartera')
+                                print('Ingrese "3" para ver informe de productos')
+                                print('Ingrese "4" para ver informe de servicios')
+                                print('Ingrese "0" para salir al menu principal')
+                                menu2 = int(input("Ingrese la opcion a elegir: "))
+                                if menu2 == 1:
+                                    informe.mostar_informe_facturas()
+                                elif menu2 == 2:
+                                    informe.mostrar_cartera()
+                                elif menu2 == 3:
+                                    informe.informe_productos()
+                                elif menu2 == 4:
+                                    informe.informe_servicios()
+                                    print("Regresando al menu principal")
+                                    var_control2 = False
+                                elif menu2 == 0:
+                                    del informe
+                                else:
+                                    print("valor no valido")
                         if menu == 7:
                             while var_control2 == True:
                                 print('Ingrese "1" para crear un nuevo usuarios')
@@ -330,13 +350,13 @@ try:
                     print("Hola Empleado")
                     while var_control == True :
                         print('Ingrese  1 para consultar agenda personal')
-                        print("Ingrese 2 para cancelar e inicializar cita")
+                        print("Ingrese 2 para inicializar cita")
                         print('Ingrese "0" para salir del programa')
                         menu = int(input("Ingrese la opcion a elegir: "))
                         if menu == 1:
                             empleado.consultar_agenda_personal()
                         if menu == 2:
-                            pass
+                            empleado.inicializar_finalizar_cita_()
                         if menu ==0:
                             var_control = False
                         else:
