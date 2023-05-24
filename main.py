@@ -355,9 +355,9 @@ try:
                         menu = int(input("Ingrese la opcion a elegir: "))
                         if menu == 1:
                             empleado.consultar_agenda_personal()
-                        if menu == 2:
+                        elif menu == 2:
                             empleado.inicializar_finalizar_cita_()
-                        if menu ==0:
+                        elif menu ==0:
                             var_control = False
                         else:
                             print("Valor ingresado no valido")
