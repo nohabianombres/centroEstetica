@@ -17,9 +17,10 @@ class Facturas():
         id_citas_cobrar = []
         id_servicios_cobrar = []
         acceso_menu_factura = True
+        hora_actual = datetime.now().strftime('%H:%M:%S')
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM citas WHERE documento_fk = %s AND facturado = %s", (cliente_cobrar, False))
+                cursor.execute("SELECT * FROM citas WHERE documento_fk = %s AND facturado = %s AND hora_fin < %s", (cliente_cobrar, False, hora_actual))
                 servicios_ee = cursor.fetchall()
                 for servicio_ee in servicios_ee:
                     id_citas_cobrar.append(servicio_ee[0])
@@ -42,8 +43,8 @@ class Facturas():
                                         print(fecha_creacion)
                                         try:
                                             with conexion.cursor() as cursor:
-                                                consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
-                                                cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos,precio_productos, cantidad_productos, valor_total, fecha_creacion))
+                                                consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion, hora_creacion ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                                                cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos,precio_productos, cantidad_productos, valor_total, fecha_creacion, hora_actual))
                                             conexion.commit()
 
                                             try:
@@ -295,4 +296,3 @@ class Facturas():
         except psycopg2.Error as e:
             print("Ocurrió un error al pagar: ", e)
         pass
-

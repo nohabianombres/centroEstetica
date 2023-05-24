@@ -1,5 +1,6 @@
 from BD.Conexion import *
 from datetime import datetime
+from datetime import datetime, timedelta
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
@@ -65,7 +66,7 @@ class Trabajadores(Usuarios):
                 print(citas_pendientes)
                 for cita_pendiente in citas_pendientes:
                     print(cita_pendiente)
-                    cita_ejercer = int(input('Ingrese el id de la cita (1 columna): '))
+                    cita_ejercer = input('Ingrese el id de la cita (1 columna): ')
                     if cita_pendiente[0] == cita_ejercer:
                         hora_actual = datetime.now().strftime('%H:%M:%S')
                         try:
@@ -88,10 +89,29 @@ class Trabajadores(Usuarios):
                                 cursor.execute(consulta, (hora_actual_2, cita_ejercer))
                             conexion.commit()
                             print("Hora de fin agregada")
+                            try:
+                                with conexion.cursor() as cursor:
+                                    cursor.execute("SELECT * FROM citas WHERE id_cita = %s ", (cita_ejercer))
+                                    cita_pendiente_d = cursor.fetchone()
+                            except psycopg2.Error as e:
+                                print("Ocurrió un error al consultar: ", e)
+                            try:
+                                with conexion.cursor() as cursor:
+                                    cursor.execute("SELECT * FROM servicios WHERE id_servicios = %s ",
+                                                   (cita_pendiente_d[4]))
+                                    servicio_a_puntaje = cursor.fetchone()
+                            except psycopg2.Error as e:
+                                print("Ocurrió un error al consultar: ", e)
+                            tiempo_promedio = timedelta(minutes=servicio_a_puntaje[3])
+                            hora_actual_c = datetime.strptime(hora_actual, '%H:%M:%S')
+                            hora_actual_2_c = datetime.strptime(hora_actual_2, '%H:%M:%S')
+                            puntaje_calculo = tiempo_promedio / (hora_actual_2_c - hora_actual_c)
+                            print(puntaje_calculo)
                         except psycopg2.Error as e:
                             print("Ocurrió un error al editar: ", e)
                     else:
                         print("Lo que ingreso no es valido")
+
         except psycopg2.Error as e:
             print("Ocurrió un error al consultar: ", e)
 
