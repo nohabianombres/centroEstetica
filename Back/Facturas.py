@@ -141,8 +141,8 @@ class Facturas():
                                 try:
 
                                     with conexion.cursor() as cursor:
-                                        consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
-                                        cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos, precio_productos, cantidad_productos, valor_total, fecha_creacion))
+                                        consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion, hora_creacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                                        cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos, precio_productos, cantidad_productos, valor_total, fecha_creacion, hora_actual))
                                     conexion.commit()
                                     try:
                                         with conexion.cursor() as cursor:

@@ -101,62 +101,61 @@ class Trabajadores(Usuarios):
                                 cursor.execute(consulta, (hora_actual_2, cita_ejercer))
                             conexion.commit()
                             print("Hora de fin agregada")
-                        except psycopg2.Error as e:
-                            print("Ocurrió un error al editar: ", e)
-                        try:
-                            with conexion.cursor() as cursor:
-                                cursor.execute("SELECT * FROM citas WHERE id_cita = %s ", (cita_ejercer,))
-                                cita_pendiente_d = cursor.fetchone()
-                                print(cita_pendiente_d)
-                        except psycopg2.Error as e:
-                                print("Ocurrió un error al consultar: ", e)
-                        try:
-                            with conexion.cursor() as cursor:
-                                cursor.execute("SELECT * FROM servicios WHERE id_servicios = %s ",(cita_pendiente_d[4],))
-                                servicio_a_puntaje = cursor.fetchone()
-                        except psycopg2.Error as e:
-                            print("Ocurrió un error al consultar: ", e)
-                        tiempo_promedio = timedelta(minutes=servicio_a_puntaje[3])
-                        hora_actual_c = datetime.strptime(hora_actual, '%H:%M:%S')
-                        hora_actual_2_c = datetime.strptime(hora_actual_2, '%H:%M:%S')
-                        puntaje_calculo_deno = hora_actual_2_c - hora_actual_c
-                        puntaje_calculo = tiempo_promedio/puntaje_calculo_deno
-                        print(puntaje_calculo)
-                        try:
-                            with conexion.cursor() as cursor:
-                                cursor.execute("SELECT * FROM usuario WHERE id_usuarios = %s ", (cita_pendiente_d[5],))
-                                usuario_escogido = cursor.fetchone()
-                                print(usuario_escogido)
-                        except psycopg2.Error as e:
-                            print("Ocurrió un error al consultar: ", e)
-                        try:
-                            with conexion.cursor() as cursor:
-                                cursor.execute("SELECT * FROM desempeno WHERE id_usuario = %s ",
-                                                   (cita_pendiente_d[5],))
-                                usuario_buscar = cursor.fetchone()
-                                print(usuario_buscar)
-                                try:
-                                    with conexion.cursor() as cursor:
-                                        consulta = "UPDATE desempeno SET puntaje = %s WHERE numero_trabajadores = %s"
-                                        cursor.execute(consulta, (puntaje_calculo, usuario_buscar[0]))
-                                    conexion.commit()
-                                    print("Puntaje agregado")
-                                except psycopg2.Error as e:
-                                    print("Ocurrió un error al editarel puntaje: ", e)
-                        except psycopg2.Error as e:
-                            print("Ocurrió un error al consultar: ", e)
-
-
                             try:
                                 with conexion.cursor() as cursor:
-                                    consulta = "INSERT INTO desempeno (nombre, apellido, rol, puntaje) VALUES (%s, %s, %s, %s);"
-                                    cursor.execute(consulta, (usuario_escogido[2], usuario_escogido[3], usuario_escogido[7], puntaje_calculo))
-                                conexion.commit()
-                                print('Puntaje de usuario creado')
+                                    cursor.execute("SELECT * FROM citas WHERE id_cita=" + str(cita_ejercer))
+                                    cita_pendiente_d = cursor.fetchone()
+                                print(cita_pendiente_d)
+                                try:
+                                    with conexion.cursor() as cursor:
+                                        cursor.execute("SELECT * FROM servicios WHERE id_servicios = %s ",(cita_pendiente_d[4],))
+                                        servicio_a_puntaje = cursor.fetchone()
+                                    tiempo_promedio = timedelta(minutes=servicio_a_puntaje[3])
+                                    hora_actual_c = datetime.strptime(hora_actual, '%H:%M:%S')
+                                    hora_actual_2_c = datetime.strptime(hora_actual_2, '%H:%M:%S')
+                                    puntaje_calculo_deno = hora_actual_2_c - hora_actual_c
+                                    puntaje_calculo = tiempo_promedio / puntaje_calculo_deno
+                                    print(puntaje_calculo)
+                                    try:
+                                        with conexion.cursor() as cursor:
+                                            cursor.execute("SELECT * FROM usuario WHERE usuario = %s ",(cita_pendiente_d[5],))
+                                            usuario_escogido = cursor.fetchone()
+                                        print(usuario_escogido)
+                                        try:
+                                            with conexion.cursor() as cursor:
+                                                cursor.execute("SELECT * FROM desempeno WHERE id_usuario = %s ",(cita_pendiente_d[5],))
+                                                usuario_buscar = cursor.fetchone()
+                                                print(usuario_buscar)
+                                                if usuario_buscar is None:
+                                                    try:
+                                                        with conexion.cursor() as cursor:
+                                                            consulta = "INSERT INTO desempeno (nombre, apellido, rol, puntaje, id_usuario) VALUES (%s, %s, %s, %s, %s);"
+                                                            cursor.execute(consulta, (usuario_escogido[2], usuario_escogido[3],usuario_escogido[7],puntaje_calculo, usuario_escogido[0]))
+                                                        conexion.commit()
+                                                        print('Nuevo puntaje de usuario creado')
+                                                    except psycopg2.Error as e:
+                                                        print("Ocurrió un error al crear la tabla de desempeño: ", e)
+                                                else:
+                                                    try:
+                                                        with conexion.cursor() as cursor:
+                                                            consulta = "UPDATE desempeno SET puntaje = %s WHERE numero_trabajadores = %s"
+                                                            cursor.execute(consulta, (puntaje_calculo, usuario_buscar[0]))
+                                                        conexion.commit()
+                                                        print("Puntaje agregado")
+                                                    except psycopg2.Error as e:
+                                                        print("Ocurrió un error al editarel puntaje: ", e)
+                                        except psycopg2.Error as e:
+                                            print("Ocurrió un error al consultar in desempeno: ", e)
+
+                                    except psycopg2.Error as e:
+                                        print("Ocurrió un error al consultar en usuarios : ", e)
+
+                                except psycopg2.Error as e:
+                                    print("Ocurrió un error al consultar servicios: ", e)
                             except psycopg2.Error as e:
-                                    print("Ocurrió un error al crear la tabla de desempeño: ", e)
-
-
+                                print("Ocurrió un error al consultar citas: ", e)
+                        except psycopg2.Error as e:
+                            print("Ocurrió un error al editar: ", e)
                 else:
                     print("Lo que ingreso no es valido")
 
