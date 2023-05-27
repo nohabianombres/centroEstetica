@@ -1,5 +1,9 @@
 from BD.Conexion import *
 from datetime import datetime
+from Front.administrador.ventanasAdmin import *
+from Front.cajero.ventanasCajero import *
+from Front.administrador.emeAdm.emeAdm import *
+from Front.comunes.emerComunes import *
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
@@ -128,7 +132,6 @@ class Facturas():
                                             for servicio_facturar in servicios_facturar:
                                                 nombres_servicio.append(servicio_facturar[1])
                                                 precios_servicio.append(servicio_facturar[2])
-
                                 except psycopg2.Error as e:
                                     print("Ocurrió un error al consultar los datos de los servicios: ", e)
                                 with conexion.cursor() as cursor:
@@ -139,7 +142,6 @@ class Facturas():
                                 valor_total = sum(precio * cantidad for precio, cantidad in zip(precio_productos, cantidad_productos)) + sum(precios_servicio)
                                 fecha_creacion = datetime.now().date()
                                 try:
-
                                     with conexion.cursor() as cursor:
                                         consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion, hora_creacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
                                         cursor.execute(consulta, (cliente_cobrar, nombres_servicio, precios_servicio, nombres_productos, precio_productos, cantidad_productos, valor_total, fecha_creacion, hora_actual))
@@ -152,43 +154,25 @@ class Facturas():
                                         conexion.commit()
                                     except psycopg2.Error as e:
                                         print("Ocurrió un error al editar: ", e)
-
                                     try:
                                         with conexion.cursor() as cursor:
-                                            cursor.execute("""
-                                                SELECT * FROM facturas
-                                                WHERE id_factura = (
-                                                    SELECT MAX(id_factura) FROM facturas
-                                                )
-                                            """)
+                                            cursor.execute("""SELECT * FROM facturas WHERE id_factura = (SELECT MAX(id_factura) FROM facturas)""")
                                             ultimo_dato_insertado = cursor.fetchone()
                                             print("Última fila insertada: ", ultimo_dato_insertado)
                                     except psycopg2.Error as e:
-                                        print(
-                                            "Ocurrió un error al obtener la última fila insertada en la tabla facturas:",
-                                            e)
-
+                                        print("Ocurrió un error al obtener la última fila insertada en la tabla facturas:",e)
                                     try:
                                         with conexion.cursor() as cursor:
                                             consulta = "INSERT INTO informe_servicios(id_factura_ser, nombre_servicio, precio_servicio, valor_total, fecha_factura_ser, estado ) VALUES (%s, %s, %s, %s, %s, %s);"
-                                            cursor.execute(consulta, (
-                                            ultimo_dato_insertado[0], ultimo_dato_insertado[2],
-                                            ultimo_dato_insertado[3], 0,
-                                            ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
+                                            cursor.execute(consulta, (ultimo_dato_insertado[0], ultimo_dato_insertado[2],ultimo_dato_insertado[3], sum(ultimo_dato_insertado[3]),ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
                                         conexion.commit()
                                     except psycopg2.Error as e:
                                         print("Ocurrió un error al crear el informe:", e)
-
-
-
-
                                     try:
+                                        valor_total_productos = sum(x * y for x, y in zip(ultimo_dato_insertado[5], ultimo_dato_insertado[6]))
                                         with conexion.cursor() as cursor:
                                             consulta = "INSERT INTO informe_productos(id_factura_pro, nombre_productos, precio_productos, cantidad_productos, valor_total, fecha_factura_pro, estado ) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-                                            cursor.execute(consulta, (
-                                            ultimo_dato_insertado[0], ultimo_dato_insertado[4],
-                                            ultimo_dato_insertado[5], ultimo_dato_insertado[6], 0,
-                                            ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
+                                            cursor.execute(consulta, (ultimo_dato_insertado[0], ultimo_dato_insertado[4],ultimo_dato_insertado[5], ultimo_dato_insertado[6], valor_total_productos,ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
                                         conexion.commit()
                                         acceso_menu_factura = False
                                     except psycopg2.Error as e:
@@ -258,10 +242,6 @@ class Facturas():
                         cursor.execute(consulta, (True, factura_pendi))
                         consulta = "UPDATE informe_servicios SET estado = %s WHERE id_factura_ser = %s"
                         cursor.execute(consulta, (True, factura_pendi))
-
-
-
-
                 print('Se efectuo el pago de la factura correctamente')
             except psycopg2.Error as e:
                 print("Ocurrió un error al pagar: ", e)

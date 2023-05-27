@@ -1,6 +1,12 @@
 from BD.Conexion import *
 from datetime import datetime
 from datetime import datetime, timedelta
+from Front.administrador.ventanasAdmin import *
+from Front.recepcionista.ventanasRecepcionista import *
+from Front.cajero.ventanasCajero import *
+from Front.trabajador.ventanasTrabajador import *
+from Front.administrador.emeAdm.emeAdm import *
+from Front.comunes.emerComunes import *
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
@@ -8,7 +14,7 @@ conexion= basedatos.conectar()
 class Usuarios():
     nombre_usuario = ""
     apellido_usuario = ""
-    usuario_propio = 0
+    usuario_propio = 1
     contrasena = ""
     documento = 1
     telefono = ""
@@ -44,9 +50,10 @@ class Trabajadores(Usuarios):
 
     def consultar_agenda_personal(self):
         id_trabajador = self.usuario_propio
+        fecha_actual = datetime.now().date()
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM citas WHERE trabajador=" + str(id_trabajador))
+                cursor.execute("SELECT * FROM citas WHERE trabajador = %s AND fecha >= %s ORDER BY hora, fecha;",(id_trabajador, fecha_actual))
                 citas = cursor.fetchall()
                 if citas:
                     for cada_cita in citas:
@@ -54,8 +61,7 @@ class Trabajadores(Usuarios):
                 else:
                     print("No tienes agenda")
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
-
+            print("Ocurrió un error al consultar: ", e)
 
     def inicializar_finalizar_cita_(self):
         id_citas = []
@@ -77,8 +83,6 @@ class Trabajadores(Usuarios):
                             print("encontrado")
                         else:
                             print("paila, siga buscando")
-
-
                 if var_control== True:
                         hora_actual = datetime.now().strftime('%H:%M:%S')
                         try:

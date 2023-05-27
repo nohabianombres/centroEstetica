@@ -1,5 +1,10 @@
 from BD.Conexion import *
 from datetime import datetime, timedelta
+from Front.administrador.ventanasAdmin import *
+from Front.recepcionista.ventanasRecepcionista import *
+from Front.trabajador.ventanasTrabajador import *
+from Front.administrador.emeAdm.emeAdm import *
+from Front.comunes.emerComunes import *
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
@@ -97,23 +102,6 @@ class Agendas():
                             print("Ocurrio un error : ", e)
                     else:
                         print("Algo paso")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 except psycopg2.Error as e:
                     print("Ocurrio un error al consultar el cliente: ", e)
                     var_control = False

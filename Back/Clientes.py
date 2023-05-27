@@ -2,6 +2,12 @@ from BD.Conexion import *
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
+from Front.administrador.ventanasAdmin import *
+from Front.recepcionista.ventanasRecepcionista import *
+from Front.cajero.ventanasCajero import *
+from Front.trabajador.ventanasTrabajador import *
+from Front.administrador.emeAdm.emeAdm import *
+from Front.comunes.emerComunes import *
 
 class Clientes():
 

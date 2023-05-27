@@ -1,5 +1,10 @@
 from BD.Conexion import *
 from datetime import datetime, timedelta
+
+from Front.administrador.ventanasAdmin import *
+from Front.administrador.emeAdm.emeAdm import *
+
+
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
 
@@ -10,52 +15,64 @@ class Informe():
         numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
         fecha_actual = datetime.now().date()
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
-        consulta = "SELECT * FROM informe_productos WHERE fecha_factura_pro >= %s"
-        with conexion.cursor() as cursor:
-            cursor.execute(consulta, (fecha_minima,))
-            informes_pro = cursor.fetchall()
-        for informe_pro in informes_pro:
-            print(informe_pro)
+        try:
+            consulta = "SELECT * FROM informe_productos WHERE fecha_factura_pro >= %s ORDER BY fecha_factura_pro DESC;"
+            with conexion.cursor() as cursor:
+                cursor.execute(consulta, (fecha_minima,))
+                informes_pro = cursor.fetchall()
+            for informe_pro in informes_pro:
+                print(informe_pro)
+        except psycopg2.Error as e:
+            print("Ocurrió un error al consultar: ", e)
 
     def informe_servicios(self):
         numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
         fecha_actual = datetime.now().date()
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
-        consulta = "SELECT * FROM informe_servicios WHERE fecha_factura_ser >= %s"
-        with conexion.cursor() as cursor:
-            cursor.execute(consulta, (fecha_minima,))
-            informes_ser = cursor.fetchall()
-        for informe_ser in informes_ser:
-            print(informe_ser)
+        try:
+            consulta = "SELECT * FROM informe_servicios WHERE fecha_factura_ser >= %s ORDER BY fecha_factura_ser DESC;"
+            with conexion.cursor() as cursor:
+                cursor.execute(consulta, (fecha_minima,))
+                informes_ser = cursor.fetchall()
+            for informe_ser in informes_ser:
+                print(informe_ser)
+        except psycopg2.Error as e:
+            print("Ocurrió un error al consultar: ", e)
 
     def mostar_informe_facturas(self):
         numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
         fecha_actual = datetime.now().date()
-
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
-        consulta = "SELECT * FROM facturas WHERE fecha_creacion >= %s"
-        with conexion.cursor() as cursor:
-            cursor.execute(consulta, (fecha_minima,))
-            facturas = cursor.fetchall()
-        for factura in facturas:
-            print(factura)
+        try:
+            consulta = "SELECT * FROM facturas WHERE fecha_creacion >= %s ORDER BY fecha_creacion DESC;"
+            with conexion.cursor() as cursor:
+                cursor.execute(consulta, (fecha_minima,))
+                facturas = cursor.fetchall()
+            for factura in facturas:
+                print(factura)
+        except psycopg2.Error as e:
+            print("Ocurrió un error al consultar: ", e)
 
     def mostrar_cartera(self):
         numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
         fecha_actual = datetime.now().date()
-
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
-        consulta = "SELECT * FROM facturas WHERE fecha_creacion >= %s AND pagado = %s"
-        with conexion.cursor() as cursor:
-            cursor.execute(consulta, (fecha_minima,False))
-            facturas = cursor.fetchall()
-        for factura in facturas:
-            print(factura)
+        try:
+            consulta = "SELECT * FROM facturas WHERE fecha_creacion >= %s AND pagado = %s ORDER BY fecha_creacion"
+            with conexion.cursor() as cursor:
+                cursor.execute(consulta, (fecha_minima,False))
+                facturas = cursor.fetchall()
+            for factura in facturas:
+                print(factura)
+        except psycopg2.Error as e:
+            print("Ocurrió un error al consultar: ", e)
 
-class Productividad():
-
-    def mostar_informe_semanal(self):
-        pass
-
-    def mostrar_informe_mensual(self):
-        pass
+    def mostrar_desempeno(self):
+        try:
+            with conexion.cursor() as cursor:
+                cursor.execute("SELECT * FROM desempeno ORDER BY puntaje DESC;")
+                usuarios_calificados = cursor.fetchall()
+                for usuario_calificado in usuarios_calificados:
+                    print(usuario_calificado)
+        except psycopg2.Error as e:
+            print("Ocurrió un error al consultar: ", e)

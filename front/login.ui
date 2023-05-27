@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>primera</class>
+ <widget class="QMainWindow" name="primera">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -180,7 +180,6 @@
      <font>
       <family>Segoe Print</family>
       <pointsize>60</pointsize>
-      <weight>75</weight>
       <italic>true</italic>
       <bold>true</bold>
       <strikeout>false</strikeout>
@@ -221,7 +220,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QLineEdit" name="VasPass">
+   <widget class="QLineEdit" name="VarPass">
     <property name="geometry">
      <rect>
       <x>820</x>
@@ -275,7 +274,7 @@
      <string>Usuario</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="cerrarPrograma">
+   <widget class="QPushButton" name="BorraPrograma">
     <property name="geometry">
      <rect>
       <x>840</x>
