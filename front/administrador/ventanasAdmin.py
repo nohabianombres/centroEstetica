@@ -5,8 +5,8 @@ import sys
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
-
-
+from Front.administrador.emeAdm.emeAdm import *
+from Front.comunes.emerComunes import *
 class Admin(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Admin, self).__init__(parent)
@@ -18,6 +18,7 @@ class Admin(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_2)
         self.botUsuAdm.clicked.connect(self.open_view_2)
         self.botFacAdm.clicked.connect(self.open_view_2)
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -68,6 +69,13 @@ class AdminInventario(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_3)
         self.botUsuAdm.clicked.connect(self.open_view_3)
         self.botFacAdm.clicked.connect(self.open_view_3)
+
+        self.botAgrPro.clicked.connect(self.open_view_eme_AgrPro)
+        self.botBusPro.clicked.connect(self.open_view_eme_BusPro)
+        self.botMosPro.clicked.connect(self.open_view_eme_MosTodPro)
+        self.botModPro.clicked.connect(self.open_view_eme_ModPro)
+
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -107,6 +115,28 @@ class AdminInventario(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
+    def open_view_eme_AgrPro(self):
+        self.close()
+        self.hide()
+        self.AgrPro = emerAgrPro()
+        self.AgrPro.show()
+
+    def open_view_eme_BusPro(self):
+        self.close()
+        self.hide()
+        self.BusPro = emerBuscPro()
+        self.AgrPro.show()
+
+    def open_view_eme_MosTodPro(self):
+        pass
+
+    def open_view_eme_ModPro(self):
+        self.close()
+        self.hide()
+        self.ModPro = emerModPro()
+        self.ModPro.show()
+
+
 class AdminServicios(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminServicios, self).__init__(parent)
@@ -118,6 +148,12 @@ class AdminServicios(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_4)
         self.botUsuAdm.clicked.connect(self.open_view_4)
         self.botFacAdm.clicked.connect(self.open_view_4)
+
+        self.botAgrSer.clicked.connect(self.open_view_eme_AgrSer)
+        self.botBusAdm.clicked.connect(self.open_view_eme_BusSer)
+        self.botMosSer.clicked.connect(self.open_view_eme_MosTodSer)
+        self.botModSer.clicked.connect(self.open_view_eme_ModSer)
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -157,6 +193,30 @@ class AdminServicios(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
+
+
+    def open_view_eme_AgrSer(self):
+        self.close()
+        self.hide()
+        self.AgrSer = emerAgrSer()
+        self.AgrSer.show()
+
+    def open_view_eme_BusSer(self):
+        self.close()
+        self.hide()
+        self.BusSer = emerBuscSer()
+        self.AgrSer.show()
+
+    def open_view_eme_MosTodSer(self):
+        pass
+
+    def open_view_eme_ModSer(self):
+        self.close()
+        self.hide()
+        self.ModSer = emerModSer()
+        self.ModSer.show()
+
+
 class AdminAgenda(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminAgenda, self).__init__(parent)
@@ -168,6 +228,14 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_5)
         self.botUsuAdm.clicked.connect(self.open_view_5)
         self.botFacAdm.clicked.connect(self.open_view_5)
+
+        self.botAgrCit.clicked.connect(self.open_view_eme_AgrCit)
+        self.botBusCit.clicked.connect(self.open_view_eme_BusCita)
+        self.botCanCit.clicked.connect(self.open_view_eme_CanCita)
+        self.botModCit.clicked.connect(self.open_view_eme_ModCita)
+
+
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -207,6 +275,35 @@ class AdminAgenda(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
+
+    def open_view_eme_AgrCit(self):
+        self.close()
+        self.hide()
+        self.AgrCit = emerAgrCita()
+        self.AgrCit.show()
+
+    def open_view_eme_BusCita(self):
+        self.close()
+        self.hide()
+        self.BusCit = emerBusCita()
+        self.BusCit.show()
+
+    def open_view_eme_ModCita(self):
+        pass
+
+    def open_view_eme_CanCita(self):
+        self.close()
+        self.hide()
+        self.CanCita = emerCamCita()
+        self.CanCita.show()
+
+
+
+
+
+
+
+
 class AdminClientes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminClientes, self).__init__(parent)
@@ -218,6 +315,14 @@ class AdminClientes(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_6)
         self.botUsuAdm.clicked.connect(self.open_view_6)
         self.botFacAdm.clicked.connect(self.open_view_6)
+
+        self.botAdcFal.clicked.connect(self.open_view_eme_AgrCit)
+        self.botAgrCli.clicked.connect(self.open_view_eme_BusCita)
+        self.botBusCli.clicked.connect(self.open_view_eme_CanCita)
+        self.botModCli.clicked.connect(self.open_view_eme_ModCita)
+
+
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -227,35 +332,57 @@ class AdminClientes(QtWidgets.QMainWindow):
         self.adClientes = None
 
     def open_view_6(self):
-        sender_button_Cli = self.sender()
-        if sender_button_Cli == self.botSerAdm:
+        sender_button_Age = self.sender()
+        if sender_button_Age == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
             self.adServicios.show()
-        elif sender_button_Cli == self.botInvAdm:
+        elif sender_button_Age == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
             self.adInventario.show()
-        elif sender_button_Cli == self.botInfAdm:
+        elif sender_button_Age == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
             self.adInformes.show()
-        elif sender_button_Cli == self.botAgeAdm:
+        elif sender_button_Age == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
             self.adAgenda.show()
-        elif sender_button_Cli == self.botCliAdm:
+        elif sender_button_Age == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
             self.adClientes.show()
-        elif sender_button_Cli == self.botUsuAdm:
+        elif sender_button_Age == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
             self.adUsuarios.show()
-        elif sender_button_Cli == self.botFacAdm:
+        elif sender_button_Age == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
+
+
+    def open_view_eme_AdcFal(self):
+        self.close()
+        self.hide()
+        self.AdcFal = emerAdiFal()
+        self.AdcFal.show()
+
+    def open_view_eme_AgrCli(self):
+        self.close()
+        self.hide()
+        self.AgrCli = emerAgrCli()
+        self.AgrCli.show()
+
+    def open_view_eme_ModCita(self):
+        pass
+
+    def open_view_eme_BusCli(self):
+        self.close()
+        self.hide()
+        self.BusCli = emerBuscClien()
+        self.BusCli.show()
 
 class AdminFacturacion(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -318,6 +445,12 @@ class AdminInformes(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_8)
         self.botUsuAdm.clicked.connect(self.open_view_8)
         self.botFacAdm.clicked.connect(self.open_view_8)
+
+        self.botDes.clicked.connect(self.open_view_Des)
+        self.botIngPro.clicked.connect(self.open_view_IngPro)
+        self.botIngSer.clicked.connect(self.open_view_IngSer)
+
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -357,6 +490,43 @@ class AdminInformes(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
+
+    def open_view_IngPro(self):
+        self.close()
+        self.hide()
+        self.IngPro = AdminInformesProductos()
+        self.IngPro.show()
+
+    def open_view_IngSer(self):
+        self.close()
+        self.hide()
+        self.IngSer = AdminInformesServicios()
+        self.IngSer.show()
+
+    def open_view_Des(self):
+        self.close()
+        self.hide()
+        self.InfDes = AdminInformesDesempeno()
+        self.InfDes.show()
+
+
+
+class AdminInformesDesempeno(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(AdminInformesDesempeno, self).__init__(parent)
+        uic.loadUi('Front/administrador/adminDesempeño.ui', self)
+
+class AdminInformesProductos(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(AdminInformesProductos, self).__init__(parent)
+        uic.loadUi('Front/administrador/adminIngresoProductos.ui', self)
+
+class AdminInformesServicios(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(AdminInformesServicios, self).__init__(parent)
+        uic.loadUi('Front/administrador/adminIngresoServicios.ui', self)
+
+
 class AdminUsuarios(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminUsuarios, self).__init__(parent)
@@ -368,6 +538,12 @@ class AdminUsuarios(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_9)
         self.botUsuAdm.clicked.connect(self.open_view_9)
         self.botFacAdm.clicked.connect(self.open_view_9)
+
+        self.botAgrUsu.clicked.connect(self.open_view_5)
+        self.botBusUsu.clicked.connect(self.open_view_5)
+        self.botCamCon.clicked.connect(self.open_view_5)
+        self.botMosTod.clicked.connect(self.open_view_5)
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None

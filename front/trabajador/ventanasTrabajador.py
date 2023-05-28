@@ -10,9 +10,9 @@ from PyQt5.QtWidgets import QApplication
 
 
 
-class Trabajador(QtWidgets.QMainWindow):
+class TrabajadorVentana(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        super(Trabajador, self).__init__(parent)
+        super(TrabajadorVentana, self).__init__(parent)
         uic.loadUi('Front/trabajador/Trabajador.ui', self)
 
 class TrabajadorAgenda(QtWidgets.QMainWindow):

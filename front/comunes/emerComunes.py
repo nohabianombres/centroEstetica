@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import QApplication
 class emerAdiFal(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerAdiFal, self).__init__(parent)
-        uic.loadUi('Front/emerAdiFal.ui', self)
+        uic.loadUi('Front/emerAdiFalta.ui', self)
 
 class emerAgrCita(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
