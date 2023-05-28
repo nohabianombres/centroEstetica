@@ -17,72 +17,39 @@ from PyQt5.uic import loadUi
 import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
-var_control = True
-var_control2 = True
-user = None
-contrasena = None
 
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
 
-### definir funciones
-class Login(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(Login, self).__init__(parent)
-        uic.loadUi('Front/login.ui', self)
-        self.BorraPrograma.clicked.connect(self.borrar)
-        self.BotEntrar.clicked.connect(self.obtener_datos)
-
-        self.admin = None
-
-
-    def obtener_datos (self):
-        user = self.varUsu.text()
-        contrasena = self.varPass.text()
-
-    def borrar(self):
-        for line_edit in self.findChildren(QtWidgets.QLineEdit):
-            line_edit.clear()
-
-    def open_view(self):
-        self.hide()
-        self.recepcionista = Recepcionista()
-        self.recepcionista.show()
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    login = Login()
-    login.show()
-    sys.exit(app.exec_())
-
-
-
-
-
-
-
-
-
-
-
-
-
-try:
+def validacion(user_log, contrasena_log, instancia_log):
+    print('hpta que chimba')
+    print(user_log)
+    var_control = True
+    try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM usuario WHERE usuario = " + str(user))
+            cursor.execute("SELECT * FROM usuario WHERE usuario = " + str(user_log))
             usuario = cursor.fetchone()
             if usuario:
                 usuario_contrasena = usuario[1]
-                if usuario_contrasena == contrasena:
+                if usuario_contrasena == contrasena_log:
                     rol_usuario = usuario[7]
+                else:
+                    print('hpta')
+            else:
+                print('gonorrea')
+    except psycopg2.Error as e:
+        print("Ocurrio un error al consultar: ", e)
+
+    return rol_usuario
+'''def escoger ventana():
                     if rol_usuario == "Admin":
-                        admin = Admin()
-                        admin.show()
-                        administrador = Administracion(usuario[2], usuario[3], int(usuario[0]), usuario[1], int(usuario[4]), usuario[5], usuario[6], usuario[7])
-                        while var_control:
+                        instancia_log.open_view_adm()
+                        administrador = Administracion(usuario[2], usuario[3], int(usuario[0]), usuario[1],
+                                                       int(usuario[4]), usuario[5], usuario[6], usuario[7])
+
+                        while var_control == True:
                             var_control2 = True
                             print('Ingrese "1" para ingresar al inventario')
                             print('Ingrese "2" para ingresar a los servicios')
@@ -210,12 +177,11 @@ try:
                             if menu == 6:
                                 informe = Informe()
                                 while var_control2 == True:
-                                    print('Ingrese "1" para ver informe de facturas: ')
-                                    print('Ingrese "2" para ver cartera: ')
-                                    print('Ingrese "3" para ver informe de productos: ')
-                                    print('Ingrese "4" para ver informe de servicios: ')
-                                    print('Ingrese "5" para ver informe de desempeño:')
-                                    print('Ingrese "0" para salir al menu principal: ')
+                                    print('Ingrese "1" para ver informe de facturas')
+                                    print('Ingrese "2" para ver cartera')
+                                    print('Ingrese "3" para ver informe de productos')
+                                    print('Ingrese "4" para ver informe de servicios')
+                                    print('Ingrese "0" para salir al menu principal')
                                     menu2 = int(input("Ingrese la opcion a elegir: "))
                                     if menu2 == 1:
                                         informe.mostar_informe_facturas()
@@ -225,8 +191,7 @@ try:
                                         informe.informe_productos()
                                     elif menu2 == 4:
                                         informe.informe_servicios()
-                                    elif menu2 == 5:
-                                        informe.mostrar_desempeno()
+                                        print("Regresando al menu principal")
                                         var_control2 = False
                                     elif menu2 == 0:
                                         del informe
@@ -308,20 +273,17 @@ try:
                                 ### falta programas las funciones
                                 facturas = Facturas()
                                 while var_control2 == True:
-                                    print('Ingrese "1" para generar factura: ')
-                                    print('Ingrese "2" para generar pago por cliente: ')
-                                    print('Ingrese "3" para generar pago de una factura en especifico: ')
-                                    print('Ingrese "4" para buscar facturas: ')
+                                    print('Ingrese "1" ')
+                                    print('Ingrese "2" ')
+                                    print('Ingrese "3" ')
                                     print('Ingrese "0" para salir al menu principal')
                                     menu2 = int(input("Ingrese la opcion a elegir: "))
                                     if menu2 == 1:
-                                        facturas.generar_factura_servicios_productos()
+                                        pass
                                     elif menu2 == 2:
-                                        facturas.pagar_facturas_documento()
+                                        pass
                                     elif menu2 == 3:
-                                        facturas.pagar_facturas_idFactura()
-                                    elif menu2 == 4:
-                                        facturas.buscar_facturas_cliente()
+                                        pass
                                     elif menu2 == 0:
                                         print("Regresando al menu principal")
                                         var_control2 = False
@@ -424,8 +386,78 @@ try:
                     print("Contraseña incorrecta")
             else:
                 print("El usuario no existe")
-except psycopg2.Error as e:
-    print("Ocurrio un error al consultar: ", e)
+    except psycopg2.Error as e:
+        print("Ocurrio un error al consultar: ", e)'''
+
+
+class Login(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(Login, self).__init__(parent)
+        uic.loadUi('Front/login.ui', self)
+        self.BorraPrograma.clicked.connect(self.borrar)
+        self.BotEntrar.clicked.connect(self.obtener_datos)
+
+
+    def obtener_datos (self):
+        print('entre')
+        self.user = self.VarUsu.text()
+        self.contrasena = self.VarPass.text()
+        usuario_validacion = validacion(self.user, self.contrasena, login)
+        if usuario_validacion == 'Admin':
+            self.open_view_adm()
+        elif usuario_validacion == 'Recepcion':
+            self.open_view_rec()
+        elif usuario_validacion == 'Cajero':
+            self.open_view_caj()
+        else:
+            self.open_view_tra()
+
+    def borrar(self):
+        for line_edit in self.findChildren(QtWidgets.QLineEdit):
+            line_edit.clear()
+
+    def open_view_rec(self):
+        print('entre rec')
+        self.close()
+        self.hide()
+        self.recepcionista = Recepcionista()
+        self.recepcionista.show()
+
+    def open_view_adm(self):
+        self.close()
+        self.hide()
+        self.admin = Admin()
+        self.admin.show()
+
+    def open_view_caj(self):
+        self.hide()
+        self.cajero_log = Cajero()
+        self.cajero_log.show()
+
+    def open_view_tra(self):
+        self.hide()
+        self.trabajador = TrabajadorVentana()
+        self.trabajador.show()
+
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    login = Login()
+    login.show()
+    sys.exit(app.exec_())
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
