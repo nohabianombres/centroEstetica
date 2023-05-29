@@ -1,13 +1,17 @@
 from BD.Conexion import *
-
-basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
-conexion= basedatos.conectar()
 from Front.administrador.ventanasAdmin import *
 from Front.recepcionista.ventanasRecepcionista import *
 from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
 from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
+
+
+
+basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
+conexion= basedatos.conectar()
+
+
 
 class Clientes():
 
@@ -87,8 +91,10 @@ class Clientes():
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM clientes;")
-                clientes = cursor.fetchall()
-                for cliente in clientes:
+                clientes_con = cursor.fetchall()
+                for cliente in clientes_con:
                     print(cliente)
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
+
+

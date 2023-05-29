@@ -8,7 +8,6 @@ from BD.Conexion import *
 from Back.Agenda import *
 import psycopg2
 from Front.administrador.ventanasAdmin import *
-from Front.cajero.ventanasCajero import *
 from Front.recepcionista.ventanasRecepcionista import *
 from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
@@ -16,9 +15,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.uic import loadUi
 import sys
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QApplication
-
-
+from Front.cajero.ventanasCajero import *
+from Front.trabajador.ventanasTrabajador import *
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
@@ -393,10 +391,8 @@ class Login(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
         uic.loadUi('Front/login.ui', self)
-        self.resize(800, 600)
         self.BorraPrograma.clicked.connect(self.borrar)
         self.BotEntrar.clicked.connect(self.obtener_datos)
-
 
     def obtener_datos (self):
         print('entre')
@@ -430,14 +426,16 @@ class Login(QtWidgets.QMainWindow):
         self.admin.show()
 
     def open_view_caj(self):
+        self.close()
         self.hide()
-        self.cajero_log = Cajero()
-        self.cajero_log.show()
+        self.cajero = Cajero()
+        self.cajero.show()
 
     def open_view_tra(self):
+        self.close()
         self.hide()
-        self.trabajador = TrabajadorVentana()
-        self.trabajador.show()
+        self.trabajador_ins = TrabajadorVentana()
+        self.trabajador_ins.show()
 
 
 
