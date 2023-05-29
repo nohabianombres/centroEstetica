@@ -10,7 +10,7 @@ import psycopg2
 from Front.administrador.ventanasAdmin import *
 from Front.cajero.ventanasCajero import *
 from Front.recepcionista.ventanasRecepcionista import *
-from Front.administrador.emeAdm.emeAdm import *
+from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.uic import loadUi
@@ -389,11 +389,11 @@ def validacion(user_log, contrasena_log, instancia_log):
     except psycopg2.Error as e:
         print("Ocurrio un error al consultar: ", e)'''
 
-
 class Login(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
         uic.loadUi('Front/login.ui', self)
+        self.resize(800, 600)
         self.BorraPrograma.clicked.connect(self.borrar)
         self.BotEntrar.clicked.connect(self.obtener_datos)
 

@@ -2,7 +2,7 @@ from BD.Conexion import *
 from datetime import datetime, timedelta
 
 from Front.administrador.ventanasAdmin import *
-from Front.administrador.emeAdm.emeAdm import *
+from Front.administrador.emeAdm.emeAdmcodigo import *
 
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
@@ -11,8 +11,8 @@ conexion= basedatos.conectar()
 
 class Informe():
 
-    def informe_productos(self):
-        numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
+    def informe_productos(self, numero_dias):
+        '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
         fecha_actual = datetime.now().date()
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
         try:
@@ -25,8 +25,8 @@ class Informe():
         except psycopg2.Error as e:
             print("Ocurrió un error al consultar: ", e)
 
-    def informe_servicios(self):
-        numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
+    def informe_servicios(self, numero_dias):
+        '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
         fecha_actual = datetime.now().date()
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
         try:
@@ -39,8 +39,8 @@ class Informe():
         except psycopg2.Error as e:
             print("Ocurrió un error al consultar: ", e)
 
-    def mostar_informe_facturas(self):
-        numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
+    def mostar_informe_facturas(self, numero_dias):
+        '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
         fecha_actual = datetime.now().date()
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
         try:
@@ -53,8 +53,8 @@ class Informe():
         except psycopg2.Error as e:
             print("Ocurrió un error al consultar: ", e)
 
-    def mostrar_cartera(self):
-        numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))
+    def mostrar_cartera(self, numero_dias):
+        '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
         fecha_actual = datetime.now().date()
         fecha_minima = fecha_actual - timedelta(days=numero_dias)
         try:

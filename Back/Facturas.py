@@ -2,7 +2,7 @@ from BD.Conexion import *
 from datetime import datetime
 from Front.administrador.ventanasAdmin import *
 from Front.cajero.ventanasCajero import *
-from Front.administrador.emeAdm.emeAdm import *
+from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
@@ -10,8 +10,8 @@ conexion= basedatos.conectar()
 
 class Facturas():
 
-    def generar_factura_servicios_productos(self):
-        cliente_cobrar = int(input('Ingrese el documento: '))
+    def generar_factura_servicios_productos(self, cliente_cobrar):
+        '''cliente_cobrar = int(input('Ingrese el documento: '))'''
         precios_servicio = []
         nombres_servicio = []
         id_productos = []
@@ -214,8 +214,8 @@ class Facturas():
         except psycopg2.Error as e:
             print("No encontro el cliente en ninguna tabla: ", e)
 
-    def pagar_facturas_documento(self):
-        documento_cliente_pagar = input('Ingrese el documento del cliente el cual generó el pago de todas sus facturas: ')
+    def pagar_facturas_documento(self, documento_cliente_pagar):
+        '''documento_cliente_pagar = input('Ingrese el documento del cliente el cual generó el pago de todas sus facturas: ')'''
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT valor_total FROM facturas WHERE documento_cliente = %s AND pagado = %s", (documento_cliente_pagar, False))
@@ -247,8 +247,8 @@ class Facturas():
                 print("Ocurrió un error al pagar: ", e)
         if menu_pago == 0:
             pass
-    def buscar_facturas_cliente(self):
-        cliente_buscar = input("Ingrese el documento del cliente: ")
+    def buscar_facturas_cliente(self, cliente_buscar):
+        '''cliente_buscar = input("Ingrese el documento del cliente: ")'''
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM facturas WHERE documento_cliente = %s AND pagado = %s", (cliente_buscar, False))
@@ -261,8 +261,8 @@ class Facturas():
             print("Ocurrio un error al consultar: ", e)
     pass
 
-    def pagar_facturas_idFactura(self):
-        id_factura = int(input('Ingrese el numero de la factura: '))
+    def pagar_facturas_idFactura(self, id_factura):
+        '''id_factura = int(input('Ingrese el numero de la factura: '))'''
         try:
             with conexion.cursor() as cursor:
                     consulta = "UPDATE facturas SET pagado = %s WHERE id_factura = %s"

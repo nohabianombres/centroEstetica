@@ -6,28 +6,29 @@ from Front.administrador.ventanasAdmin import *
 from Front.recepcionista.ventanasRecepcionista import *
 from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
-from Front.administrador.emeAdm.emeAdm import *
+from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
 
 class Clientes():
 
-    def crear_clientes(self):
+    def crear_clientes(self, in_documento, in_nombre, in_apellido, in_telefono, in_correo):
         try:
             with conexion.cursor() as cursor:
                 consulta = "INSERT INTO clientes(documento, nombre, apellido, telefono, correo, numero_faltas, estado) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-                in_documento = input("Ingrese el documento del cliente: ")
+                '''in_documento = input("Ingrese el documento del cliente: ")
                 in_nombre = input("Ingrese el nombre del cliente: ")
                 in_apellido = input("Ingrese el apellido del cliente: ")
                 in_telefono = input("Ingrese el teléfono del cliente: ")
-                in_correo = input("Ingrese el correo electrónico del cliente: ")
+                in_correo = input("Ingrese el correo electrónico del cliente: ")'''
                 cursor.execute(consulta, (in_documento, in_nombre, in_apellido, in_telefono, in_correo, 0, True))
             conexion.commit()
             print("Cliente creado")
         except psycopg2.Error as e:
             print("Ocurrió un error al crear el cliente:", e)
 
-    def adicionar_falta_cliente(self):
-        documento = input("Ingrese el documento")
+    def adicionar_falta_cliente(self, documento):
+        '''documento = input("Ingrese el documento")'''
+        print('estoy en la funcion rica y deli')
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM clientes WHERE documento=" + str(documento))
@@ -69,8 +70,8 @@ class Clientes():
             except psycopg2.Error as e:
                 print("Ocurrió un error al editar: ", e)
 
-    def verificar_cliente(self):
-        cliente_a_buscar = input("Ingrese el documento")
+    def verificar_cliente(self, cliente_a_buscar):
+        '''cliente_a_buscar = input("Ingrese el documento")'''
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM clientes WHERE documento=" + str(cliente_a_buscar))

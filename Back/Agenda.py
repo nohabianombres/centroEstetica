@@ -3,21 +3,21 @@ from datetime import datetime, timedelta
 from Front.administrador.ventanasAdmin import *
 from Front.recepcionista.ventanasRecepcionista import *
 from Front.trabajador.ventanasTrabajador import *
-from Front.administrador.emeAdm.emeAdm import *
+from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
 class Agendas():
-    def crear_cita(self):
+    def crear_cita(self, in_hora, in_fecha, in_documento, in_trabajador, in_servicio):
                 intervalos_citas = []
-                in_hora = input("Ingrese la hora de la cita: ")
+                '''in_hora = input("Ingrese la hora de la cita: ")'''
                 hora_cita = datetime.strptime(in_hora, '%H:%M:%S')
 
-                in_fecha = input("Ingrese la fecha de la cita aaaa/mm/dd: ")
+                '''in_fecha = input("Ingrese la fecha de la cita aaaa/mm/dd: ")
                 in_documento = input("Ingrese el documento : ")
                 in_trabajador = int(input("Ingrese id del trabajador: "))
-                in_servicio = int(input("Ingrese el servicio: "))
+                in_servicio = int(input("Ingrese el servicio: "))'''
                 var_control = True
                 try:
                     with conexion.cursor() as cursor:
@@ -109,17 +109,13 @@ class Agendas():
 
 
 
-                except psycopg2.Error as e:
-                    print("Ocurrio un error al consultar: ", e)
 
 
 
 
 
-
-
-    def consultar_cita(self):
-        cita_a_buscar = input("Ingrese el id de la cita")
+    def consultar_cita(self, cita_a_buscar):
+        '''cita_a_buscar = input("Ingrese el id de la cita")'''
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM citas WHERE id_cita=" + str(cita_a_buscar))
@@ -131,8 +127,8 @@ class Agendas():
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
 
-    def cancelar_cita(self):
-        cita_a_cancelar=input("Ingerese el id de la cita: ")
+    def cancelar_cita(self, cita_a_cancelar):
+        '''cita_a_cancelar=input("Ingerese el id de la cita: ")'''
         try:
             with conexion.cursor() as cursor:
                 consulta = "DELETE FROM citas WHERE id_cita=" + str(cita_a_cancelar)

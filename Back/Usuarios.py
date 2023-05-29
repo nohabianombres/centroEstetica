@@ -5,7 +5,7 @@ from Front.administrador.ventanasAdmin import *
 from Front.recepcionista.ventanasRecepcionista import *
 from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
-from Front.administrador.emeAdm.emeAdm import *
+from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
@@ -63,10 +63,10 @@ class Trabajadores(Usuarios):
         except psycopg2.Error as e:
             print("Ocurrió un error al consultar: ", e)
 
-    def inicializar_finalizar_cita_(self):
+    def inicializar_finalizar_cita_(self, documento_cliente):
         id_citas = []
         var_control=False
-        documento_cliente = int(input('Ingrese el documento del cliente: '))
+        '''documento_cliente = int(input('Ingrese el documento del cliente: '))'''
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM citas WHERE documento_fk = %s AND facturado = %s", (documento_cliente, False))
@@ -172,24 +172,21 @@ class Trabajadores(Usuarios):
 
 
 
-    def finalizar_servicio(self):
-        pass
-
 
 class Administracion(Usuarios):
 
-    def crear_usuarios(self):
+    def crear_usuarios(self, in_contrasena, in_documento, in_nombre, in_apellido, in_telefono, in_correo, in_rol):
         try:
             with conexion.cursor() as cursor:
                 consulta = "INSERT INTO usuario (contrasena , nombre, apellido, documento, telefono, correo, rol) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-                in_contrasena = input("ingrese la contraseña: ")
+                '''in_contrasena = input("ingrese la contraseña: ")
                 in_documento = int(input("Ingrese el documento del usuario: "))
                 in_nombre = input("Ingrese el nombre del usuario: ")
                 in_apellido = input("Ingrese el apellido del usuario: ")
                 in_telefono = input("Ingrese el teléfono del usuario: ")
-                in_correo = input("Ingrese el correo electrónico del usuario: ")
+                in_correo = input("Ingrese el correo electrónico del usuario: ")'''
                 print("Cajero, Recepcion o Empleado")
-                in_rol = input("Ingrese el rol del usuario: ")
+                '''in_rol = input("Ingrese el rol del usuario: ")'''
 
                 cursor.execute(consulta, (in_contrasena, in_nombre, in_apellido, in_documento, in_telefono, in_correo, in_rol))
             conexion.commit()
@@ -206,8 +203,8 @@ class Administracion(Usuarios):
     def ver_informe_desempeno(self):
         pass
 
-    def verificar_usuario(self):
-        usuario_a_buscar = input("Ingrese el usuario")
+    def verificar_usuario(self, usuario_a_buscar):
+        '''usuario_a_buscar = input("Ingrese el usuario")'''
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM usuario WHERE usuario=" + str(usuario_a_buscar))
@@ -219,11 +216,11 @@ class Administracion(Usuarios):
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
 
-    def recuperar_contrasena(self):
+    def recuperar_contrasena(self, usuario_buscar, contrasena_nueva):
         try:
             with conexion.cursor() as cursor:
-                usuario_buscar = int(input("Ingrese el usuario"))
-                contrasena_nueva = int(input("Ingrese la nueva contraseña"))
+                '''usuario_buscar = int(input("Ingrese el usuario"))
+                contrasena_nueva = int(input("Ingrese la nueva contraseña"))'''
                 consulta = "UPDATE usuario SET contrasena = '" + str(contrasena_nueva) + "' WHERE usuario = " + str(usuario_buscar)
 
                 cursor.execute(consulta)
