@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>980</height>
+    <width>1360</width>
+    <height>768</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1360</width>
+    <height>768</height>
+   </size>
   </property>
   <property name="palette">
    <palette>
@@ -142,7 +148,7 @@
    <widget class="QPushButton" name="BotEntrar">
     <property name="geometry">
      <rect>
-      <x>1080</x>
+      <x>780</x>
       <y>660</y>
       <width>150</width>
       <height>45</height>
@@ -170,7 +176,7 @@
    <widget class="QLabel" name="Title">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>190</x>
       <y>90</y>
       <width>951</width>
       <height>201</height>
@@ -180,6 +186,7 @@
      <font>
       <family>Segoe Print</family>
       <pointsize>60</pointsize>
+      <weight>75</weight>
       <italic>true</italic>
       <bold>true</bold>
       <strikeout>false</strikeout>
@@ -202,7 +209,7 @@
    <widget class="QLineEdit" name="VarUsu">
     <property name="geometry">
      <rect>
-      <x>820</x>
+      <x>520</x>
       <y>410</y>
       <width>451</width>
       <height>61</height>
@@ -223,7 +230,7 @@
    <widget class="QLineEdit" name="VarPass">
     <property name="geometry">
      <rect>
-      <x>820</x>
+      <x>520</x>
       <y>520</y>
       <width>451</width>
       <height>61</height>
@@ -241,7 +248,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>270</x>
       <y>510</y>
       <width>211</width>
       <height>81</height>
@@ -259,7 +266,7 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>300</x>
       <y>410</y>
       <width>141</width>
       <height>51</height>
@@ -277,7 +284,7 @@
    <widget class="QPushButton" name="BorraPrograma">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>540</x>
       <y>660</y>
       <width>150</width>
       <height>45</height>

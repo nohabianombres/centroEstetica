@@ -1,4 +1,4 @@
-from Back.Clientes import *
+
 from Back.Facturas import *
 from Back.Informes import *
 from Back.Servicios import *
@@ -6,23 +6,34 @@ from Back.Usuarios import *
 from Back.Inventario import *
 from BD.Conexion import *
 from Back.Agenda import *
-
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.uic import loadUi
-
+import os
 import sys
+
+# Obtener la ruta absoluta del directorio actual
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Obtener la ruta absoluta del directorio "Back" dentro de "centrodeestetica"
+back_dir = os.path.join(current_dir, "...", "Back")
+
+# Agregar el directorio "Back" al path de búsqueda de módulos
+sys.path.append(back_dir)
+
+# Importar la clase "Clientes" desde el archivo "Clientes.py" dentro de "Back"
+from Back.Clientes import *
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
-
-
+basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
+conexion= basedatos.conectar()
+#clientes = Clientes()
 
 class emerAdiFal(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerAdiFal, self).__init__(parent)
         uic.loadUi('Front/comunes/emerAdiFalta.ui', self)
 
-        self.cliente = None
         self.EmerAdiFalta.clicked.connect(self.llamar_funcion)
         self.documento_falta = None
 
@@ -31,9 +42,8 @@ class emerAdiFal(QtWidgets.QMainWindow):
         self.documento_falta = self.lineEdit.text()
         self.hide()
         print(self.documento_falta)
-        self.cliente = Clientes()
-        print(self.cliente)
-        self.cliente.verificar_cliente(self.documento_falta)
+        #print(clientes)
+        #clientes.verificar_cliente(self.documento_falta)
 
 class emerAgrCita(QtWidgets.QMainWindow):
     def __init__(self, parent=None):

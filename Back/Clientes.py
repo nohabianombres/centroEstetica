@@ -8,11 +8,6 @@ from Front.comunes.emerComunes import *
 
 
 
-basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
-conexion= basedatos.conectar()
-
-
-
 class Clientes():
 
     def crear_clientes(self, in_documento, in_nombre, in_apellido, in_telefono, in_correo):
@@ -96,5 +91,4 @@ class Clientes():
                     print(cliente)
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
-
 

@@ -41,6 +41,70 @@ def validacion(user_log, contrasena_log, instancia_log):
         print("Ocurrio un error al consultar: ", e)
 
     return rol_usuario
+
+class Login(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(Login, self).__init__(parent)
+        uic.loadUi('Front/login.ui', self)
+        self.BorraPrograma.clicked.connect(self.borrar)
+        self.BotEntrar.clicked.connect(self.obtener_datos)
+
+    def obtener_datos (self):
+        print('entre')
+        self.user = self.VarUsu.text()
+        self.contrasena = self.VarPass.text()
+        usuario_validacion = validacion(self.user, self.contrasena, login)
+
+
+        if usuario_validacion == 'Admin':
+            self.open_view_adm()
+        elif usuario_validacion == 'Recepcion':
+            self.open_view_rec()
+        elif usuario_validacion == 'Cajero':
+            self.open_view_caj()
+        else:
+            print('voy en el if')
+            self.open_view_tra()
+
+    def borrar(self):
+        for line_edit in self.findChildren(QtWidgets.QLineEdit):
+            line_edit.clear()
+
+    def open_view_rec(self):
+        print('entre rec')
+        self.close()
+        self.hide()
+        self.recepcionista = Recepcionista()
+        self.recepcionista.show()
+
+    def open_view_adm(self):
+        self.close()
+        self.hide()
+        self.admin = Admin()
+        self.admin.show()
+
+    def open_view_caj(self):
+        self.close()
+        self.hide()
+        self.cajero = Cajero()
+        self.cajero.show()
+
+    def open_view_tra(self):
+        print('llegue a la funcion')
+        self.close()
+        self.hide()
+        self.trabajador_ins = TrabajadorVentana()
+        self.trabajador_ins.show()
+
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    login = Login()
+    login.show()
+    sys.exit(app.exec_())
+
+
 '''def escoger ventana():
                     if rol_usuario == "Admin":
                         instancia_log.open_view_adm()
@@ -386,64 +450,6 @@ def validacion(user_log, contrasena_log, instancia_log):
                 print("El usuario no existe")
     except psycopg2.Error as e:
         print("Ocurrio un error al consultar: ", e)'''
-
-class Login(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(Login, self).__init__(parent)
-        uic.loadUi('Front/login.ui', self)
-        self.BorraPrograma.clicked.connect(self.borrar)
-        self.BotEntrar.clicked.connect(self.obtener_datos)
-
-    def obtener_datos (self):
-        print('entre')
-        self.user = self.VarUsu.text()
-        self.contrasena = self.VarPass.text()
-        usuario_validacion = validacion(self.user, self.contrasena, login)
-        if usuario_validacion == 'Admin':
-            self.open_view_adm()
-        elif usuario_validacion == 'Recepcion':
-            self.open_view_rec()
-        elif usuario_validacion == 'Cajero':
-            self.open_view_caj()
-        else:
-            self.open_view_tra()
-
-    def borrar(self):
-        for line_edit in self.findChildren(QtWidgets.QLineEdit):
-            line_edit.clear()
-
-    def open_view_rec(self):
-        print('entre rec')
-        self.close()
-        self.hide()
-        self.recepcionista = Recepcionista()
-        self.recepcionista.show()
-
-    def open_view_adm(self):
-        self.close()
-        self.hide()
-        self.admin = Admin()
-        self.admin.show()
-
-    def open_view_caj(self):
-        self.close()
-        self.hide()
-        self.cajero = Cajero()
-        self.cajero.show()
-
-    def open_view_tra(self):
-        self.close()
-        self.hide()
-        self.trabajador_ins = TrabajadorVentana()
-        self.trabajador_ins.show()
-
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    login = Login()
-    login.show()
-    sys.exit(app.exec_())
 
 
 

@@ -30,6 +30,9 @@ class Admin(QtWidgets.QMainWindow):
         self.botUsuAdm.clicked.connect(self.open_view_2)
         self.botFacAdm.clicked.connect(self.open_view_2)
 
+
+
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -37,6 +40,10 @@ class Admin(QtWidgets.QMainWindow):
         self.adFacturas = None
         self.adUsuarios = None
         self.adClientes = None
+
+    def resize_to_screen(self):
+        screen = QtWidgets.QDesktopWidget().screenGeometry()
+        self.setGeometry(screen)
 
     def open_view_2(self):
         sender_button_A = self.sender()
@@ -312,7 +319,7 @@ class AdminClientes(QtWidgets.QMainWindow):
         self.botAdcFal.clicked.connect(self.open_view_eme_AdcFal)
         self.botAgrCli.clicked.connect(self.open_view_eme_AgrCli)
         self.botBusCli.clicked.connect(self.open_view_eme_BusCli)
-        self.botModCli.clicked.connect(self.open_view_eme_ModCli)
+
 
 
         self.cliente_ins = None
@@ -363,9 +370,6 @@ class AdminClientes(QtWidgets.QMainWindow):
     def open_view_eme_AgrCli(self):
         self.AgrCli = emerAgrCli()
         self.AgrCli.show()
-
-    def open_view_eme_ModCli(self):
-        pass
 
     def open_view_eme_BusCli(self):
         self.BusCli = emerBuscClien()
