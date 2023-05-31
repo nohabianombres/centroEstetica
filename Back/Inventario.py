@@ -11,7 +11,7 @@ conexion= basedatos.conectar()
 
 class Inventario():
 
-    def verificar_producto(self, prducto_a_buscar):
+    def verificar_producto(self, producto_a_buscar):
         '''producto_a_buscar = input("Ingrese el id del producto")'''
         try:
             with conexion.cursor() as cursor:

@@ -30,9 +30,6 @@ class Admin(QtWidgets.QMainWindow):
         self.botUsuAdm.clicked.connect(self.open_view_2)
         self.botFacAdm.clicked.connect(self.open_view_2)
 
-
-
-
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -139,7 +136,7 @@ class AdminInventario(QtWidgets.QMainWindow):
 
     def open_view_eme_BusPro(self):
         self.BusPro = emerBuscPro()
-        self.AgrPro.show()
+        self.BusPro.show()
 
     def open_view_eme_MosTodPro(self):
         pass
@@ -162,7 +159,7 @@ class AdminServicios(QtWidgets.QMainWindow):
         self.botFacAdm.clicked.connect(self.open_view_4)
 
         self.botAgrSer.clicked.connect(self.open_view_eme_AgrSer)
-        self.botBusAdm.clicked.connect(self.open_view_eme_BusSer)
+        self.botBusSer.clicked.connect(self.open_view_eme_BusSer)
         self.botMosSer.clicked.connect(self.open_view_eme_MosTodSer)
         self.botModSer.clicked.connect(self.open_view_eme_ModSer)
 
@@ -213,7 +210,7 @@ class AdminServicios(QtWidgets.QMainWindow):
 
     def open_view_eme_BusSer(self):
         self.BusSer = emerBuscSer()
-        self.AgrSer.show()
+        self.BusSer.show()
 
     def open_view_eme_MosTodSer(self):
         pass
@@ -287,20 +284,15 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.AgrCit.show()
 
     def open_view_eme_BusCita(self):
-        self.BusCit = emerBusCita()
+        self.BusCit = emerBusCitas()
         self.BusCit.show()
 
     def open_view_eme_ModCita(self):
         pass
 
     def open_view_eme_CanCita(self):
-        self.CanCita = emerCamCita()
+        self.CanCita = emerCanCita()
         self.CanCita.show()
-
-
-
-
-
 
 
 
@@ -374,7 +366,6 @@ class AdminClientes(QtWidgets.QMainWindow):
     def open_view_eme_BusCli(self):
         self.BusCli = emerBuscClien()
         self.BusCli.show()
-        self.clientes.verificar_cliente()
 
 class AdminFacturacion(QtWidgets.QMainWindow):
     def __init__(self, parent=None):

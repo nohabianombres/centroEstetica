@@ -7,6 +7,8 @@ from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
 
 
+basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
+conexion= basedatos.conectar()
 
 class Clientes():
 
@@ -53,7 +55,6 @@ class Clientes():
             try:
                 with conexion.cursor() as cursor:
                     consulta = "UPDATE clientes SET numero_faltas = '" + str(valor_total) + "' WHERE documento = " + str(documento)
-
                     cursor.execute(consulta)
                 conexion.commit()
                 print("falta agregada")

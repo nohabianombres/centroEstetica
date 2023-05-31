@@ -104,8 +104,8 @@ if __name__ == "__main__":
     login.show()
     sys.exit(app.exec_())
 
-
-'''def escoger ventana():
+'''
+def escoger ventana():
                     if rol_usuario == "Admin":
                         instancia_log.open_view_adm()
                         administrador = Administracion(usuario[2], usuario[3], int(usuario[0]), usuario[1],

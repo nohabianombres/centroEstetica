@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>980</height>
+    <width>1360</width>
+    <height>730</height>
    </rect>
   </property>
   <property name="palette">
@@ -170,8 +170,8 @@
    <widget class="QLabel" name="Title">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>80</y>
+      <x>80</x>
+      <y>0</y>
       <width>211</width>
       <height>91</height>
      </rect>
@@ -194,7 +194,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>70</y>
       <width>381</width>
       <height>41</height>
      </rect>
@@ -208,27 +208,6 @@ alternate-background-color: rgb(104, 168, 182);
 gridline-color: rgb(104, 168, 182);
 border-top-color: rgb(104, 168, 182);
 border-color: rgb(104, 168, 182);</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="varA">
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>410</y>
-      <width>451</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-     </font>
     </property>
    </widget>
    <widget class="QLineEdit" name="varB">
@@ -317,7 +296,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>200</y>
+      <y>120</y>
       <width>381</width>
       <height>41</height>
      </rect>
@@ -330,7 +309,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>330</y>
+      <y>170</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -533,7 +512,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>400</y>
+      <y>240</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -736,7 +715,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>540</y>
+      <y>380</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -939,7 +918,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>470</y>
+      <y>310</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -1142,7 +1121,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>680</y>
+      <y>520</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -1345,7 +1324,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>610</y>
+      <y>450</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -1548,7 +1527,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>750</y>
+      <y>590</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -1751,7 +1730,7 @@ border-color: rgb(104, 168, 182);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>910</y>
+      <y>660</y>
       <width>401</width>
       <height>71</height>
      </rect>
@@ -1901,7 +1880,7 @@ border-color: rgb(104, 168, 182);</string>
      <rect>
       <x>470</x>
       <y>150</y>
-      <width>1431</width>
+      <width>841</width>
       <height>811</height>
      </rect>
     </property>
@@ -1927,9 +1906,9 @@ border-color: rgb(104, 168, 182);</string>
     <widget class="QLabel" name="Title_2">
      <property name="geometry">
       <rect>
-       <x>710</x>
+       <x>30</x>
        <y>0</y>
-       <width>241</width>
+       <width>201</width>
        <height>121</height>
       </rect>
      </property>
@@ -2128,7 +2107,6 @@ border-color: rgb(104, 168, 182);</string>
    <zorder>boton</zorder>
    <zorder>Title</zorder>
    <zorder>Nombre_usuario</zorder>
-   <zorder>varA</zorder>
    <zorder>varB</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>

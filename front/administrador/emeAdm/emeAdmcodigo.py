@@ -6,9 +6,6 @@ import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
 
-
-
-
 class emerModSer(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerModSer, self).__init__(parent)
