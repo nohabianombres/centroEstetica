@@ -1,20 +1,5 @@
-from Back.Clientes import *
-from Back.Facturas import *
-from Back.Informes import *
-from Back.Servicios import *
-from Back.Usuarios import *
-from Back.Inventario import *
-from BD.Conexion import *
-from Back.Agenda import *
-import psycopg2
 from Front.administrador.ventanasAdmin import *
-from Front.recepcionista.ventanasRecepcionista import *
-from Front.administrador.emeAdm.emeAdmcodigo import *
 from Front.comunes.emerComunes import *
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.uic import loadUi
-import sys
-from PyQt5 import QtWidgets, uic
 from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
