@@ -93,3 +93,5 @@ class Clientes():
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
 
+        return cliente
+

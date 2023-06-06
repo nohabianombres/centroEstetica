@@ -37,6 +37,16 @@ class Servicios():
         except psycopg2.Error as e:
             print("Ocurrió un error al ingresar el servicio:", e)
 
+    def verificar_servicio(self, id_ser):
+        try:
+            with conexion.cursor() as cursor:
+                cursor.execute("SELECT * FROM servicios WHERE id_servicios=" + str(id_ser))
+                servicio = cursor.fetchone()
+                print(servicio)
+        except psycopg2.Error as e:
+            print("Ocurrio un error al consultar: ", e)
+
+
     def consultar_servicios(self):
         try:
             with conexion.cursor() as cursor:

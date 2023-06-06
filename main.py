@@ -2,12 +2,12 @@ from Front.administrador.ventanasAdmin import *
 from Front.comunes.emerComunes import *
 from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
+from Back.Usuarios import *
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
 
 def validacion(user_log, contrasena_log, instancia_log):
-    print('hpta que chimba')
     print(user_log)
     var_control = True
     try:
@@ -18,6 +18,7 @@ def validacion(user_log, contrasena_log, instancia_log):
                 usuario_contrasena = usuario[1]
                 if usuario_contrasena == contrasena_log:
                     rol_usuario = usuario[7]
+                    list_validacion = [usuario[2], usuario[3], int(usuario[0]), usuario[1], usuario[4], usuario[5], usuario[6], usuario[7]]
                 else:
                     print('hpta')
             else:
@@ -25,7 +26,7 @@ def validacion(user_log, contrasena_log, instancia_log):
     except psycopg2.Error as e:
         print("Ocurrio un error al consultar: ", e)
 
-    return rol_usuario
+    return list_validacion
 
 class Login(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -38,14 +39,14 @@ class Login(QtWidgets.QMainWindow):
         print('entre')
         self.user = self.VarUsu.text()
         self.contrasena = self.VarPass.text()
-        usuario_validacion = validacion(self.user, self.contrasena, login)
+        usuario_validacion = validacion(self.user, self.contrasena, login)  #usuario_validacion = validacion(self.user, self.contrasena, login)
 
 
-        if usuario_validacion == 'Admin':
+        if usuario_validacion[7] == 'Admin':
             self.open_view_adm()
-        elif usuario_validacion == 'Recepcion':
+        elif usuario_validacion[7] == 'Recepcion':
             self.open_view_rec()
-        elif usuario_validacion == 'Cajero':
+        elif usuario_validacion[7] == 'Cajero':
             self.open_view_caj()
         else:
             print('voy en el if')
@@ -93,8 +94,7 @@ if __name__ == "__main__":
 def escoger ventana():
                     if rol_usuario == "Admin":
                         instancia_log.open_view_adm()
-                        administrador = Administracion(usuario[2], usuario[3], int(usuario[0]), usuario[1],
-                                                       int(usuario[4]), usuario[5], usuario[6], usuario[7])
+                        
 
                         while var_control == True:
                             var_control2 = True
@@ -272,8 +272,7 @@ def escoger ventana():
                                 print("Valor ingresado no valido")
 
                     elif rol_usuario == "Cajero":
-                        cajero = Cajero(usuario[2], usuario[3], int(usuario[0]), usuario[1], int(usuario[4]),
-                                        usuario[5], usuario[6], usuario[7])
+                        
                         print("Hola cajero")
                         while var_control == True:
                             var_control2 = True

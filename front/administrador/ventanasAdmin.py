@@ -1,19 +1,10 @@
 from Front.comunes.emerComunes import *
-from Back.Clientes import *
-from Back.Facturas import *
-from Back.Informes import *
-from Back.Servicios import *
-from Back.Usuarios import *
-from Back.Inventario import *
-from BD.Conexion import *
-from Back.Agenda import *
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PyQt5.uic import loadUi
-
 import sys
-
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidget
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QApplication
+
 from Front.administrador.emeAdm.emeAdmcodigo import *
 
 
@@ -142,7 +133,7 @@ class AdminInventario(QtWidgets.QMainWindow):
         pass
 
     def open_view_eme_ModPro(self):
-        self.ModPro = emerModPro()
+        self.ModPro = emerModProPre()
         self.ModPro.show()
 
 
@@ -283,9 +274,13 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.AgrCit = emerAgrCita()
         self.AgrCit.show()
 
+
+
     def open_view_eme_BusCita(self):
         self.BusCit = emerBusCitas()
+        self.BusCit.set_callback(self.imprimir_tablas)
         self.BusCit.show()
+
 
     def open_view_eme_ModCita(self):
         pass
@@ -294,8 +289,18 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.CanCita = emerCanCita()
         self.CanCita.show()
 
-
-
+    def imprimir_tablas (self, listas):
+        print('entrege a imprimir tabla')
+        print(listas)
+        fila = 0
+        for lista in listas:
+            columna = 0
+            self.ui.TabAgenda.insertRow(fila)
+            for elemento in lista:
+                celda = QtWidgets.QTableWidgetItem(elemento)
+                self.ui.TabAgenda.setItem(fila, columna, celda)
+                columna += 1
+            fila += 1
 class AdminClientes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminClientes, self).__init__(parent)

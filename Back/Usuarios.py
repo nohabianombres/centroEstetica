@@ -216,7 +216,7 @@ class Administracion(Usuarios):
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
 
-    def recuperar_contrasena(self, usuario_buscar, contrasena_nueva):
+    def cambiar_contrasena(self, usuario_buscar, contrasena_nueva):
         try:
             with conexion.cursor() as cursor:
                 '''usuario_buscar = int(input("Ingrese el usuario"))

@@ -14,7 +14,7 @@ class Agendas():
         intervalos_citas = []
         '''in_hora = input("Ingrese la hora de la cita: ")'''
         hora_cita = datetime.strptime(in_hora, '%H:%M:%S')
-
+        print(hora_cita)
         '''in_fecha = input("Ingrese la fecha de la cita aaaa/mm/dd: ")
         in_documento = input("Ingrese el documento : ")
         in_trabajador = int(input("Ingrese id del trabajador: "))
@@ -27,7 +27,8 @@ class Agendas():
                 tiempo_promedio = timedelta(minutes=servicio[3])
                 hora_fin_promedio = hora_cita + tiempo_promedio
                 # hora_fin_promedio_str = datetime.strptime(hora_fin_promedio,'%H:%M:%S')#
-
+                print(hora_fin_promedio)
+                print('juas juas juas')
         except psycopg2.Error as e:
             print("Ocurrió un error al crear la cita: ", e)
 
@@ -110,27 +111,20 @@ class Agendas():
             print("Ocurrio un error al consultar el cliente: ", e)
             var_control = False
 
-
-
-
-
-
-
-
-
     def consultar_citas(self, cliente_consultar):
         '''cita_a_buscar = input("Ingrese el id de la cita")'''
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM citas WHERE documento_cliente=" + str(cliente_consultar))
+                cursor.execute("SELECT * FROM citas WHERE documento_fk=" + str(cliente_consultar))
                 citas = cursor.fetchall()
                 for cita in citas:
                     if cita:
-                        print(cita)
+                        pass
                     else:
                         print("Cliente no tiene citas")
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
+        return cita
 
     def cancelar_cita(self, cliente_cancelar):
         '''cita_a_cancelar=input("Ingerese el id de la cita: ")'''
