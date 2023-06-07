@@ -18,11 +18,11 @@ class Inventario():
                 cursor.execute("SELECT * FROM inventario WHERE id_producto=" + str(producto_a_buscar))
                 producto = cursor.fetchone()
                 if producto:
-                    print(producto)
+                    return producto
                 else:
-                    print("Producto no encontrado")
+                    return print("Producto no encontrado")
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
     def agregar_nuevo_producto(self, nombre_pro, cantidad_pro, precio_pro):
         try:
@@ -33,9 +33,9 @@ class Inventario():
                 precio_pro = int(input("Ingrese el precio del producto: "))
                 cursor.execute(consulta, (nombre_pro, cantidad_pro, precio_pro))'''
             conexion.commit()
-            print("Producto ingresado")
+            return print("Producto ingresado")
         except psycopg2.Error as e:
-            print("Ocurrió un error al ingresar el producto:", e)
+            return print("Ocurrió un error al ingresar el producto:", e)
 
     def consultar_inverntario(self):
         try:
@@ -44,8 +44,9 @@ class Inventario():
                 inventario = cursor.fetchall()
                 for productos in inventario:
                     print(productos)
+                return inventario
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
     def cambiar_precio_producto(self, id_buscar, precio_nuevo):
         try:
@@ -56,9 +57,9 @@ class Inventario():
 
                 cursor.execute(consulta)
             conexion.commit()
-            print("Precio modificado")
+            return print("Precio modificado")
         except psycopg2.Error as e:
-            print("Ocurrió un error al editar: ", e)
+            return print("Ocurrió un error al editar: ", e)
 
     def agregar_cantidad_inventario(self, id_buscar, cantidad_nueva):
         try:
@@ -66,9 +67,9 @@ class Inventario():
                 '''id_buscar = int(input("Ingrese el ID del producto"))
                 cantidad_nueva = int(input("Cantidad actual"))'''
                 consulta = "UPDATE inventario SET cantidad = '" + str(cantidad_nueva) + "' WHERE id_producto = " + str(id_buscar)
-
                 cursor.execute(consulta)
             conexion.commit()
+            return print('Cantidad agregada ')
         except psycopg2.Error as e:
-            print("Ocurrió un error al editar: ", e)
+            return print("Ocurrió un error al editar: ", e)
 

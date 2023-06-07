@@ -103,6 +103,7 @@ class Agendas():
                                        (in_hora, in_fecha, in_documento, in_servicio, in_trabajador, hora_fin_promedio))
                         conexion.commit()
                         print("Cita creada")
+                        creacion = print('Cita creada')
                 except psycopg2.Error as e:
                     print("Ocurrio un error : ", e)
             else:
@@ -110,6 +111,8 @@ class Agendas():
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar el cliente: ", e)
             var_control = False
+
+
 
     def consultar_citas(self, cliente_consultar):
         '''cita_a_buscar = input("Ingrese el id de la cita")'''
@@ -124,7 +127,7 @@ class Agendas():
                         print("Cliente no tiene citas")
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar: ", e)
-        return cita
+        return citas
 
     def cancelar_cita(self, cliente_cancelar):
         '''cita_a_cancelar=input("Ingerese el id de la cita: ")'''

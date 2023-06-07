@@ -22,8 +22,9 @@ class Informe():
                 informes_pro = cursor.fetchall()
             for informe_pro in informes_pro:
                 print(informe_pro)
+            return informes_pro
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
+            return print("Ocurrió un error al consultar: ", e)
 
     def informe_servicios(self, numero_dias):
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
@@ -36,8 +37,9 @@ class Informe():
                 informes_ser = cursor.fetchall()
             for informe_ser in informes_ser:
                 print(informe_ser)
+            return informes_ser
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
+            return print("Ocurrió un error al consultar: ", e)
 
     def mostar_informe_facturas(self, numero_dias):
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
@@ -50,8 +52,9 @@ class Informe():
                 facturas = cursor.fetchall()
             for factura in facturas:
                 print(factura)
+            return facturas
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
+            return print("Ocurrió un error al consultar: ", e)
 
     def mostrar_cartera(self, numero_dias):
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
@@ -64,8 +67,9 @@ class Informe():
                 facturas = cursor.fetchall()
             for factura in facturas:
                 print(factura)
+            return facturas
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
+            return print("Ocurrió un error al consultar: ", e)
 
     def mostrar_desempeno(self):
         try:
@@ -74,5 +78,6 @@ class Informe():
                 usuarios_calificados = cursor.fetchall()
                 for usuario_calificado in usuarios_calificados:
                     print(usuario_calificado)
+                return usuarios_calificados
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
+            return print("Ocurrió un error al consultar: ", e)

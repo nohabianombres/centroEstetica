@@ -1,6 +1,6 @@
 from Front.comunes.emerComunes import *
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
-from PyQt5.uic import loadUi
+
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidget
 from PyQt5 import QtWidgets, uic
@@ -28,10 +28,6 @@ class Admin(QtWidgets.QMainWindow):
         self.adFacturas = None
         self.adUsuarios = None
         self.adClientes = None
-
-    def resize_to_screen(self):
-        screen = QtWidgets.QDesktopWidget().screenGeometry()
-        self.setGeometry(screen)
 
     def open_view_2(self):
         sender_button_A = self.sender()
@@ -123,10 +119,12 @@ class AdminInventario(QtWidgets.QMainWindow):
 
     def open_view_eme_AgrPro(self):
         self.AgrPro = emerAgrPro()
+        self.AgrPro.set_callback(self.crear_ventana)
         self.AgrPro.show()
 
     def open_view_eme_BusPro(self):
         self.BusPro = emerBuscPro()
+        self.BusPro.set_callback(self.imprimir_tabla)
         self.BusPro.show()
 
     def open_view_eme_MosTodPro(self):
@@ -134,8 +132,14 @@ class AdminInventario(QtWidgets.QMainWindow):
 
     def open_view_eme_ModPro(self):
         self.ModPro = emerModProPre()
+        self.ModPro.set_callback(self.crear_ventana)
         self.ModPro.show()
 
+    def crear_ventana(self):
+        pass
+
+    def imprimir_tabla(self):
+        pass
 
 class AdminServicios(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -209,6 +213,13 @@ class AdminServicios(QtWidgets.QMainWindow):
     def open_view_eme_ModSer(self):
         self.ModSer = emerModSer()
         self.ModSer.show()
+
+    def crear_ventana(self):
+        pass
+
+    def imprimir_tabla(self):
+        pass
+
 
 
 class AdminAgenda(QtWidgets.QMainWindow):
@@ -289,18 +300,19 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.CanCita = emerCanCita()
         self.CanCita.show()
 
-    def imprimir_tablas (self, listas):
-        print('entrege a imprimir tabla')
-        print(listas)
-        fila = 0
+    def imprimir_tablas(self, listas):
+        self.ui.TabAgenda.clearContents()  # Limpiar contenido existente en la tabla
+        self.ui.TabAgenda.setRowCount(0)  # Reiniciar número de filas
+
         for lista in listas:
-            columna = 0
+            fila = self.ui.TabAgenda.rowCount()
             self.ui.TabAgenda.insertRow(fila)
-            for elemento in lista:
+
+            for columna, elemento in enumerate(lista):
                 celda = QtWidgets.QTableWidgetItem(elemento)
                 self.ui.TabAgenda.setItem(fila, columna, celda)
-                columna += 1
-            fila += 1
+
+
 class AdminClientes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminClientes, self).__init__(parent)
@@ -372,6 +384,9 @@ class AdminClientes(QtWidgets.QMainWindow):
         self.BusCli = emerBuscClien()
         self.BusCli.show()
 
+    def crear_ventana(self):
+        pass
+
 class AdminFacturacion(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminFacturacion, self).__init__(parent)
@@ -421,6 +436,9 @@ class AdminFacturacion(QtWidgets.QMainWindow):
             self.hide()
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
+
+    def crear_ventana(self):
+        pass
 
 class AdminInformes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -477,6 +495,9 @@ class AdminInformes(QtWidgets.QMainWindow):
             self.hide()
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
+
+    def crear_ventana(self):
+        pass
 
 
     def open_view_IngPro(self):
@@ -564,3 +585,6 @@ class AdminUsuarios(QtWidgets.QMainWindow):
             self.hide()
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
+
+    def crear_ventana(self):
+        pass

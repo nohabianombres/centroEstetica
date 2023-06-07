@@ -36,7 +36,6 @@ class Login(QtWidgets.QMainWindow):
         self.BotEntrar.clicked.connect(self.obtener_datos)
 
     def obtener_datos (self):
-        print('entre')
         self.user = self.VarUsu.text()
         self.contrasena = self.VarPass.text()
         usuario_validacion = validacion(self.user, self.contrasena, login)  #usuario_validacion = validacion(self.user, self.contrasena, login)

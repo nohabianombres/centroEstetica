@@ -20,9 +20,9 @@ class Servicios():
 
                 cursor.execute(consulta)
             conexion.commit()
-            print("Precio modificado")
+            return print("Precio modificado")
         except psycopg2.Error as e:
-            print("Ocurrió un error al editar: ", e)
+            return print("Ocurrió un error al editar: ", e)
 
     def agregar_servicio(self, nombre_ser, tiempo_promedio, precio_ser):
         try:
@@ -33,18 +33,18 @@ class Servicios():
                 precio_ser = int(input("Ingrese el precio del servicio: "))'''
                 cursor.execute(consulta, (nombre_ser, precio_ser, tiempo_promedio))
             conexion.commit()
-            print("Servicio ingresado")
+            return print("Servicio ingresado")
         except psycopg2.Error as e:
-            print("Ocurrió un error al ingresar el servicio:", e)
+            return print("Ocurrió un error al ingresar el servicio:", e)
 
     def verificar_servicio(self, id_ser):
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM servicios WHERE id_servicios=" + str(id_ser))
                 servicio = cursor.fetchone()
-                print(servicio)
+            return servicio
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
 
     def consultar_servicios(self):
@@ -54,8 +54,9 @@ class Servicios():
                 servicios = cursor.fetchall()
                 for servicio in servicios:
                     print(servicio)
+                return servicios
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
     def verificar_servicio(self, servicio_a_buscar):
         '''servicio_a_buscar = input("Ingrese el id del servicio")'''
@@ -65,7 +66,8 @@ class Servicios():
                 servicio = cursor.fetchone()
                 if servicio:
                     print(servicio)
+                    return servicio
                 else:
-                    print("El servicio no existe")
+                    return print("El servicio no existe")
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)

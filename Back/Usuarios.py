@@ -43,8 +43,9 @@ class Recepcion(Usuarios):
                 usuarios = cursor.fetchall()
                 for usuario in usuarios:
                     print(usuario)
+                return usuarios
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
 class Trabajadores(Usuarios):
 
@@ -58,10 +59,11 @@ class Trabajadores(Usuarios):
                 if citas:
                     for cada_cita in citas:
                         print(cada_cita)
+                    return citas
                 else:
-                    print("No tienes agenda")
+                    return print("No tienes agenda")
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
+            return print("Ocurrió un error al consultar: ", e)
 
     def inicializar_finalizar_cita_(self, documento_cliente):
         id_citas = []
@@ -153,7 +155,6 @@ class Trabajadores(Usuarios):
 
                                     except psycopg2.Error as e:
                                         print("Ocurrió un error al consultar en usuarios : ", e)
-
                                 except psycopg2.Error as e:
                                     print("Ocurrió un error al consultar servicios: ", e)
                             except psycopg2.Error as e:
@@ -162,7 +163,6 @@ class Trabajadores(Usuarios):
                             print("Ocurrió un error al editar: ", e)
                 else:
                     print("Lo que ingreso no es valido")
-
         except psycopg2.Error as e:
             print("Ocurrió un error al consultar: ", e)
 
@@ -190,9 +190,9 @@ class Administracion(Usuarios):
 
                 cursor.execute(consulta, (in_contrasena, in_nombre, in_apellido, in_documento, in_telefono, in_correo, in_rol))
             conexion.commit()
-            print("Usuario creado")
+            return print("Usuario creado")
         except psycopg2.Error as e:
-            print("Ocurrió un error al crear el usuario:", e)
+            return print("Ocurrió un error al crear el usuario:", e)
 
     def ver_informe_productos(self):
         pass

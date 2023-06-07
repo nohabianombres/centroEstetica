@@ -9,8 +9,8 @@ from Back.Inventario import *
 from BD.Conexion import *
 from Back.Agenda import *
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import  QApplication, QMainWindow, QDialog, QTableWidget
-from PyQt5.uic import loadUi
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidget
+
 import os
 from Back.Clientes import Clientes
 from Back.Agenda import Agendas
@@ -28,8 +28,8 @@ class emerAdiFal(QtWidgets.QMainWindow):
         uic.loadUi('Front/comunes/emerAdiFalta.ui', self)
 
         self.EmerAdiFalta.clicked.connect(self.adicionar_falta)
+        self.CanAdiFal.clicked.connect(self.cancelar_agregar_falta)
         self.documento_falta = None
-
 
     def adicionar_falta (self):
 
@@ -38,7 +38,17 @@ class emerAdiFal(QtWidgets.QMainWindow):
         self.hide()
         print(self.documento_falta)
         print(cliente)
-        cliente.adicionar_falta_cliente(self.documento_falta)
+        self.retorno_adi_fal = cliente.adicionar_falta_cliente(self.documento_falta)
+        if self.callback:
+            self.callback(self.retorno_adi_fal)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_agregar_falta(self):
+        self.hide()
+        self.close()
+
 
 class emerAgrCita(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -55,7 +65,12 @@ class emerAgrCita(QtWidgets.QMainWindow):
         self.fec_cit = self.fechaCita.text()
         self.hor_cit = self.horaCita.text()
         hora = '11:00:00'
-        agenda.crear_cita(hora, self.fec_cit, self.doc_cli, self.id_tra, self.id_ser)
+        self.retorno_agr_cit = agenda.crear_cita(hora, self.fec_cit, self.doc_cli, self.id_tra, self.id_ser)
+        if self.callback:
+            self.callback(self.retorno_agr_cit)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_agregar_cita(self):
         self.hide()
@@ -76,7 +91,12 @@ class emerAgrCli(QtWidgets.QMainWindow):
         self.ape_cli = self.LApeCliAgr.text()
         self.tel_cli = self.LTelCliAgr.text()
         self.cor_cli = self.LCorCliAgr.text()
-        cliente.crear_clientes(self.doc_cli_agr,self.nom_cli, self.ape_cli, self.tel_cli, self.cor_cli)
+        self.retorno_agr_cli = cliente.crear_clientes(self.doc_cli_agr,self.nom_cli, self.ape_cli, self.tel_cli, self.cor_cli)
+        if self.callback:
+            self.callback(self.retorno_agr_cli)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_agregar_cliente(self):
         self.hide()
@@ -98,7 +118,12 @@ class emerBuscClien(QtWidgets.QMainWindow):
 
     def buscar_cliente_funcion(self):
         self.doc_cli_bus = self.LDocCliBus.text()
-        cliente.verificar_cliente(self.doc_cli_bus)
+        self.retorno_bus_cli = cliente.verificar_cliente(self.doc_cli_bus)
+        if self.callback:
+            self.callback(self.retorno_bus_cli)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_buscar_cliente(self):
         self.hide()
@@ -124,7 +149,7 @@ class emerBusCitas(QtWidgets.QMainWindow):
         print(self.citas_encontradas)
         if self.callback:
             self.callback(self.citas_encontradas)
-        self.close()
+
     def cancelar_buscar_cita(self):
         self.hide()
         self.close()
@@ -139,7 +164,15 @@ class emerBuscPro(QtWidgets.QMainWindow):
 
     def buscar_producto_funcion(self):
         self.id_pro_bus = self.LIdProBus.text()
-        inventario.verificar_producto(self.id_pro_bus)
+        self.retorno_bus_cli = inventario.verificar_producto(self.id_pro_bus)
+        if self.callback:
+            self.callback(self.retorno_bus_cli)
+
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+
 
     def cancelar_buscar_producto(self):
         self.hide()
@@ -155,7 +188,12 @@ class emerBuscSer(QtWidgets.QMainWindow):
 
     def buscar_servicio_funcion(self):
         self.id_ser_bus = self.LIdSerBus.text()
-        servicio.verificar_servicio(self.id_ser_bus)
+        self.retorno_bus_ser = servicio.verificar_servicio(self.id_ser_bus)
+        if self.callback:
+            self.callback(self.retorno_bus_ser)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_buscar_servicio(self):
         self.hide()
@@ -171,7 +209,11 @@ class emerBuscUsu(QtWidgets.QMainWindow):
 
     def buscar_usuario_funcion(self):
         self.id_usu_bus = self.LIdUsuBus.text()
+        #if self.callback:
+         #   self.callback(self.)
 
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_buscar_usuario(self):
         self.hide()
@@ -182,12 +224,17 @@ class emerCanCita(QtWidgets.QMainWindow):
         super(emerCanCita, self).__init__(parent)
         uic.loadUi('Front/comunes/emerCanCita.ui', self)
 
-        self.botConCanCit.clicked.connect(self.buscar_usuario_funcion)
+        self.botConCanCit.clicked.connect(self.cancelar_cita_funcion)
         self.botCanCanCit.clicked.connect(self.cancelar_cancelar_cita)
 
-    def buscar_usuario_funcion(self):
+    def cancelar_cita_funcion(self):
         self.id_cit_can = self.LIdCitCan.text()
-        agenda.cancelar_cita(self.id_cit_can)
+        self.retorno_can_cit = agenda.cancelar_cita(self.id_cit_can)
+        if self.callback:
+            self.callback(self.retorno_can_cit)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_cancelar_cita(self):
         self.hide()

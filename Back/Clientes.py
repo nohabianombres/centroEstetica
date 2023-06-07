@@ -24,8 +24,10 @@ class Clientes():
                 cursor.execute(consulta, (in_documento, in_nombre, in_apellido, in_telefono, in_correo, 0, True))
             conexion.commit()
             print("Cliente creado")
+            return print('Cliente creado')
         except psycopg2.Error as e:
-            print("Ocurrió un error al crear el cliente:", e)
+            return print("Ocurrió un error al crear el cliente:", e)
+
 
     def adicionar_falta_cliente(self, documento):
         '''documento = input("Ingrese el documento")'''
@@ -36,39 +38,46 @@ class Clientes():
                 cliente = cursor.fetchone()
                 if cliente:
                     faltas = cliente[5]
+                    valor_total = faltas + 1
+                    if valor_total < 3:
+                        try:
+                            with conexion.cursor() as cursor:
+                                consulta = "UPDATE clientes SET numero_faltas = '" + str(
+                                    valor_total) + "' WHERE documento = " + str(documento)
+
+                                cursor.execute(consulta)
+                            conexion.commit()
+                            print("falta agregada")
+                            return print('Falta agregada')
+                        except psycopg2.Error as e:
+                            print("Ocurrió un error al editar: ", e)
+                    elif valor_total >= 3:
+                        try:
+                            with conexion.cursor() as cursor:
+                                consulta = "UPDATE clientes SET numero_faltas = '" + str(
+                                    valor_total) + "' WHERE documento = " + str(documento)
+                                cursor.execute(consulta)
+                            conexion.commit()
+                            print("falta agregada")
+                        except psycopg2.Error as e:
+                            print("Ocurrió un error al editar: ", e)
+                        try:
+                            with conexion.cursor() as cursor:
+                                consulta = "UPDATE clientes SET estado = '" + str(False) + "' WHERE documento = " + str(
+                                    documento)
+
+                                cursor.execute(consulta)
+                            conexion.commit()
+                            return print("Usuario betado por cantidad de faltas")
+
+                        except psycopg2.Error as e:
+                            return print("Ocurrió un error al editar: ", e)
                 else:
-                    print("El cliente no existe")
+                    return print("El cliente no existe")
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
-        valor_total = faltas + 1
-        if valor_total < 3:
-            try:
-                with conexion.cursor() as cursor:
-                    consulta = "UPDATE clientes SET numero_faltas = '" + str(valor_total) + "' WHERE documento = " + str(documento)
+            return print("Ocurrio un error al consultar: ", e)
 
-                    cursor.execute(consulta)
-                conexion.commit()
-                print("falta agregada")
-            except psycopg2.Error as e:
-                print("Ocurrió un error al editar: ", e)
-        elif valor_total >= 3:
-            try:
-                with conexion.cursor() as cursor:
-                    consulta = "UPDATE clientes SET numero_faltas = '" + str(valor_total) + "' WHERE documento = " + str(documento)
-                    cursor.execute(consulta)
-                conexion.commit()
-                print("falta agregada")
-            except psycopg2.Error as e:
-                print("Ocurrió un error al editar: ", e)
-            try:
-                with conexion.cursor() as cursor:
-                    consulta = "UPDATE clientes SET estado = '" + str(False) + "' WHERE documento = " + str(documento)
 
-                    cursor.execute(consulta)
-                conexion.commit()
-                print("Usuario betado por cantidad de faltas")
-            except psycopg2.Error as e:
-                print("Ocurrió un error al editar: ", e)
 
     def verificar_cliente(self, cliente_a_buscar):
         '''cliente_a_buscar = input("Ingrese el documento")'''
@@ -78,10 +87,12 @@ class Clientes():
                 cliente = cursor.fetchone()
                 if cliente:
                     print(cliente)
+                    return cliente
                 else:
                     print("El cliente no existe")
+                    return print('No se encontro ningun cliente')
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
     def consultar_clientes(self):
         try:
@@ -90,8 +101,9 @@ class Clientes():
                 clientes_con = cursor.fetchall()
                 for cliente in clientes_con:
                     print(cliente)
+                return clientes_con
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return print("Ocurrio un error al consultar: ", e)
 
-        return cliente
+
 

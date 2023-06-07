@@ -256,10 +256,10 @@ class Facturas():
                 print('Las facturas que debe en este momento son las siguientes: ')
             for factura_credito in facturas_credito:
                 print(factura_credito)
+            return facturas_credito
 
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
-    pass
+            return print("Ocurrio un error al consultar: ", e)
 
     def pagar_facturas_idFactura(self, id_factura):
         '''id_factura = int(input('Ingrese el numero de la factura: '))'''

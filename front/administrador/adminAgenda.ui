@@ -2850,9 +2850,9 @@ border-color: rgb(255, 255, 255);</string>
     <widget class="QTableWidget" name="TabAgenda">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>931</width>
+       <x>10</x>
+       <y>80</y>
+       <width>1001</width>
        <height>811</height>
       </rect>
      </property>
