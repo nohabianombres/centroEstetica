@@ -24,7 +24,7 @@ class Informe():
                 print(informe_pro)
             return informes_pro
         except psycopg2.Error as e:
-            return print("Ocurrió un error al consultar: ", e)
+            return "Ocurrió un error al consultar"
 
     def informe_servicios(self, numero_dias):
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
@@ -39,7 +39,7 @@ class Informe():
                 print(informe_ser)
             return informes_ser
         except psycopg2.Error as e:
-            return print("Ocurrió un error al consultar: ", e)
+            return "Ocurrió un error al consultar"
 
     def mostar_informe_facturas(self, numero_dias):
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
@@ -54,7 +54,7 @@ class Informe():
                 print(factura)
             return facturas
         except psycopg2.Error as e:
-            return print("Ocurrió un error al consultar: ", e)
+            return "Ocurrió un error al consultar"
 
     def mostrar_cartera(self, numero_dias):
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''
@@ -69,7 +69,7 @@ class Informe():
                 print(factura)
             return facturas
         except psycopg2.Error as e:
-            return print("Ocurrió un error al consultar: ", e)
+            return "Ocurrió un error al consultar"
 
     def mostrar_desempeno(self):
         try:
@@ -80,4 +80,4 @@ class Informe():
                     print(usuario_calificado)
                 return usuarios_calificados
         except psycopg2.Error as e:
-            return print("Ocurrió un error al consultar: ", e)
+            return "Ocurrió un error al consultar"

@@ -151,7 +151,7 @@ class Trabajadores(Usuarios):
                                                     except psycopg2.Error as e:
                                                         print("Ocurrió un error al editarel puntaje: ", e)
                                         except psycopg2.Error as e:
-                                            print("Ocurrió un error al consultar in desempeno: ", e)
+                                            print("Ocurrió un error al consultar en desempeno: ", e)
 
                                     except psycopg2.Error as e:
                                         print("Ocurrió un error al consultar en usuarios : ", e)
@@ -190,9 +190,9 @@ class Administracion(Usuarios):
 
                 cursor.execute(consulta, (in_contrasena, in_nombre, in_apellido, in_documento, in_telefono, in_correo, in_rol))
             conexion.commit()
-            return print("Usuario creado")
+            return "Usuario creado"
         except psycopg2.Error as e:
-            return print("Ocurrió un error al crear el usuario:", e)
+            return "Ocurrió un error al crear el usuario"
 
     def ver_informe_productos(self):
         pass

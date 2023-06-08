@@ -41,7 +41,7 @@ class Admin(QtWidgets.QMainWindow):
             self.adInventario.show()
         elif sender_button_A == self.botInfAdm:
             self.hide()
-            self.adInformes = AdminServicios()
+            self.adInformes = AdminInformes()
             self.adInformes.show()
         elif sender_button_A == self.botAgeAdm:
             self.hide()
@@ -75,8 +75,7 @@ class AdminInventario(QtWidgets.QMainWindow):
         self.botAgrPro.clicked.connect(self.open_view_eme_AgrPro)
         self.botBusPro.clicked.connect(self.open_view_eme_BusPro)
         self.botMosPro.clicked.connect(self.open_view_eme_MosTodPro)
-        self.botModPro.clicked.connect(self.open_view_eme_ModPro)
-
+        self.botModPro.clicked.connect(self.open_view_eme_ModProPre)
 
         self.adInventario = None
         self.adServicios = None
@@ -130,13 +129,20 @@ class AdminInventario(QtWidgets.QMainWindow):
     def open_view_eme_MosTodPro(self):
         pass
 
-    def open_view_eme_ModPro(self):
-        self.ModPro = emerModProPre()
-        self.ModPro.set_callback(self.crear_ventana)
-        self.ModPro.show()
+    def open_view_eme_ModProPre(self):
+        self.ModProPre = emerModProPre()
+        self.ModProPre.set_callback(self.crear_ventana)
+        self.ModProPre.show()
 
-    def crear_ventana(self):
-        pass
+    def open_view_eme_ModProCan(self):
+        self.ModProCan = emerModProCan()
+        self.ModProCan.set_callback(self.crear_ventana)
+        self.ModProPre.show()
+
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
 
     def imprimir_tabla(self):
         pass
@@ -197,14 +203,14 @@ class AdminServicios(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
-
-
     def open_view_eme_AgrSer(self):
         self.AgrSer = emerAgrSer()
+        self.AgrSer.set_callback(self.crear_ventana)
         self.AgrSer.show()
 
     def open_view_eme_BusSer(self):
         self.BusSer = emerBuscSer()
+        self.BusSer.set_callback(self.imprimir_tabla)
         self.BusSer.show()
 
     def open_view_eme_MosTodSer(self):
@@ -212,15 +218,17 @@ class AdminServicios(QtWidgets.QMainWindow):
 
     def open_view_eme_ModSer(self):
         self.ModSer = emerModSer()
+        self.ModSer.set_callback(self. crear_ventana)
         self.ModSer.show()
 
-    def crear_ventana(self):
-        pass
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
 
     def imprimir_tabla(self):
         pass
-
-
 
 class AdminAgenda(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -238,8 +246,6 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.botBusCit.clicked.connect(self.open_view_eme_BusCita)
         self.botCanCit.clicked.connect(self.open_view_eme_CanCita)
         self.botModCit.clicked.connect(self.open_view_eme_ModCita)
-
-
 
         self.adInventario = None
         self.adServicios = None
@@ -264,9 +270,7 @@ class AdminAgenda(QtWidgets.QMainWindow):
             self.adInformes = AdminInformes()
             self.adInformes.show()
         elif sender_button_Age == self.botAgeAdm:
-            self.hide()
-            self.adAgenda = AdminAgenda()
-            self.adAgenda.show()
+            pass
         elif sender_button_Age == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
@@ -283,28 +287,30 @@ class AdminAgenda(QtWidgets.QMainWindow):
 
     def open_view_eme_AgrCit(self):
         self.AgrCit = emerAgrCita()
+        self.AgrCit.set_callback(self.crear_ventana)
         self.AgrCit.show()
-
-
 
     def open_view_eme_BusCita(self):
         self.BusCit = emerBusCitas()
         self.BusCit.set_callback(self.imprimir_tablas)
         self.BusCit.show()
 
-
     def open_view_eme_ModCita(self):
         pass
 
     def open_view_eme_CanCita(self):
         self.CanCita = emerCanCita()
+        self.CanCita.set_callback(self.open_view_emerIdCitCan)
         self.CanCita.show()
 
+
     def imprimir_tablas(self, listas):
-        self.ui.TabAgenda.clearContents()  # Limpiar contenido existente en la tabla
-        self.ui.TabAgenda.setRowCount(0)  # Reiniciar número de filas
+        print('entre:')
+        #self.ui.TabAgenda.clearContents()  # Limpiar contenido existente en la tabla
+        #self.ui.TabAgenda.setRowCount()  # Reiniciar número de filas
 
         for lista in listas:
+            print(lista)
             fila = self.ui.TabAgenda.rowCount()
             self.ui.TabAgenda.insertRow(fila)
 
@@ -312,6 +318,16 @@ class AdminAgenda(QtWidgets.QMainWindow):
                 celda = QtWidgets.QTableWidgetItem(elemento)
                 self.ui.TabAgenda.setItem(fila, columna, celda)
 
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
+    def open_view_emerIdCitCan(self,a):
+        print(a)
+        self.IdCitCan = emerCanCitaId ()
+        self.IdCitCan.set_callback(self.crear_ventana)
+        self.IdCitCan.show()
 
 class AdminClientes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -328,8 +344,6 @@ class AdminClientes(QtWidgets.QMainWindow):
         self.botAdcFal.clicked.connect(self.open_view_eme_AdcFal)
         self.botAgrCli.clicked.connect(self.open_view_eme_AgrCli)
         self.botBusCli.clicked.connect(self.open_view_eme_BusCli)
-
-
 
         self.cliente_ins = None
         self.adInventario = None
@@ -371,20 +385,27 @@ class AdminClientes(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
-
     def open_view_eme_AdcFal(self):
         self.AdcFal = emerAdiFal()
+        self.AdcFal.set_callback(self.crear_ventana)
         self.AdcFal.show()
 
     def open_view_eme_AgrCli(self):
         self.AgrCli = emerAgrCli()
+        self.AgrCli.set_callback(self.crear_ventana)
         self.AgrCli.show()
 
     def open_view_eme_BusCli(self):
         self.BusCli = emerBuscClien()
+        self.BusCli.set_callback(self.imprimir_tablas)
         self.BusCli.show()
 
-    def crear_ventana(self):
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
+    def imprimir_tablas (self):
         pass
 
 class AdminFacturacion(QtWidgets.QMainWindow):
@@ -437,7 +458,12 @@ class AdminFacturacion(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
-    def crear_ventana(self):
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
+    def imprimir_tablas (self):
         pass
 
 class AdminInformes(QtWidgets.QMainWindow):
@@ -496,21 +522,29 @@ class AdminInformes(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
-    def crear_ventana(self):
-        pass
-
 
     def open_view_IngPro(self):
         self.IngPro = AdminInformesProductos()
+        self.IngPro.set_callback(self.imprimir_tablas)
         self.IngPro.show()
 
     def open_view_IngSer(self):
         self.IngSer = AdminInformesServicios()
+        self.IngPro.set_callback(self.imprimir_tablas)
         self.IngSer.show()
 
     def open_view_Des(self):
         self.InfDes = AdminInformesDesempeno()
+        self.IngPro.set_callback(self.imprimir_tablas)
         self.InfDes.show()
+
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
+    def imprimir_tablas(self):
+        pass
 
 
 
@@ -586,5 +620,10 @@ class AdminUsuarios(QtWidgets.QMainWindow):
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
 
-    def crear_ventana(self):
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
+    def imprimir_tablas(self):
         pass

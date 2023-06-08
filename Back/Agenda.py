@@ -59,7 +59,6 @@ class Agendas():
                                     print("ALGO FALLO")
                     except psycopg2.Error as e:
                         pass
-
                     try:
                         with conexion.cursor() as cursor:
                             cursor.execute("SELECT * FROM usuario WHERE usuario=" + str(in_trabajador))
@@ -120,36 +119,39 @@ class Agendas():
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM citas WHERE documento_fk=" + str(cliente_consultar))
                 citas = cursor.fetchall()
-                for cita in citas:
-                    if cita:
-                        pass
-                    else:
-                        print("Cliente no tiene citas")
+            for cita in citas:
+                if cita:
+                    return citas
+                else:
+                    return "Cliente no tiene citas"
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
-        return citas
+            return "Ocurrio un error al consultar: "
+
 
     def cancelar_cita(self, cliente_cancelar):
         '''cita_a_cancelar=input("Ingerese el id de la cita: ")'''
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM citas WHERE documento_cliente=" + str(cliente_cancelar))
-                citas = cursor.fetchall()
-                for cita in citas:
-                    if cita:
-                        print(cita)
-                    else:
-                        print("Cliente no tiene citas")
-                    id_cita_cancelar = input('Ingrese el id de la cita que quiere cancelar, (el primer numero de la fila)')
-                    try:
-                        with conexion.cursor() as cursor:
-                            consulta = "DELETE FROM citas WHERE documento_cliente=" + str(id_cita_cancelar)
-                            cursor.execute(consulta)
-                            print("Cita cancelada correctamente")
-                        conexion.commit()
-                    except psycopg2.Error as e:
-                        print("Error al eliminar cita: ", e)
+                cursor.execute("SELECT * FROM citas WHERE documento_fk=%s AND hora_inicio IS NULL ",
+                               (cliente_cancelar, ))
+            citas = cursor.fetchall()
+            for cita in citas:
+                if cita:
+                    return (citas)
+                else:
+                    return ("Cliente no tiene citas")
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return ("Ocurrio un error al consultar: ", e)
+
+    def cancelar_cita_exacta (self, id_cita_cancelar):
+        try:
+            with conexion.cursor() as cursor:
+                consulta = "DELETE FROM citas WHERE id_cita=" + str(id_cita_cancelar)
+            cursor.execute(consulta)
+            conexion.commit()
+            return ("Cita cancelada correctamente")
+        except psycopg2.Error as e:
+            return ("Error al eliminar cita")
+
 
 

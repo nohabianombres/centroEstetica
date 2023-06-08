@@ -1,12 +1,14 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.uic import loadUi
+
 
 import sys
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
-from Back.Servicios import *
+
 from Back.Inventario import *
+from Back.Servicios import *
+from Back.Informes import *
 
 class emerModSer(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -19,16 +21,18 @@ class emerModSer(QtWidgets.QMainWindow):
     def modificar_precio_servicio_funcion(self):
         self.id_ser = self.LIdSerMod.text()
         self.pre_nue = self.LPreNueSer.text()
-        servicio.modificar_servicios(self.id_ser, self.pre_nue)
+        self.hide()
+        self.servicio = Servicios ()
+        self.retorno_mod_ser = self.servicio.modificar_servicios(self.id_ser, self.pre_nue)
+        if self.callback:
+            self.callback(self.retorno_mod_ser)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_agregar_producto(self):
         self.hide()
         self.close()
-
-
-
-
-
 
 class emerModProCan(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -41,7 +45,14 @@ class emerModProCan(QtWidgets.QMainWindow):
     def modificar_cantidad_prodcuto_funcion(self):
         self.id_pro = self.LIdProMod.text()
         self.can_nue = self.LCanNuePro.text()
-        inventario.agregar_cantidad_inventario(self.id_pro, self.can_nue)
+        self.hide()
+        self.inventario = Inventario ()
+        self.retorno_mod_can_pro = self.inventario.agregar_cantidad_inventario(self.id_pro, self.can_nue)
+        if self.callback:
+            self.callback(self.retorno_mod_can_pro)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_modificar_producto(self):
         self.hide()
@@ -58,7 +69,14 @@ class emerModProPre(QtWidgets.QMainWindow):
     def modificar_precio_producto_funcion(self):
         self.id_pro = self.LIdProMod.text()
         self.pre_nue = self.LPreNuePro.text()
-        inventario.agregar_cantidad_inventario(self.id_pro, self.can_nue)
+        self.hide()
+        self.inventario = Inventario()
+        self.retorno_mod_pre_pro = self.inventario.cambiar_precio_producto(self.id_pro, self.pre_nue)
+        if self.callback:
+            self.callback(self.retorno_mod_pre_pro)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_modificar_producto(self):
         self.hide()
@@ -79,14 +97,21 @@ class emerAgrPro(QtWidgets.QMainWindow):
         super(emerAgrPro, self).__init__(parent)
         uic.loadUi('Front/administrador/emeAdm/emerAgrPro.ui', self)
 
-        self.AgrSer.clicked.connect(self.agregar_producto_funcion)
-        self.CanAgrSer.clicked.connect(self.cancelar_agregar_producto)
+        self.botAgrPro.clicked.connect(self.agregar_producto_funcion)
+        self.botCanAgrPro.clicked.connect(self.cancelar_agregar_producto)
 
     def agregar_producto_funcion(self):
         self.nom_pro = self.LAgrNomPro.text()
         self.pre_pro = self.LAgrPrePro.text()
         self.can_pro = self.LAgrCanPro.text()
-        inventario.agregar_nuevo_producto(self.nom_pro, self.can_pro, self.pre_pro)
+        self.hide()
+        self.inventario = Inventario()
+        self.retorno_agre_inv = self.inventario.agregar_nuevo_producto(self.nom_pro, self.can_pro, self.pre_pro)
+        if self.callback:
+            self.callback(self.retorno_agre_inv)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_agregar_producto(self):
         self.hide()
@@ -104,7 +129,14 @@ class emerAgrSer(QtWidgets.QMainWindow):
         self.nom_ser = self.LNomSerAgr.text()
         self.pre_ser = self.LPreSerAgr.text()
         self.tie_pro = self.LTiePro.text()
-        servicio.agregar_servicio(self.nom_ser, self.tie_pro, self.pre_ser)
+        self.hide()
+        self.servicio = Servicios ()
+        self.retorno_agr_ser = self.servicio.agregar_servicio(self.nom_ser, self.tie_pro, self.pre_ser)
+        if self.callback:
+            self.callback(self.retorno_agr_ser)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def cancelar_agregar_servicio(self):
         self.hide()

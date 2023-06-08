@@ -259,7 +259,7 @@ class Facturas():
             return facturas_credito
 
         except psycopg2.Error as e:
-            return print("Ocurrio un error al consultar: ", e)
+            return "Ocurrio un error al consultar"
 
     def pagar_facturas_idFactura(self, id_factura):
         '''id_factura = int(input('Ingrese el numero de la factura: '))'''

@@ -24,14 +24,13 @@ class Clientes():
                 cursor.execute(consulta, (in_documento, in_nombre, in_apellido, in_telefono, in_correo, 0, True))
             conexion.commit()
             print("Cliente creado")
-            return print('Cliente creado')
+            return 'Cliente creado'
         except psycopg2.Error as e:
-            return print("Ocurrió un error al crear el cliente:", e)
+            return "Ocurrió un error al crear el cliente:"
 
 
     def adicionar_falta_cliente(self, documento):
         '''documento = input("Ingrese el documento")'''
-        print('estoy en la funcion rica y deli')
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM clientes WHERE documento=" + str(documento))
@@ -48,7 +47,7 @@ class Clientes():
                                 cursor.execute(consulta)
                             conexion.commit()
                             print("falta agregada")
-                            return print('Falta agregada')
+                            return 'Falta agregada'
                         except psycopg2.Error as e:
                             print("Ocurrió un error al editar: ", e)
                     elif valor_total >= 3:
@@ -68,14 +67,14 @@ class Clientes():
 
                                 cursor.execute(consulta)
                             conexion.commit()
-                            return print("Usuario betado por cantidad de faltas")
+                            return "Usuario betado por cantidad de faltas"
 
                         except psycopg2.Error as e:
-                            return print("Ocurrió un error al editar: ", e)
+                            return "Ocurrió un error al editar: "
                 else:
-                    return print("El cliente no existe")
+                    return "El cliente no existe"
         except psycopg2.Error as e:
-            return print("Ocurrio un error al consultar: ", e)
+            return "Ocurrio un error al consultar: "
 
 
 
@@ -90,9 +89,9 @@ class Clientes():
                     return cliente
                 else:
                     print("El cliente no existe")
-                    return print('No se encontro ningun cliente')
+                    return 'No se encontro ningun cliente'
         except psycopg2.Error as e:
-            return print("Ocurrio un error al consultar: ", e)
+            return "Ocurrio un error al consultar: "
 
     def consultar_clientes(self):
         try:
@@ -103,7 +102,7 @@ class Clientes():
                     print(cliente)
                 return clientes_con
         except psycopg2.Error as e:
-            return print("Ocurrio un error al consultar: ", e)
+            return "Ocurrio un error al consultar: "
 
 
 
