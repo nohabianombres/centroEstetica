@@ -237,21 +237,24 @@ class Facturas():
         try:
             with conexion.cursor() as cursor:
                 consulta = "UPDATE facturas SET pagado = %s WHERE documento_cliente = %s"
-                cursor.execute(consulta, (True, documento_cliente_pagar))
-                conexion.commit()
+            cursor.execute(consulta, (True, documento_cliente_pagar))
+            conexion.commit()
+            with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM facturas WHERE documento_cliente = %s ", (documento_cliente_pagar))
-                facturas_pendientes = cursor.fetchall()
-                conexion.commit()
-                if facturas_pendientes:
-                    facturas_pendientes_list = [factura[1] for factura in facturas_pendientes]
-                    for factura_pendi in facturas_pendientes_list:
+            facturas_pendientes = cursor.fetchall()
+            conexion.commit()
+            if facturas_pendientes:
+                facturas_pendientes_list = [factura[1] for factura in facturas_pendientes]
+                for factura_pendi in facturas_pendientes_list:
+                    with conexion.cursor() as cursor:
                         consulta = "UPDATE informe_productos SET estado = %s WHERE id_factura_pro = %s"
-                        cursor.execute(consulta, (True, factura_pendi))
+                    cursor.execute(consulta, (True, factura_pendi))
+                    with conexion.cursor() as cursor:
                         consulta = "UPDATE informe_servicios SET estado = %s WHERE id_factura_ser = %s"
-                        cursor.execute(consulta, (True, factura_pendi))
-                        return ('Se efectuo el pago de la factura correctamente')
-                else:
-                    return ('No tienes facturas pendientes')
+                    cursor.execute(consulta, (True, factura_pendi))
+                return ('Se efectuo el pago de la factura correctamente')
+            else:
+                return ('No tienes facturas pendientes')
         except psycopg2.Error as e:
             return ("Ocurrió un error al pagar: ", e)
 
