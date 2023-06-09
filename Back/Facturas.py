@@ -233,23 +233,27 @@ class Facturas():
             return ("Ocurrió un error al consultar: ", e)
 
     def pagar_facturas_documento_aceptar(self, documento_cliente_pagar):
-            try:
-                with conexion.cursor() as cursor:
-                    consulta = "UPDATE facturas SET pagado = %s WHERE documento_cliente = %s"
-                    cursor.execute(consulta, (True, documento_cliente_pagar))
-                    conexion.commit()
-                    cursor.execute("SELECT * FROM facturas WHERE documento_cliente = %s ",(documento_cliente_pagar))
-                    facturas_pendientes=cursor.fetchall()
-                    conexion.commit()
+        print('hpta')
+        try:
+            with conexion.cursor() as cursor:
+                consulta = "UPDATE facturas SET pagado = %s WHERE documento_cliente = %s"
+                cursor.execute(consulta, (True, documento_cliente_pagar))
+                conexion.commit()
+                cursor.execute("SELECT * FROM facturas WHERE documento_cliente = %s ", (documento_cliente_pagar))
+                facturas_pendientes = cursor.fetchall()
+                conexion.commit()
+                if facturas_pendientes:
                     facturas_pendientes_list = [factura[1] for factura in facturas_pendientes]
                     for factura_pendi in facturas_pendientes_list:
-                        consulta = "UPDATE informe_productos SET estado %s WHERE id_factura_pro = %s"
+                        consulta = "UPDATE informe_productos SET estado = %s WHERE id_factura_pro = %s"
                         cursor.execute(consulta, (True, factura_pendi))
                         consulta = "UPDATE informe_servicios SET estado = %s WHERE id_factura_ser = %s"
                         cursor.execute(consulta, (True, factura_pendi))
-                print('Se efectuo el pago de la factura correctamente')
-            except psycopg2.Error as e:
-                print("Ocurrió un error al pagar: ", e)
+                        return ('Se efectuo el pago de la factura correctamente')
+                else:
+                    return ('No tienes facturas pendientes')
+        except psycopg2.Error as e:
+            return ("Ocurrió un error al pagar: ", e)
 
 
 

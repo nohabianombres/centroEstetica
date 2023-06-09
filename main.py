@@ -1,5 +1,5 @@
 from Front.administrador.ventanasAdmin import *
-from Front.comunes.emerComunes import *
+
 from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
 from Back.Usuarios import *
@@ -38,14 +38,12 @@ class Login(QtWidgets.QMainWindow):
     def obtener_datos (self):
         self.user = self.VarUsu.text()
         self.contrasena = self.VarPass.text()
-        usuario_validacion = validacion(self.user, self.contrasena, login)  #usuario_validacion = validacion(self.user, self.contrasena, login)
-
-
-        if usuario_validacion[7] == 'Admin':
+        self.usuario_validacion = validacion(self.user, self.contrasena, login)  #usuario_validacion = validacion(self.user, self.contrasena, login)
+        if self.usuario_validacion[7] == 'Admin':
             self.open_view_adm()
-        elif usuario_validacion[7] == 'Recepcion':
+        elif self.usuario_validacion[7] == 'Recepcion':
             self.open_view_rec()
-        elif usuario_validacion[7] == 'Cajero':
+        elif self.usuario_validacion[7] == 'Cajero':
             self.open_view_caj()
         else:
             print('voy en el if')
@@ -66,7 +64,9 @@ class Login(QtWidgets.QMainWindow):
         self.close()
         self.hide()
         self.admin = Admin()
+        self.admin.recibir_datos(self.usuario_validacion)
         self.admin.show()
+
 
     def open_view_caj(self):
         self.close()

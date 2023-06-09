@@ -174,8 +174,11 @@ class Trabajadores(Usuarios):
 
 
 class Administracion(Usuarios):
+    def lologre (self):
+        print ('asi fueque')
 
     def crear_usuarios(self, in_contrasena, in_documento, in_nombre, in_apellido, in_telefono, in_correo, in_rol):
+        print('entre a crear usuarios la funcion Back')
         try:
             with conexion.cursor() as cursor:
                 consulta = "INSERT INTO usuario (contrasena , nombre, apellido, documento, telefono, correo, rol) VALUES (%s, %s, %s, %s, %s, %s, %s);"
@@ -194,27 +197,19 @@ class Administracion(Usuarios):
         except psycopg2.Error as e:
             return "Ocurrió un error al crear el usuario"
 
-    def ver_informe_productos(self):
-        pass
-
-    def ver_informe_servicios(self):
-        pass
-
-    def ver_informe_desempeno(self):
-        pass
 
     def verificar_usuario(self, usuario_a_buscar):
         '''usuario_a_buscar = input("Ingrese el usuario")'''
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM usuario WHERE usuario=" + str(usuario_a_buscar))
+                cursor.execute("SELECT * FROM usuario WHERE docuemnto=" + str(usuario_a_buscar))
                 usuario = cursor.fetchone()
                 if usuario:
-                    print(usuario)
+                    return (usuario)
                 else:
-                    print("Usuario no encontrado")
+                    return ("Usuario no encontrado")
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return ("Ocurrio un error al consultar: ", e)
 
     def cambiar_contrasena(self, usuario_buscar, contrasena_nueva):
         try:
@@ -225,9 +220,9 @@ class Administracion(Usuarios):
 
                 cursor.execute(consulta)
             conexion.commit()
-            print("Contraseña cambiada")
+            return ("Contraseña cambiada")
         except psycopg2.Error as e:
-            print("Ocurrió un error al editar: ", e)
+            return ("Ocurrió un error al editar: ", e)
 
     def consultar_usuarios(self):
         try:
@@ -235,8 +230,8 @@ class Administracion(Usuarios):
                 cursor.execute("SELECT * FROM usuario;")
                 usuarios = cursor.fetchall()
                 for usuario in usuarios:
-                    print(usuario)
+                    return (usuario)
         except psycopg2.Error as e:
-            print("Ocurrio un error al consultar: ", e)
+            return ("Ocurrio un error al consultar: ", e)
 
 

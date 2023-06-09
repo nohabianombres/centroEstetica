@@ -7,8 +7,6 @@ from PyQt5 import QtWidgets, uic
 
 from Front.administrador.emeAdm.emeAdmcodigo import *
 
-
-
 class Admin(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Admin, self).__init__(parent)
@@ -34,31 +32,41 @@ class Admin(QtWidgets.QMainWindow):
         if sender_button_A == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_A == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_A == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInformes.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_A == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_A == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_A == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_A == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
+            self.adFacturas.recibir_datos(self.datos_usuario)
             self.adFacturas.show()
+
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
 
 class AdminInventario(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -90,30 +98,37 @@ class AdminInventario(QtWidgets.QMainWindow):
         if sender_button_Inv == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_Inv == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_Inv == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInformes.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_Inv == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_Inv == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_Inv == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_Inv == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
+            self.adFacturas.recibir_datos(self.datos_usuario)
             self.adFacturas.show()
 
     def open_view_eme_AgrPro(self):
@@ -147,6 +162,9 @@ class AdminInventario(QtWidgets.QMainWindow):
     def imprimir_tabla(self):
         pass
 
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
+
 class AdminServicios(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminServicios, self).__init__(parent)
@@ -177,10 +195,12 @@ class AdminServicios(QtWidgets.QMainWindow):
         if sender_button_S == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_S == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_S == self.botInfAdm:
             self.hide()
@@ -189,18 +209,22 @@ class AdminServicios(QtWidgets.QMainWindow):
         elif sender_button_S == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_S == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_S == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_S == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
+            self.adFacturas.recibir_datos(self.datos_usuario)
             self.adFacturas.show()
 
     def open_view_eme_AgrSer(self):
@@ -230,6 +254,9 @@ class AdminServicios(QtWidgets.QMainWindow):
     def imprimir_tabla(self):
         pass
 
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
+
 class AdminAgenda(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminAgenda, self).__init__(parent)
@@ -245,7 +272,7 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.botAgrCit.clicked.connect(self.open_view_eme_AgrCit)
         self.botBusCit.clicked.connect(self.open_view_eme_BusCita)
         self.botCanCit.clicked.connect(self.open_view_eme_CanCita)
-        self.botModCit.clicked.connect(self.open_view_eme_ModCita)
+
 
         self.adInventario = None
         self.adServicios = None
@@ -260,24 +287,32 @@ class AdminAgenda(QtWidgets.QMainWindow):
         if sender_button_Age == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_Age == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_Age == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInformes.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_Age == self.botAgeAdm:
-            pass
+            self.hide()
+            self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
+            self.adAgenda.show()
         elif sender_button_Age == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_Age == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_Age == self.botFacAdm:
             self.hide()
@@ -329,6 +364,9 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.IdCitCan.set_callback(self.crear_ventana)
         self.IdCitCan.show()
 
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
+
 class AdminClientes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminClientes, self).__init__(parent)
@@ -359,30 +397,37 @@ class AdminClientes(QtWidgets.QMainWindow):
         if sender_button_Cli == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_Cli == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_Cli == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInformes.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_Cli == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_Cli == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_Cli == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_Cli == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
+            self.adFacturas.recibir_datos(self.datos_usuario)
             self.adFacturas.show()
 
     def open_view_eme_AdcFal(self):
@@ -408,6 +453,9 @@ class AdminClientes(QtWidgets.QMainWindow):
     def imprimir_tablas (self):
         pass
 
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
+
 class AdminFacturacion(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AdminFacturacion, self).__init__(parent)
@@ -419,6 +467,13 @@ class AdminFacturacion(QtWidgets.QMainWindow):
         self.botCliAdm.clicked.connect(self.open_view_7)
         self.botUsuAdm.clicked.connect(self.open_view_7)
         self.botFacAdm.clicked.connect(self.open_view_7)
+
+        self.botBusFacDoc.clicked.connect(self.open_view_eme_BusFac)
+        self.botPagId.clicked.connect(self.open_view_eme_PagFacId)
+        self.botPagDoc.clicked.connect(self.open_view_eme_PagFacDoc)
+        self.botCreFac.clicked.connect(self.open_view_eme_CreFac)
+
+
         self.adInventario = None
         self.adServicios = None
         self.adInformes = None
@@ -432,31 +487,58 @@ class AdminFacturacion(QtWidgets.QMainWindow):
         if sender_button_Fac == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_Fac == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_Fac == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInformes.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_Fac == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_Fac == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_Fac == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_Fac == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
             self.adFacturas.show()
+
+
+    def open_view_eme_CreFac(self):
+        self.CreFac = emerCreFac ()
+        self.CreFac.set_callback(self.crear_ventana)
+        self.CreFac.show()
+
+    def open_view_eme_PagFacId(self):
+        self.PagFacId = emerPagFacId()
+        self.PagFacId.set_callback(self.crear_ventana)
+        self.PagFacId.show()
+
+    def open_view_eme_PagFacDoc(self):
+        self.PagFacDoc = emerPagFacDoc()
+        self.PagFacDoc.set_callback(self.crear_ventana)
+        self.PagFacDoc.show()
+
+    def open_view_eme_BusFac(self):
+        self.BusFac = emerBusFac ()
+        self.BusFac.set_callback(self.imprimir_tablas)
+        self.BusFac.show()
 
     def crear_ventana(self, retorno):
         self.emer_retorno = emerRetorno()
@@ -465,6 +547,9 @@ class AdminFacturacion(QtWidgets.QMainWindow):
 
     def imprimir_tablas (self):
         pass
+
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
 
 class AdminInformes(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -496,47 +581,54 @@ class AdminInformes(QtWidgets.QMainWindow):
         if sender_button_Inf == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_Inf == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_Inf == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_Inf == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_Inf == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_Inf == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_Inf == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
+            self.adFacturas.recibir_datos(self.datos_usuario)
             self.adFacturas.show()
 
 
     def open_view_IngPro(self):
-        self.IngPro = AdminInformesProductos()
+        self.IngPro = emerBusInfPro()
         self.IngPro.set_callback(self.imprimir_tablas)
         self.IngPro.show()
 
     def open_view_IngSer(self):
-        self.IngSer = AdminInformesServicios()
-        self.IngPro.set_callback(self.imprimir_tablas)
+        self.IngSer = emerBusInfSer()
+        self.IngSer.set_callback(self.imprimir_tablas)
         self.IngSer.show()
 
     def open_view_Des(self):
-        self.InfDes = AdminInformesDesempeno()
-        self.IngPro.set_callback(self.imprimir_tablas)
-        self.InfDes.show()
+        self.infDes = Informe()
+        self.informe_desempe = self.infDes.mostrar_desempeno()
+        self.imprimir_tablas(self.informe_desempe)
 
     def crear_ventana(self, retorno):
         self.emer_retorno = emerRetorno()
@@ -546,22 +638,8 @@ class AdminInformes(QtWidgets.QMainWindow):
     def imprimir_tablas(self):
         pass
 
-
-
-class AdminInformesDesempeno(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(AdminInformesDesempeno, self).__init__(parent)
-        uic.loadUi('Front/administrador/adminDesempeño.ui', self)
-
-class AdminInformesProductos(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(AdminInformesProductos, self).__init__(parent)
-        uic.loadUi('Front/administrador/adminIngresoProductos.ui', self)
-
-class AdminInformesServicios(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(AdminInformesServicios, self).__init__(parent)
-        uic.loadUi('Front/administrador/adminIngresoServicios.ui', self)
+    def recibir_datos (self, usuario_validar):
+        self.datos_usuario = usuario_validar
 
 
 class AdminUsuarios(QtWidgets.QMainWindow):
@@ -576,10 +654,10 @@ class AdminUsuarios(QtWidgets.QMainWindow):
         self.botUsuAdm.clicked.connect(self.open_view_9)
         self.botFacAdm.clicked.connect(self.open_view_9)
 
-        self.botAgrUsu.clicked.connect(self.open_view_5)
-        self.botBusUsu.clicked.connect(self.open_view_5)
-        self.botCamCon.clicked.connect(self.open_view_5)
-        self.botMosTod.clicked.connect(self.open_view_5)
+        self.botAgrUsu.clicked.connect(self.open_view_emer_cre_usu)
+        self.botBusUsu.clicked.connect(self.open_view_emer_cre_usu)
+        self.botCamCon.clicked.connect(self.open_view_emer_cam_con)
+        self.botMosTod.clicked.connect(self.open_view_emer_cre_usu)
 
         self.adInventario = None
         self.adServicios = None
@@ -594,31 +672,57 @@ class AdminUsuarios(QtWidgets.QMainWindow):
         if sender_button_Usu == self.botSerAdm:
             self.hide()
             self.adServicios = AdminServicios()
+            self.adServicios.recibir_datos(self.datos_usuario)
             self.adServicios.show()
         elif sender_button_Usu == self.botInvAdm:
             self.hide()
             self.adInventario = AdminInventario()
+            self.adInventario.recibir_datos(self.datos_usuario)
             self.adInventario.show()
         elif sender_button_Usu == self.botInfAdm:
             self.hide()
             self.adInformes = AdminInformes()
+            self.adInformes.recibir_datos(self.datos_usuario)
             self.adInformes.show()
         elif sender_button_Usu == self.botAgeAdm:
             self.hide()
             self.adAgenda = AdminAgenda()
+            self.adAgenda.recibir_datos(self.datos_usuario)
             self.adAgenda.show()
         elif sender_button_Usu == self.botCliAdm:
             self.hide()
             self.adClientes = AdminClientes()
+            self.adClientes.recibir_datos(self.datos_usuario)
             self.adClientes.show()
         elif sender_button_Usu == self.botUsuAdm:
             self.hide()
             self.adUsuarios = AdminUsuarios()
+            self.adUsuarios.recibir_datos(self.datos_usuario)
             self.adUsuarios.show()
         elif sender_button_Usu == self.botFacAdm:
             self.hide()
             self.adFacturas = AdminFacturacion()
+            self.adFacturas.recibir_datos(self.datos_usuario)
             self.adFacturas.show()
+
+
+    def open_view_emer_cre_usu (self):
+        self.creUsu = emerAgrUsu()
+        self.creUsu.set_callback(self.crear_ventana)
+        self.creUsu.recibir_datos(self.datos_usuario)
+        self.creUsu.show()
+
+    def open_view_emer_cam_con(self):
+        self.camCon = emerCamCon()
+        self.camCon.set_callback(self.crear_ventana)
+        self.camCon.recibir_datos(self.datos_usuario)
+        self.camCon.show()
+
+    def open_view_emer_bus_usu(self):
+        self.busUsu = emerBuscUsu()
+        self.busUsu.set_callback(self.imprimir_tablas)
+        self.busUsu.recibir_datos(self.datos_usuario)
+        self.busUsu.show()
 
     def crear_ventana(self, retorno):
         self.emer_retorno = emerRetorno()
@@ -627,3 +731,7 @@ class AdminUsuarios(QtWidgets.QMainWindow):
 
     def imprimir_tablas(self):
         pass
+
+    def recibir_datos(self, usuario_validar):
+        self.datos_usuario = usuario_validar
+        print(self.datos_usuario)

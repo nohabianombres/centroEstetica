@@ -1,21 +1,18 @@
 import sys
 import path
 from PyQt5 import QtWidgets, uic
-from Back.Facturas import *
-from Back.Informes import *
-from Back.Servicios import *
 
-from Back.Inventario import *
+from Back.Inventario import Inventario
 from BD.Conexion import *
-from Back.Agenda import *
+
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidget
-
 import os
 from Back.Clientes import Clientes
 from Back.Agenda import Agendas
 from Back.Servicios import Servicios
-import sys
+from Back.Facturas import Facturas
+
 
 class emerAdiFal(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -41,7 +38,6 @@ class emerAdiFal(QtWidgets.QMainWindow):
         self.hide()
         self.close()
 
-
 class emerAgrCita(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerAgrCita, self).__init__(parent)
@@ -59,7 +55,7 @@ class emerAgrCita(QtWidgets.QMainWindow):
         self.hide()
         self.agenda = Agendas()
         hora = '11:00:00'
-        self.retorno_agr_cit = self.agenda.crear_cita(hora, self.fec_cit, self.doc_cli, self.id_tra, self.id_ser)
+        self.retorno_agr_cit = self.agenda.crear_cita(self.hor_cit, self.fec_cit, self.doc_cli, self.id_tra, self.id_ser)
         if self.callback:
             self.callback(self.retorno_agr_cit)
 
@@ -69,7 +65,6 @@ class emerAgrCita(QtWidgets.QMainWindow):
     def cancelar_agregar_cita(self):
         self.hide()
         self.close()
-
 
 class emerAgrCli(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -102,7 +97,6 @@ class emerConfirmar(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerConfirmar, self).__init__(parent)
         uic.loadUi('Front/comunes/emerConfirmar.ui', self)
-
 
 class emerBuscClien(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -164,7 +158,7 @@ class emerBuscPro(QtWidgets.QMainWindow):
     def buscar_producto_funcion(self):
         self.id_pro_bus = self.LIdProBus.text()
         self.hide()
-        self.inventario = Inventario ()
+        self.inventario = Inventario()
         self.retorno_bus_pro = self.inventario.verificar_producto(self.id_pro_bus)
 
         if self.callback:
@@ -172,8 +166,6 @@ class emerBuscPro(QtWidgets.QMainWindow):
 
     def set_callback(self, callback):
         self.callback = callback
-
-
 
     def cancelar_buscar_producto(self):
         self.hide()
@@ -211,9 +203,11 @@ class emerBuscUsu(QtWidgets.QMainWindow):
         self.botCanBusUsu.clicked.connect(self.cancelar_buscar_usuario)
 
     def buscar_usuario_funcion(self):
-        self.id_usu_bus = self.LIdUsuBus.text()
-        #if self.callback:
-         #   self.callback(self.)
+        self.id_usu = self.LUsuBus.text()
+        self.hide()
+        self.retorno_cam_con = self.instancia.verificar_usuario(self.id_usu)
+        if self.callback:
+            self.callback(self.retorno_cam_con)
 
     def set_callback(self, callback):
         self.callback = callback
@@ -221,6 +215,10 @@ class emerBuscUsu(QtWidgets.QMainWindow):
     def cancelar_buscar_usuario(self):
         self.hide()
         self.close()
+
+    def recibir_datos(self, usuario_validar):
+        self.datos_usuario = usuario_validar
+        self.instancia = Administracion(self.datos_usuario[0], self.datos_usuario[1], self.datos_usuario[2],self.datos_usuario[3], self.datos_usuario[4], self.datos_usuario[5],self.datos_usuario[6], self.datos_usuario[7])
 
 class emerCanCita(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -244,7 +242,6 @@ class emerCanCita(QtWidgets.QMainWindow):
         self.hide()
         self.close()
 
-
 class emerCanCitaId(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerCanCitaId, self).__init__(parent)
@@ -267,8 +264,6 @@ class emerCanCitaId(QtWidgets.QMainWindow):
         self.hide()
         self.close()
 
-
-
 class emerRetorno(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerRetorno, self).__init__(parent)
@@ -281,6 +276,141 @@ class emerRetorno(QtWidgets.QMainWindow):
 
     def funcion_ok (self):
         self.close()
+
+class emerCreFac(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(emerCreFac, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerCreFac.ui', self)
+
+        self.botCreFac.clicked.connect(self.crear_factura_funcion)
+        self.botCanCreFac.clicked.connect(self.cancelar_crear_factura)
+        self.callback = None
+
+    def crear_factura_funcion(self):
+        self.doc_fac_cre = self.LDocCreFac.text()
+        self.hide()
+        self.factura = Facturas()
+        self.retorno_fac_cre = self.factura.generar_factura_servicios_productos(self.doc_fac_cre)
+        if self.callback:
+            self.callback(self.retorno_fac_cre)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_crear_factura(self):
+        self.hide()
+        self.close()
+
+class emerPagFacId(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(emerPagFacId, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerGenPag.ui', self)
+
+        self.botGenPag.clicked.connect(self.generar_pago_funcion)
+        self.botCanGenPag.clicked.connect(self.cancelar_generar_pago)
+        self.callback = None
+
+    def generar_pago_funcion(self):
+        self.idFactura = self.LIdFacPag.text()
+        self.hide()
+        self.factura = Facturas()
+        self.retorno_fac_cre = self.factura.pagar_facturas_idFactura(self.idFactura)
+        if self.callback:
+            self.callback(self.retorno_fac_cre)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_generar_pago(self):
+        self.hide()
+        self.close()
+
+class emerBusFac(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(emerBusFac, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerBusFac.ui', self)
+
+        self.botBusFac.clicked.connect(self.buscar_facturas_funcion)
+        self.botCanBusFac.clicked.connect(self.cancelar_buscar_facturas)
+        self.callback = None
+
+    def buscar_facturas_funcion(self):
+        self.doc_fac_bus = self.LDocBusFac.text()
+        self.hide()
+        self.factura = Facturas()
+        self.retorno_bus_fac = self.factura.buscar_facturas_cliente(self.doc_fac_bus)
+        if self.callback:
+            self.callback(self.retorno_fac_cre)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_buscar_facturas(self):
+        self.hide()
+        self.close()
+
+class emerValTot(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(emerValTot, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerValTot.ui', self)
+
+        self.botPagar.clicked.connect(self.funcion_ok)
+
+    def imprimir_retorno_2 (self, retorno_emer, variable_ok):
+        print('llegue a imprimir_retorno_2')
+        print(retorno_emer)
+        print(variable_ok)
+        self.LValTot.setText(variable_ok)
+        self.documento = variable_ok
+
+    def funcion_ok (self):
+        self.def_pag_facturas = Facturas()
+        self.def_pag_facturas.pagar_facturas_documento_aceptar(self.documento)
+        self.hide()
+
+class emerPagFacDoc(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(emerPagFacDoc, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerGenPagDoc.ui', self)
+
+        self.botGenPag.clicked.connect(self.generar_pago_funcion)
+        self.botCanGenPag.clicked.connect(self.cancelar_generar_pago)
+        self.callback = None
+
+    def generar_pago_funcion(self):
+        self.doc_fac_pag = self.LDocFacPag.text()
+        self.hide()
+        self.factura = Facturas()
+        self.retorno_fac_pag = self.factura.pagar_facturas_documento(self.doc_fac_pag)
+        self.crear_ventana_valor_total(self.retorno_fac_pag[0])
+
+        #if self.callback:
+            #self.callback(self.retorno_fac_cre)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_generar_pago(self):
+        self.hide()
+        self.close()
+
+    def crear_ventana_valor_total(self, retorno):
+        print('llegue crear_ventana_total')
+        print(self.retorno_fac_pag[0])
+        print(self.retorno_fac_pag[1])
+        self.hide()
+        self.emer_val_tol = emerValTot()
+        self.emer_val_tol.imprimir_retorno_2(retorno, self.retorno_fac_pag[1])
+        self.emer_val_tol.show()
+
+
+
+
 '''
 class emerModClien(QtWidgets.QMainWindow):
     def __init__(self, parent=None):

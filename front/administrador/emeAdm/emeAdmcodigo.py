@@ -5,10 +5,10 @@ import sys
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
-
-from Back.Inventario import *
-from Back.Servicios import *
-from Back.Informes import *
+from Back.Inventario import Inventario
+from Back.Servicios import Servicios
+from Back.Informes import Informe
+from Back.Usuarios import Administracion
 
 class emerModSer(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -87,10 +87,83 @@ class emerCamCon(QtWidgets.QMainWindow):
         super(emerCamCon, self).__init__(parent)
         uic.loadUi('Front/administrador/emeAdm/emerCamCon.ui', self)
 
+        self.CamCon.clicked.connect(self.cambiar_contrasena_funcion)
+        self.CanCamCon.clicked.connect(self.cancelar_cambiar_contrasena)
+
+    def cambiar_contrasena_funcion(self):
+        print('entre a agregar usuario funcion')
+        self.id_usu = self.LUsuCamCon.text()
+        self.nue_con = self.LConNue.text()
+        self.hide()
+        self.retorno_cam_con = self.instancia.cambiar_contrasena(self.id_usu, self.nue_con)
+
+        if self.callback:
+            self.callback(self.retorno_cam_con)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_cambiar_contrasena(self):
+        self.hide()
+        self.close()
+
+    def recibir_datos(self, usuario_validar):
+        self.datos_usuario = usuario_validar
+        self.instancia = Administracion(self.datos_usuario[0], self.datos_usuario[1], self.datos_usuario[2],self.datos_usuario[3], self.datos_usuario[4], self.datos_usuario[5],self.datos_usuario[6], self.datos_usuario[7])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class emerAgrUsu(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerAgrUsu, self).__init__(parent)
         uic.loadUi('Front/administrador/emeAdm/emerAgrUsu.ui', self)
+
+        self.botAgrUsu.clicked.connect(self.agregar_usuario_funcion)
+        self.botCanAgrUsu.clicked.connect(self.cancelar_agregar_usuario)
+
+    def agregar_usuario_funcion(self):
+        print('entre a agregar usuario funcion')
+        self.nom_usu = self.LNomUsuAgr.text()
+        self.ape_usu = self.LApeUsuAgr.text()
+        self.doc_usu = self.LDocUsuAgr.text()
+        self.pasw_usu = self.LConUsuAgr.text()
+        self.cor_usu = self.LCorUsuAgr.text()
+        self.rol_usu = self.LRolUsuAgr.text()
+        self.tel_usu = self.LTelUsuAgr.text()
+        self.hide()
+        self.retorno_agregar_usu = self.instancia.crear_usuarios(self.pasw_usu,self.doc_usu, self.nom_usu, self.ape_usu, self.tel_usu, self.cor_usu, self.rol_usu)
+
+
+        if self.callback:
+            self.callback(self.retorno_agregar_usu)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_agregar_usuario(self):
+        self.hide()
+        self.close()
+
+    def recibir_datos(self, usuario_validar):
+        self.datos_usuario = usuario_validar
+        self.instancia = Administracion(self.datos_usuario[0], self.datos_usuario[1], self.datos_usuario[2], self.datos_usuario[3], self.datos_usuario[4], self.datos_usuario[5], self.datos_usuario[6], self.datos_usuario[7])
+        print(self.instancia)
+
+
+
+
+
 
 class emerAgrPro(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -139,5 +212,53 @@ class emerAgrSer(QtWidgets.QMainWindow):
         self.callback = callback
 
     def cancelar_agregar_servicio(self):
+        self.hide()
+        self.close()
+
+
+class emerBusInfPro(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(emerBusInfPro, self).__init__(parent)
+        uic.loadUi('Front/administrador/emeAdm/emerDiaDes.ui', self)
+
+        self.botBusInf.clicked.connect(self.buscar_informe_pro)
+        self.botCanBusInf.clicked.connect(self.cancelar_buscar_informe_pro)
+
+    def buscar_informe_pro(self):
+        self.dia_bus_inf = self.LNumDiaInf.text()
+        self.hide()
+        self.informe = Informe()
+        self.retorno_bus_inf = self.informe.informe_productos(self.dia_bus_inf)
+        if self.callback:
+            self.callback(self.retorno_bus_inf)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_buscar_informe_pro(self):
+        self.hide()
+        self.close()
+
+
+class emerBusInfSer(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(emerBusInfSer, self).__init__(parent)
+        uic.loadUi('Front/administrador/emeAdm/emerDiaDes.ui', self)
+
+        self.botBusInf.clicked.connect(self.buscar_informe_ser)
+        self.botCanBusInf.clicked.connect(self.cancelar_buscar_informe_ser)
+
+    def buscar_informe_ser(self):
+        self.dia_bus_inf = self.LNumDiaInf.text()
+        self.hide()
+        self.informe = Informe()
+        self.retorno_bus_inf = self.informe.informe_servicios(self.dia_bus_inf)
+        if self.callback:
+            self.callback(self.retorno_bus_inf)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_buscar_informe_ser(self):
         self.hide()
         self.close()
