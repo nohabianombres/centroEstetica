@@ -28,7 +28,6 @@ class Agendas():
                 hora_fin_promedio = hora_cita + tiempo_promedio
                 # hora_fin_promedio_str = datetime.strptime(hora_fin_promedio,'%H:%M:%S')#
                 print(hora_fin_promedio)
-                print('juas juas juas')
         except psycopg2.Error as e:
             print("Ocurrió un error al crear la cita: ", e)
 
@@ -86,7 +85,7 @@ class Agendas():
                                                     print("ALGO FALLO")
 
                                     except psycopg2.Error as e:
-                                        pass
+                                        print('me quivoque fue en citas')
                                 else:
                                     print("No es un empleado")
                                     var_control = False
@@ -101,15 +100,15 @@ class Agendas():
                         cursor.execute(consulta,
                                        (in_hora, in_fecha, in_documento, in_servicio, in_trabajador, hora_fin_promedio))
                         conexion.commit()
-                        print("Cita creada")
-                        creacion = print('Cita creada')
+                        return ("Cita creada")
                 except psycopg2.Error as e:
                     print("Ocurrio un error : ", e)
             else:
-                print("Algo paso")
+                return ("Algo paso, revisa todos los datos")
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar el cliente: ", e)
             var_control = False
+
 
 
 

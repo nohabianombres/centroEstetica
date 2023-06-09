@@ -214,6 +214,11 @@ class Facturas():
         except psycopg2.Error as e:
             print("No encontro el cliente en ninguna tabla: ", e)
 
+
+
+
+
+
     def pagar_facturas_documento(self, documento_cliente_pagar):
         '''documento_cliente_pagar = input('Ingrese el documento del cliente el cual generó el pago de todas sus facturas: ')'''
         try:
@@ -223,11 +228,11 @@ class Facturas():
                 valores_totales_list = [valor[0] for valor in valores_totales]
                 print('La lista de los valores de cada factura que debe pagar es la siguiente: ', (valores_totales_list))
                 valor_total = sum(valores_totales_list)
-                print("Valor total a pagar:", valor_total)
+                return valor_total, documento_cliente_pagar
         except psycopg2.Error as e:
-            print("Ocurrió un error al consultar: ", e)
-        menu_pago = int(input('Ingrese 1 si desea pagar, de lo contrario ingrese 0: '))
-        if menu_pago == 1:
+            return ("Ocurrió un error al consultar: ", e)
+
+    def pagar_facturas_documento_aceptar(self, documento_cliente_pagar):
             try:
                 with conexion.cursor() as cursor:
                     consulta = "UPDATE facturas SET pagado = %s WHERE documento_cliente = %s"
@@ -245,8 +250,13 @@ class Facturas():
                 print('Se efectuo el pago de la factura correctamente')
             except psycopg2.Error as e:
                 print("Ocurrió un error al pagar: ", e)
-        if menu_pago == 0:
-            pass
+
+
+
+
+
+
+
     def buscar_facturas_cliente(self, cliente_buscar):
         '''cliente_buscar = input("Ingrese el documento del cliente: ")'''
         try:
