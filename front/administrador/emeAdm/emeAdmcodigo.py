@@ -112,18 +112,6 @@ class emerCamCon(QtWidgets.QMainWindow):
         self.instancia = Administracion(self.datos_usuario[0], self.datos_usuario[1], self.datos_usuario[2],self.datos_usuario[3], self.datos_usuario[4], self.datos_usuario[5],self.datos_usuario[6], self.datos_usuario[7])
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 class emerAgrUsu(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerAgrUsu, self).__init__(parent)
@@ -159,11 +147,6 @@ class emerAgrUsu(QtWidgets.QMainWindow):
         self.datos_usuario = usuario_validar
         self.instancia = Administracion(self.datos_usuario[0], self.datos_usuario[1], self.datos_usuario[2], self.datos_usuario[3], self.datos_usuario[4], self.datos_usuario[5], self.datos_usuario[6], self.datos_usuario[7])
         print(self.instancia)
-
-
-
-
-
 
 class emerAgrPro(QtWidgets.QMainWindow):
     def __init__(self, parent=None):

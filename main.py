@@ -1,8 +1,11 @@
-from Front.administrador.ventanasAdmin import *
 
-from Front.cajero.ventanasCajero import *
 from Front.trabajador.ventanasTrabajador import *
 from Back.Usuarios import *
+from Front.cajero.ventanasCajero import *
+from Front.administrador.ventanasAdmin import *
+from Front.recepcionista.ventanasRecepcionista import *
+
+
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
@@ -58,6 +61,7 @@ class Login(QtWidgets.QMainWindow):
         self.close()
         self.hide()
         self.recepcionista = Recepcionista()
+        self.recepcionista.recibir_datos(self.usuario_validacion)
         self.recepcionista.show()
 
     def open_view_adm(self):
@@ -72,6 +76,7 @@ class Login(QtWidgets.QMainWindow):
         self.close()
         self.hide()
         self.cajero = Cajero()
+        self.cajero.recibir_datos(self.usuario_validacion)
         self.cajero.show()
 
     def open_view_tra(self):
@@ -79,6 +84,7 @@ class Login(QtWidgets.QMainWindow):
         self.close()
         self.hide()
         self.trabajador_ins = TrabajadorVentana()
+
         self.trabajador_ins.show()
 
 

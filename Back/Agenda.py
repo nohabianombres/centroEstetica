@@ -1,10 +1,6 @@
 from BD.Conexion import *
 from datetime import datetime, timedelta
-from Front.administrador.ventanasAdmin import *
-from Front.recepcionista.ventanasRecepcionista import *
-from Front.trabajador.ventanasTrabajador import *
-from Front.administrador.emeAdm.emeAdmcodigo import *
-from Front.comunes.emerComunes import *
+
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion = basedatos.conectar()
 
@@ -129,10 +125,10 @@ class Agendas():
 
     def cancelar_cita(self, cliente_cancelar):
         '''cita_a_cancelar=input("Ingerese el id de la cita: ")'''
+        print(cliente_cancelar)
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM citas WHERE documento_fk=%s AND hora_inicio IS NULL ",
-                               (cliente_cancelar, ))
+                cursor.execute("SELECT * FROM citas WHERE documento_fk=%s AND hora_inicio IS NULL ",(cliente_cancelar, ))
             citas = cursor.fetchall()
             for cita in citas:
                 if cita:
@@ -146,7 +142,7 @@ class Agendas():
         try:
             with conexion.cursor() as cursor:
                 consulta = "DELETE FROM citas WHERE id_cita=" + str(id_cita_cancelar)
-            cursor.execute(consulta)
+                cursor.execute(consulta)
             conexion.commit()
             return ("Cita cancelada correctamente")
         except psycopg2.Error as e:

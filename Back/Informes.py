@@ -1,9 +1,6 @@
 from BD.Conexion import *
 from datetime import datetime, timedelta
 
-from Front.administrador.ventanasAdmin import *
-from Front.administrador.emeAdm.emeAdmcodigo import *
-
 
 basedatos = Database("postgres", "00112233", "centroestetica.ccwkcz7cjsk2.us-east-2.rds.amazonaws.com")
 conexion= basedatos.conectar()
