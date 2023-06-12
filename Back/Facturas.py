@@ -7,15 +7,12 @@ conexion= basedatos.conectar()
 class Facturas():
 
     def generar_factura_servicios_productos(self, cliente_cobrar):
+        self.id_citas_cobrar = []
+        self.acceso_menu_factura = True
         self.precios_servicio = []
         self.nombres_servicio = []
-        self.id_productos = []
-        self.nombres_productos = []
-        self.precio_productos = []
-        self.cantidad_productos = []
-        self.id_citas_cobrar = []
         self.id_servicios_cobrar = []
-        self.acceso_menu_factura = True
+
         self.hora_actual = datetime.now().strftime('%H:%M:%S')
         try:
             with conexion.cursor() as cursor:
@@ -29,106 +26,82 @@ class Facturas():
                             cursor.execute("SELECT * FROM clientes WHERE documento=" + str(cliente_cobrar))
                             self.cliente_facturar = cursor.fetchone()
                             if self.cliente_facturar:
-                                return self.cliente_facturar, cliente_cobrar
+                                return cliente_cobrar, [], [], []
                             else:
                                 return ("Cliente no encontrado")
                     except psycopg2.Error as e:
                         return ("Ocurrio un error al consultar: ", e)
                 else:
-                    return (self.servicios_ee, cliente_cobrar)
+                    for id_cita_facturar in self.id_citas_cobrar:
+                        try:
+                            with conexion.cursor() as cursor:
+                                cursor.execute("SELECT * FROM citas WHERE id_cita = %s", (id_cita_facturar,))
+                                citas_facturar = cursor.fetchall()
+                                for cita_facturar in citas_facturar:
+                                    self.id_servicios_cobrar.append(cita_facturar[4])
+
+                                    with conexion.cursor() as cursor:
+                                        cursor.execute("SELECT * FROM servicios WHERE id_servicios = %s",
+                                                       (cita_facturar[4],))
+                                        servicios_facturar = cursor.fetchall()
+                                    for servicio_facturar in servicios_facturar:
+                                        self.nombres_servicio.append(servicio_facturar[1])
+                                        self.precios_servicio.append(servicio_facturar[2])
+                        except psycopg2.Error as e:
+                            return ("Ocurrió un error al consultar las citas : ", e)
+                    return (cliente_cobrar, self.id_citas_cobrar, self.nombres_servicio, self.precios_servicio )
+
         except psycopg2.Error as e:
             return ("Ocurrió un error al obtener las citas a facturar")
 
-    def agr_fac (self, cliente_cobrar):
-        with conexion.cursor() as cursor:
-            for id_producto, cantidad in zip(self.id_productos, self.cantidad_productos):
-                consulta = "UPDATE inventario SET cantidad = cantidad - %s WHERE id_producto = %s"
-                cursor.execute(consulta, (cantidad, id_producto))
-        conexion.commit()
-        valor_total = sum(precio * cantidad for precio, cantidad in zip(self.precio_productos, self.cantidad_productos)) + sum(
-            self.precios_servicio)
-        fecha_creacion = datetime.now().date()
-        try:
-            with conexion.cursor() as cursor:
-                consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion, hora_creacion ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                cursor.execute(consulta, (cliente_cobrar, self.nombres_servicio, self.precios_servicio, self.nombres_productos, self.precio_productos,self.cantidad_productos, valor_total, fecha_creacion, self.hora_actual))
-            conexion.commit()
-            try:
-                with conexion.cursor() as cursor:
-                    cursor.execute("""SELECT * FROM facturas WHERE id_factura = (SELECT MAX(id_factura) FROM facturas)""")
-                ultimo_dato_insertado = cursor.fetchone()
-                try:
-                    with conexion.cursor() as cursor:
-                        consulta = "INSERT INTO informe_productos(id_factura_pro, nombre_productos, precio_productos, cantidad_productos, valor_total, fecha_factura_pro, estado ) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-                        cursor.execute(consulta, (ultimo_dato_insertado[0], ultimo_dato_insertado[4], ultimo_dato_insertado[5],ultimo_dato_insertado[6], 0, ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
-                    conexion.commit()
-                except psycopg2.Error as e:
-                    return ("Ocurrió un error al crear el informe:", e)
-            except psycopg2.Error as e:
-                return ("Ocurrió un error al obtener la última fila insertada en la tabla facturas:",e)
-            return ('La factura, con debidos informes creado correctamente')
-        except psycopg2.Error as e:
-            return ("Ocurrió un error al crear la factura:", e)
 
 
-    def agr_pro_fac(self, id_producto_factura):
+
+    def agr_pro_fac(self, id_producto_factura, cantidad_productos_comprar):
+        self.id_productos = []
+        self.nombres_productos = []
+        self.precio_productos = []
+        self.cantidad_productos = []
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM inventario WHERE id_producto = %s", (id_producto_factura,))
                 producto_nueva_factura_l = cursor.fetchone()
                 if producto_nueva_factura_l is None:
                     return ("El producto no existe")
+
                 else:
-                    cantidad_productos_comprar = int(input("Ingrese la cantidad: "))
-                    if producto_nueva_factura_l is None:
-                        return ("El producto no existe")
-                    else:
-                        cantidad_disponible = producto_nueva_factura_l[2]
-                        cantidades_correspondientes = [cantidad for cantidad, id_producto_s in zip(self.cantidad_productos, self.id_productos) if id_producto_s == id_producto_factura]
+                    cantidad_disponible = producto_nueva_factura_l[2]
+                    cantidades_correspondientes = [cantidad for cantidad, id_producto_s in zip(self.cantidad_productos, self.id_productos) if id_producto_s == id_producto_factura]
                     if cantidad_disponible >= cantidad_productos_comprar + sum(cantidades_correspondientes):
                         self.id_productos.append(id_producto_factura)
                         self.nombres_productos.append(producto_nueva_factura_l[1])
                         self.precio_productos.append(producto_nueva_factura_l[3])
                         self.cantidad_productos.append(cantidad_productos_comprar)
-                        return ("Producto agregado")
+                        return "Producto agregado", self.id_productos, self.nombres_productos, self.precio_productos, self.cantidad_productos
                     else:
                         return ("No hay suficientes unidades disponibles en el inventario.")
         except psycopg2.Error as e:
             return ("Ocurrió un error al consultar el producto:", e)
 
 
-    def agr_fac_con_ser(self, cliente_cobrar):
-        for id_cita_facturar in self.id_citas_cobrar:
-            print(id_cita_facturar)
-            try:
+    def agr_fac_con_ser(self, pre_productos, nom_productos, caa_productos, id_productos_var, id_citas, cliente_cobrar, nom_servicios, pre_servicios):
+        hora_actual = datetime.now().strftime('%H:%M:%S')
+        try:
                 with conexion.cursor() as cursor:
-                    cursor.execute("SELECT * FROM citas WHERE id_cita = %s", (id_cita_facturar,))
-                    citas_facturar = cursor.fetchall()
-                    for cita_facturar in citas_facturar:
-                        self.id_servicios_cobrar.append(cita_facturar[4])
-
-                        with conexion.cursor() as cursor:
-                            cursor.execute("SELECT * FROM servicios WHERE id_servicios = %s", (cita_facturar[4],))
-                            servicios_facturar = cursor.fetchall()
-                        for servicio_facturar in servicios_facturar:
-                            self.nombres_servicio.append(servicio_facturar[1])
-                            self.precios_servicio.append(servicio_facturar[2])
-
-                with conexion.cursor() as cursor:
-                    for id_producto, cantidad in zip(self.id_productos, self.cantidad_productos):
+                    for id_producto, cantidad in zip(id_productos_var, caa_productos):
                         consulta = "UPDATE inventario SET cantidad = cantidad - %s WHERE id_producto = %s"
                         cursor.execute(consulta, (cantidad, id_producto))
                 conexion.commit()
-                valor_total = sum(precio * cantidad for precio, cantidad in zip(self.precio_productos, self.cantidad_productos)) + sum(self.precios_servicio)
+                valor_total = sum(precio * cantidad for precio, cantidad in zip(pre_productos, caa_productos)) + sum(pre_productos)
                 fecha_creacion = datetime.now().date()
                 try:
                     with conexion.cursor() as cursor:
                         consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion, hora_creacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                        cursor.execute(consulta, (cliente_cobrar, self.nombres_servicio, self.precios_servicio, self.nombres_productos, self.precio_productos,self.cantidad_productos, valor_total, fecha_creacion, self.hora_actual))
+                        cursor.execute(consulta, (cliente_cobrar, nom_servicios,pre_servicios, nom_productos, pre_productos,caa_productos, valor_total, fecha_creacion, hora_actual))
                     conexion.commit()
                     try:
                         with conexion.cursor() as cursor:
-                            for id_cita_facturar in self.id_citas_cobrar:
+                            for id_cita_facturar in id_citas:
                                 consulta = "UPDATE citas SET facturado = %s WHERE id_cita = %s"
                                 cursor.execute(consulta, (True, id_cita_facturar))
                         conexion.commit()
@@ -160,8 +133,8 @@ class Facturas():
                 except psycopg2.Error as e:
                     return ("Ocurrió un error al crear la factura:", e)
                 return ('se creo la factura')
-            except psycopg2.Error as e:
-                return ("Ocurrió un error al consultar los datos de los servicios: ", e)
+        except psycopg2.Error as e:
+            return ("Ocurrió un error al consultar los datos de los servicios: ", e)
 
 
 

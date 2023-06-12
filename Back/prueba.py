@@ -233,3 +233,40 @@ def generar_factura_servicios_productos(self, cliente_cobrar):
         print("La factura se creó correctamente")
     except psycopg2.Error as e:
         print("No encontro el cliente en ninguna tabla: ", e)
+
+
+
+
+
+
+
+    def agr_fac (self, cliente_cobrar):
+        with conexion.cursor() as cursor:
+            for id_producto, cantidad in zip(self.id_productos, self.cantidad_productos):
+                consulta = "UPDATE inventario SET cantidad = cantidad - %s WHERE id_producto = %s"
+                cursor.execute(consulta, (cantidad, id_producto))
+        conexion.commit()
+        valor_total = sum(precio * cantidad for precio, cantidad in zip(self.precio_productos, self.cantidad_productos)) + sum(
+            self.precios_servicio)
+        fecha_creacion = datetime.now().date()
+        try:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO facturas(documento_cliente, nombre_servicio, precio_ser, nombre_producto, precio_producto, cantidad_producto, valor_total, fecha_creacion, hora_creacion ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                cursor.execute(consulta, (cliente_cobrar, self.nombres_servicio, self.precios_servicio, self.nombres_productos, self.precio_productos,self.cantidad_productos, valor_total, fecha_creacion, self.hora_actual))
+            conexion.commit()
+            try:
+                with conexion.cursor() as cursor:
+                    cursor.execute("""SELECT * FROM facturas WHERE id_factura = (SELECT MAX(id_factura) FROM facturas)""")
+                ultimo_dato_insertado = cursor.fetchone()
+                try:
+                    with conexion.cursor() as cursor:
+                        consulta = "INSERT INTO informe_productos(id_factura_pro, nombre_productos, precio_productos, cantidad_productos, valor_total, fecha_factura_pro, estado ) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+                        cursor.execute(consulta, (ultimo_dato_insertado[0], ultimo_dato_insertado[4], ultimo_dato_insertado[5],ultimo_dato_insertado[6], 0, ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
+                    conexion.commit()
+                except psycopg2.Error as e:
+                    return ("Ocurrió un error al crear el informe:", e)
+            except psycopg2.Error as e:
+                return ("Ocurrió un error al obtener la última fila insertada en la tabla facturas:",e)
+            return ('La factura, con debidos informes creado correctamente')
+        except psycopg2.Error as e:
+            return ("Ocurrió un error al crear la factura:", e)
