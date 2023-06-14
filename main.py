@@ -84,7 +84,7 @@ class Login(QtWidgets.QMainWindow):
         self.close()
         self.hide()
         self.trabajador_ins = TrabajadorVentana()
-
+        self.trabajador_ins.recibir_datos(self.usuario_validacion)
         self.trabajador_ins.show()
 
 

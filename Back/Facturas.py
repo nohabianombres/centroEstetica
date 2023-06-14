@@ -54,32 +54,32 @@ class Facturas():
         except psycopg2.Error as e:
             return ("Ocurrió un error al obtener las citas a facturar")
 
-
-
-
     def agr_pro_fac(self, id_producto_factura, cantidad_productos_comprar):
+        print('entre agregar producto')
         self.id_productos = []
         self.nombres_productos = []
         self.precio_productos = []
         self.cantidad_productos = []
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM inventario WHERE id_producto = %s", (id_producto_factura,))
+                cursor.execute("SELECT * FROM inventario WHERE id_producto = " + str(id_producto_factura))
                 producto_nueva_factura_l = cursor.fetchone()
-                if producto_nueva_factura_l is None:
-                    return ("El producto no existe")
-
-                else:
-                    cantidad_disponible = producto_nueva_factura_l[2]
-                    cantidades_correspondientes = [cantidad for cantidad, id_producto_s in zip(self.cantidad_productos, self.id_productos) if id_producto_s == id_producto_factura]
-                    if cantidad_disponible >= cantidad_productos_comprar + sum(cantidades_correspondientes):
-                        self.id_productos.append(id_producto_factura)
-                        self.nombres_productos.append(producto_nueva_factura_l[1])
-                        self.precio_productos.append(producto_nueva_factura_l[3])
-                        self.cantidad_productos.append(cantidad_productos_comprar)
-                        return "Producto agregado", self.id_productos, self.nombres_productos, self.precio_productos, self.cantidad_productos
-                    else:
-                        return ("No hay suficientes unidades disponibles en el inventario.")
+                print(producto_nueva_factura_l)
+            #if producto_nueva_factura_l == None:
+                #return ("El producto no existe")
+            #else:
+            cantidad_disponible = producto_nueva_factura_l[2]
+                # cantidades_correspondientes = [cantidad for cantidad, id_producto_s in zip(self.cantidad_productos, self.id_productos) if id_producto_s == id_producto_factura]
+            if cantidad_disponible >= cantidad_productos_comprar:
+                    # sum(cantidades_correspondientes):
+                    self.id_productos.append(id_producto_factura)
+                    self.nombres_productos.append(producto_nueva_factura_l[1])
+                    self.precio_productos.append(producto_nueva_factura_l[3])
+                    self.cantidad_productos.append(cantidad_productos_comprar)
+                    print('si termine de agregar')
+                    return "Producto agregado", id_producto_factura, producto_nueva_factura_l[1], producto_nueva_factura_l[3], cantidad_productos_comprar
+            else:
+                    return ("No hay suficientes unidades disponibles en el inventario.")
         except psycopg2.Error as e:
             return ("Ocurrió un error al consultar el producto:", e)
 

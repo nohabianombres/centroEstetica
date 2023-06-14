@@ -221,8 +221,6 @@ class emerBuscUsu(QtWidgets.QMainWindow):
         self.datos_usuario = usuario_validar
         self.instancia = Administracion(self.datos_usuario[0], self.datos_usuario[1], self.datos_usuario[2], self.datos_usuario[3], self.datos_usuario[4], self.datos_usuario[5], self.datos_usuario[6], self.datos_usuario[7])
 
-
-
 class emerCanCita(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerCanCita, self).__init__(parent)
@@ -280,30 +278,6 @@ class emerRetorno(QtWidgets.QMainWindow):
     def funcion_ok (self):
         self.close()
 
-class emerCreFac(QtWidgets.QMainWindow):
-
-    def __init__(self, parent=None):
-        super(emerCreFac, self).__init__(parent)
-        uic.loadUi('Front/comunes/emerCreFac.ui', self)
-
-        self.botCreFac.clicked.connect(self.crear_factura_funcion)
-        self.botCanCreFac.clicked.connect(self.cancelar_crear_factura)
-        self.callback = None
-
-    def crear_factura_funcion(self):
-        self.doc_fac_cre = self.LDocCreFac.text()
-        self.hide()
-        self.factura = Facturas()
-        self.retorno_fac_cre = self.factura.generar_factura_servicios_productos(self.doc_fac_cre)
-        if self.callback:
-            self.callback(self.retorno_fac_cre)
-
-    def set_callback(self, callback):
-        self.callback = callback
-
-    def cancelar_crear_factura(self):
-        self.hide()
-        self.close()
 
 class emerPagFacId(QtWidgets.QMainWindow):
 
@@ -411,7 +385,56 @@ class emerPagFacDoc(QtWidgets.QMainWindow):
         self.emer_val_tol.imprimir_retorno_2(retorno, self.retorno_fac_pag[1])
         self.emer_val_tol.show()
 
+class emerAgrProFac(QtWidgets.QMainWindow):
 
+    def __init__(self, parent=None):
+        super(emerAgrProFac, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerAgrProFac.ui', self)
+
+        self.botAgrProFac.clicked.connect(self.agregar_producto_funcion)
+        self.botCanAgrProFac.clicked.connect(self.cancelar_agregar_producto)
+
+    def agregar_producto_funcion(self):
+        self.id_pro_agr_fac = self.LIdProFac.text()
+        self.can_pro_fac = self.LCanProFac.text()
+        self.hide()
+        self.facturas = Facturas()
+        self.retorno_agr_pro = self.facturas.agr_pro_fac(self.id_pro_agr_fac, self.can_pro_fac)
+        if self.callback:
+            self.callback(self.retorno_agr_pro)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_agregar_producto(self):
+        self.hide()
+        self.close()
+
+class emerCreFac(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(emerCreFac, self).__init__(parent)
+        uic.loadUi('Front/comunes/emerCreFac.ui', self)
+
+        self.botCreFac.clicked.connect(self.crear_factura_funcion)
+        self.botCanCreFac.clicked.connect(self.cancelar_crear_factura)
+        self.callback = None
+
+    def crear_factura_funcion(self):
+        self.doc_fac_cre = self.LDocCreFac.text()
+        self.hide()
+        self.factura = Facturas()
+        self.retorno_fac_cre = self.factura.generar_factura_servicios_productos(self.doc_fac_cre)
+        print(self.retorno_fac_cre)
+        if self.callback:
+            self.callback(self.retorno_fac_cre)
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def cancelar_crear_factura(self):
+        self.hide()
+        self.close()
 
 
 '''

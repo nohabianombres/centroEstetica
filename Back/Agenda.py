@@ -79,7 +79,6 @@ class Agendas():
                                                     var_control = False
                                                 else:
                                                     print("ALGO FALLO")
-
                                     except psycopg2.Error as e:
                                         print('me quivoque fue en citas')
                                 else:
@@ -93,17 +92,15 @@ class Agendas():
                 try:
                     with conexion.cursor() as cursor:
                         consulta = "INSERT INTO citas (hora, fecha, documento_fk, servicio_fk, trabajador, hora_aproximada_fin) VALUES (%s, %s, %s, %s, %s, %s);"
-                        cursor.execute(consulta,
-                                       (in_hora, in_fecha, in_documento, in_servicio, in_trabajador, hora_fin_promedio))
+                        cursor.execute(consulta,(in_hora, in_fecha, in_documento, in_servicio, in_trabajador, hora_fin_promedio))
                         conexion.commit()
                         return ("Cita creada")
                 except psycopg2.Error as e:
-                    print("Ocurrio un error : ", e)
+                    return ("Ocurrio un error : ", e)
             else:
                 return ("Algo paso, revisa todos los datos")
         except psycopg2.Error as e:
             print("Ocurrio un error al consultar el cliente: ", e)
-            var_control = False
 
 
 
@@ -130,11 +127,10 @@ class Agendas():
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM citas WHERE documento_fk=%s AND hora_inicio IS NULL ",(cliente_cancelar, ))
             citas = cursor.fetchall()
-            for cita in citas:
-                if cita:
-                    return (citas)
-                else:
-                    return ("Cliente no tiene citas")
+            if citas:
+                return citas
+            else:
+                return ("Cliente no tiene citas")
         except psycopg2.Error as e:
             return ("Ocurrio un error al consultar: ", e)
 
