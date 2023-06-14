@@ -1003,6 +1003,51 @@ Cliente</string>
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
+    <widget class="QTableWidget" name="TabClientes">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>100</y>
+       <width>711</width>
+       <height>531</height>
+      </rect>
+     </property>
+     <column>
+      <property name="text">
+       <string>Documento</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Nombre</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Apellido</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Teléfono</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Correo</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string># Faltas</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Estado</string>
+      </property>
+     </column>
+    </widget>
    </widget>
    <widget class="QTextEdit" name="Nombre_usuario">
     <property name="geometry">

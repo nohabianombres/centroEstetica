@@ -1003,6 +1003,66 @@
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
+    <widget class="QTableWidget" name="TabAgenda">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>90</y>
+       <width>921</width>
+       <height>571</height>
+      </rect>
+     </property>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Hora</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Documento</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Servicio</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Trabajador</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Facturado</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Hora maxima fin</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Hora de inicio</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Hora de fin</string>
+      </property>
+     </column>
+    </widget>
    </widget>
    <widget class="QTextEdit" name="Nombre_usuario">
     <property name="geometry">

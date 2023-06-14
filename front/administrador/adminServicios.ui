@@ -139,34 +139,6 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QPushButton" name="boton">
-    <property name="geometry">
-     <rect>
-      <x>1080</x>
-      <y>660</y>
-      <width>150</width>
-      <height>45</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Entrar</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>../../Downloads/uco/POO/entornoVirtual/_92127008_thinkstockphotos-615094882.jpg</normaloff>../../Downloads/uco/POO/entornoVirtual/_92127008_thinkstockphotos-615094882.jpg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>35</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
    <widget class="QLabel" name="Title">
     <property name="geometry">
      <rect>
@@ -210,42 +182,6 @@ border-top-color: rgb(104, 168, 182);
 border-color: rgb(104, 168, 182);</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="varB">
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>520</y>
-      <width>451</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="echoMode">
-     <enum>QLineEdit::Password</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>510</y>
-      <width>211</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Contraseña</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
@@ -262,34 +198,6 @@ border-color: rgb(104, 168, 182);</string>
     </property>
     <property name="text">
      <string>Usuario</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="cerrarPrograma">
-    <property name="geometry">
-     <rect>
-      <x>840</x>
-      <y>660</y>
-      <width>150</width>
-      <height>45</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Cerrar</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>../../Downloads/uco/POO/entornoVirtual/_92127008_thinkstockphotos-615094882.jpg</normaloff>../../Downloads/uco/POO/entornoVirtual/_92127008_thinkstockphotos-615094882.jpg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>35</width>
-      <height>30</height>
-     </size>
     </property>
    </widget>
    <widget class="QTextEdit" name="Documento">
@@ -1875,16 +1783,6 @@ border-color: rgb(104, 168, 182);</string>
      </size>
     </property>
    </widget>
-   <widget class="QTableView" name="tableView">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>150</y>
-      <width>841</width>
-      <height>811</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
@@ -2929,16 +2827,42 @@ border-color: rgb(255, 255, 255);</string>
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
+    <widget class="QTableWidget" name="TabServicios">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>80</y>
+       <width>421</width>
+       <height>571</height>
+      </rect>
+     </property>
+     <column>
+      <property name="text">
+       <string>IdServicios</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Nombre</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Precio</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Promedio</string>
+      </property>
+     </column>
+    </widget>
    </widget>
    <zorder>frame_2</zorder>
    <zorder>botInvAdm</zorder>
-   <zorder>boton</zorder>
    <zorder>Title</zorder>
    <zorder>Nombre_usuario</zorder>
-   <zorder>varB</zorder>
-   <zorder>label_2</zorder>
    <zorder>label_3</zorder>
-   <zorder>cerrarPrograma</zorder>
    <zorder>Documento</zorder>
    <zorder>botSerAdm</zorder>
    <zorder>botFacAdm</zorder>
@@ -2947,7 +2871,6 @@ border-color: rgb(255, 255, 255);</string>
    <zorder>botAgeAdm</zorder>
    <zorder>botInfAdm</zorder>
    <zorder>botUsuAdm</zorder>
-   <zorder>tableView</zorder>
    <zorder>frame</zorder>
   </widget>
  </widget>

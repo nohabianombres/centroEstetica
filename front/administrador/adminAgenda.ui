@@ -200,24 +200,6 @@ border-color: rgb(104, 168, 182);</string>
      <string>Contraseña</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>410</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Usuario</string>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="Documento">
     <property name="geometry">
      <rect>
@@ -2642,10 +2624,10 @@ border-color: rgb(255, 255, 255);</string>
     <widget class="QTableWidget" name="TabAgenda">
      <property name="geometry">
       <rect>
-       <x>-80</x>
-       <y>90</y>
-       <width>1071</width>
-       <height>811</height>
+       <x>10</x>
+       <y>80</y>
+       <width>991</width>
+       <height>791</height>
       </rect>
      </property>
      <column>
@@ -2705,7 +2687,6 @@ border-color: rgb(255, 255, 255);</string>
    <zorder>Title</zorder>
    <zorder>Nombre_usuario</zorder>
    <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
    <zorder>Documento</zorder>
    <zorder>botSerAdm</zorder>
    <zorder>botFacAdm</zorder>

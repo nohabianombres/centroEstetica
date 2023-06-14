@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1360</width>
-    <height>730</height>
+    <height>731</height>
    </rect>
   </property>
   <property name="palette">
@@ -2821,7 +2821,7 @@ producto</string>
      </property>
      <column>
       <property name="text">
-       <string>Id producto</string>
+       <string>IdProducto</string>
       </property>
      </column>
      <column>
