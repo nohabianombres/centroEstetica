@@ -198,7 +198,6 @@ class emerAgrSer(QtWidgets.QMainWindow):
         self.hide()
         self.close()
 
-
 class emerBusInfPro(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(emerBusInfPro, self).__init__(parent)
@@ -208,20 +207,54 @@ class emerBusInfPro(QtWidgets.QMainWindow):
         self.botCanBusInf.clicked.connect(self.cancelar_buscar_informe_pro)
 
     def buscar_informe_pro(self):
+        print('llegue a buscar informe productos')
         self.dia_bus_inf = self.LNumDiaInf.text()
         self.hide()
-        self.informe = Informe()
-        self.retorno_bus_inf = self.informe.informe_productos(self.dia_bus_inf)
-        if self.callback:
-            self.callback(self.retorno_bus_inf)
-
-    def set_callback(self, callback):
-        self.callback = callback
+        self.mostrar_informe(self.dia_bus_inf)
 
     def cancelar_buscar_informe_pro(self):
         self.hide()
         self.close()
 
+    def mostrar_informe (self, dias):
+        self.mosPro = emerProductos()
+        self.mosPro.buscar_informe_pro(dias)
+        self.mosPro.show()
+
+
+class emerProductos(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(emerProductos, self).__init__(parent)
+        uic.loadUi('Front/administrador/emeAdm/emerProductos.ui', self)
+
+    def buscar_informe_pro(self, dias):
+        print('llegue a inf_des')
+        self.informe = Informe()
+        self.retorno_bus_inf = self.informe.informe_productos(dias)
+        print(self.retorno_bus_inf)
+
+        self.imprimir_tabla_pro(self.retorno_bus_inf)
+
+    def imprimir_tabla_pro(self, listas):
+        self.TabProductos.clearContents()
+        print(listas)
+        self.TabProductos.show()
+        if listas != None:
+            fila = 0
+            self.TabProductos.setRowCount(len(listas))
+            for elementos in listas:
+                print(elementos)
+                self.TabProductos.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(elementos[0])))
+                self.TabProductos.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(elementos[1])))
+                self.TabProductos.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(elementos[2])))
+                self.TabProductos.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(elementos[3])))
+                self.TabProductos.setItem(fila, 4, QtWidgets.QTableWidgetItem(str(elementos[4])))
+                self.TabProductos.setItem(fila, 5, QtWidgets.QTableWidgetItem(str(elementos[5])))
+                self.TabProductos.setItem(fila, 6, QtWidgets.QTableWidgetItem(str(elementos[6])))
+                self.TabProductos.setItem(fila, 7, QtWidgets.QTableWidgetItem(str(elementos[7])))
+                fila = fila + 1
+        else:
+            print('no encontre')
 
 class emerBusInfSer(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -232,16 +265,83 @@ class emerBusInfSer(QtWidgets.QMainWindow):
         self.botCanBusInf.clicked.connect(self.cancelar_buscar_informe_ser)
 
     def buscar_informe_ser(self):
+        print('llegue a buscar informe productos')
         self.dia_bus_inf = self.LNumDiaInf.text()
         self.hide()
-        self.informe = Informe()
-        self.retorno_bus_inf = self.informe.informe_servicios(self.dia_bus_inf)
-        if self.callback:
-            self.callback(self.retorno_bus_inf)
-
-    def set_callback(self, callback):
-        self.callback = callback
+        self.mostrar_informe(self.dia_bus_inf)
 
     def cancelar_buscar_informe_ser(self):
         self.hide()
         self.close()
+
+    def mostrar_informe (self, dias):
+        self.mosPro = emerServicios()
+        self.mosPro.buscar_informe_ser(dias)
+        self.mosPro.show()
+
+class emerServicios(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(emerServicios, self).__init__(parent)
+        uic.loadUi('Front/administrador/emeAdm/emerServicios.ui', self)
+
+    def buscar_informe_ser(self, dias):
+        self.informe = Informe()
+        self.retorno_bus_inf = self.informe.informe_servicios(dias)
+        print(self.retorno_bus_inf)
+
+        self.imprimir_tabla_ser(self.retorno_bus_inf)
+
+    def imprimir_tabla_ser(self, listas):
+        self.TabServicios.clearContents()
+        print(listas)
+        self.TabServicios.show()
+        if listas != None:
+            fila = 0
+            self.TabServicios.setRowCount(len(listas))
+            for elementos in listas:
+                print(elementos)
+                self.TabServicios.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(elementos[0])))
+                self.TabServicios.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(elementos[1])))
+                self.TabServicios.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(elementos[2])))
+                self.TabServicios.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(elementos[3])))
+                self.TabServicios.setItem(fila, 4, QtWidgets.QTableWidgetItem(str(elementos[4])))
+                self.TabServicios.setItem(fila, 5, QtWidgets.QTableWidgetItem(str(elementos[5])))
+                self.TabServicios.setItem(fila, 6, QtWidgets.QTableWidgetItem(str(elementos[6])))
+
+                fila = fila + 1
+        else:
+            print('no encontre')
+
+class emerDesempeno(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(emerDesempeno, self).__init__(parent)
+        uic.loadUi('Front/administrador/emeAdm/emerDesem.ui', self)
+
+        self.botAct.clicked.connect(self.buscar_informe_des)
+
+    def buscar_informe_des(self):
+        print('llegue a inf_des')
+        self.informe = Informe()
+        self.retorno_bus_inf = self.informe.mostrar_desempeno()
+        print(self.retorno_bus_inf)
+
+        self.imprimir_tabla_des(self.retorno_bus_inf)
+
+    def imprimir_tabla_des(self, listas):
+        self.TabDesempeno.clearContents()
+        print(listas)
+        self.TabDesempeno.show()
+        if listas != None:
+            fila = 0
+            self.TabDesempeno.setRowCount(len(listas))
+            for elementos in listas:
+                print(elementos)
+                self.TabDesempeno.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(elementos[0])))
+                self.TabDesempeno.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(elementos[1])))
+                self.TabDesempeno.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(elementos[2])))
+                self.TabDesempeno.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(elementos[3])))
+                self.TabDesempeno.setItem(fila, 4, QtWidgets.QTableWidgetItem(str(elementos[4])))
+                self.TabDesempeno.setItem(fila, 5, QtWidgets.QTableWidgetItem(str(elementos[5])))
+                fila = fila + 1
+        else:
+            print('no encontre')
