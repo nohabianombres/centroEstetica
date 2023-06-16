@@ -7,7 +7,6 @@ conexion= basedatos.conectar()
 
 
 class Informe():
-
     def informe_productos(self, numero_dias):
         print('entre a informe prodcutos')
         '''numero_dias = int(input('Ingrese la cantidad de dias desde la cual quiere que traiga las facturas: '))'''

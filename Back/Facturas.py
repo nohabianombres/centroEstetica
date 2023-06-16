@@ -127,14 +127,15 @@ class Facturas():
                                 ultimo_dato_insertado = cursor.fetchone()
                             try:
                                 print("5")
+                                print(sum(ultimo_dato_insertado[3]))
                                 with conexion.cursor() as cursor:
                                     consulta = "INSERT INTO informe_servicios(id_factura_ser, nombre_servicio, precio_servicio, valor_total, fecha_factura_ser, estado ) VALUES (%s, %s, %s, %s, %s, %s);"
                                     cursor.execute(consulta, (ultimo_dato_insertado[0], ultimo_dato_insertado[2], ultimo_dato_insertado[3],sum(ultimo_dato_insertado[3]), ultimo_dato_insertado[9], ultimo_dato_insertado[8]))
                                 conexion.commit()
                                 try:
                                     print("6")
-                                    valor_total_productos = sum(
-                                        x * y for x, y in zip(ultimo_dato_insertado[5], ultimo_dato_insertado[6]))
+                                    valor_total_productos = sum(x * y for x, y in zip(ultimo_dato_insertado[5], ultimo_dato_insertado[6]))
+                                    print(valor_total_productos)
                                     with conexion.cursor() as cursor:
                                         consulta = "INSERT INTO informe_productos(id_factura_pro, nombre_productos, precio_productos, cantidad_productos, valor_total, fecha_factura_pro, estado ) VALUES (%s, %s, %s, %s, %s, %s, %s);"
                                         cursor.execute(consulta, (ultimo_dato_insertado[0], ultimo_dato_insertado[4],ultimo_dato_insertado[5],ultimo_dato_insertado[6], valor_total_productos, ultimo_dato_insertado[9],ultimo_dato_insertado[8]))

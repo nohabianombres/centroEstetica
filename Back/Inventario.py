@@ -13,6 +13,7 @@ class Inventario():
                 cursor.execute("SELECT * FROM inventario WHERE id_producto=" + str(producto_a_buscar))
                 producto = cursor.fetchone()
                 if producto:
+                    print(producto)
                     return producto
                 else:
                     return "Producto no encontrado"

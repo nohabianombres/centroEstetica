@@ -42,6 +42,19 @@ class Recepcion(Usuarios):
         except psycopg2.Error as e:
             return "Ocurrio un error al consultar: "
 
+    def verificar_usuario(self, usuario_a_buscar):
+        '''usuario_a_buscar = input("Ingrese el usuario")'''
+        try:
+            with conexion.cursor() as cursor:
+                cursor.execute("SELECT * FROM usuario WHERE documento=" + str(usuario_a_buscar))
+                usuario = cursor.fetchone()
+                if usuario:
+                    return (usuario)
+                else:
+                    return ("Usuario no encontrado")
+        except psycopg2.Error as e:
+            return ("Ocurrio un error al consultar: ", e)
+
 class Trabajadores(Usuarios):
 
     def consultar_agenda_personal(self):
@@ -155,7 +168,7 @@ class Administracion(Usuarios):
         '''usuario_a_buscar = input("Ingrese el usuario")'''
         try:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT * FROM usuario WHERE docuemnto=" + str(usuario_a_buscar))
+                cursor.execute("SELECT * FROM usuario WHERE documento=" + str(usuario_a_buscar))
                 usuario = cursor.fetchone()
                 if usuario:
                     return (usuario)
