@@ -2,8 +2,9 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 import sys
 from Front.cajero import *
-from Front.comunes.emerComunes import emerRetorno, emerBuscPro, emerAgrCli, emerBusFac, emerCreFac, emerPagFacId, emerPagFacDoc, emerBuscClien, emerAdiFal
+from Front.comunes.emerComunes import emerRetorno, emerBuscPro, emerAgrCli, emerBusFac, emerCreFac, emerPagFacId, emerPagFacDoc, emerBuscClien, emerAdiFal,emerAgrProFac
 from Back.Inventario import Inventario
+from Back.Facturas import Facturas
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
 
@@ -53,12 +54,13 @@ class CajeroFacturacion(QtWidgets.QMainWindow):
         self.botCliCaj.clicked.connect(self.open_view_caj_fac)
         self.botFacCaj.clicked.connect(self.open_view_caj_fac)
         self.botInvCaj.clicked.connect(self.open_view_caj_fac)
+        self.botCerCaj.clicked.connect(self.cerrar_sesion)
 
         self.botBusFacDoc.clicked.connect(self.open_view_eme_BusFac)
         self.botPagId.clicked.connect(self.open_view_eme_PagFacId)
         self.botPagDoc.clicked.connect(self.open_view_eme_PagFacDoc)
         self.botCreFac.clicked.connect(self.open_view_eme_CreFac)
-        self.botCerCaj.clicked.connect(self.cerrar_sesion)
+
 
         self.cajInventavio = None
         self.cajFactu = None
@@ -83,8 +85,8 @@ class CajeroFacturacion(QtWidgets.QMainWindow):
             self.cajClien.show()
 
     def open_view_eme_CreFac(self):
-        self.CreFac = emerCreFac ()
-        self.CreFac.set_callback(self.crear_ventana)
+        self.CreFac = emerCreFac()
+        self.CreFac.set_callback(self.proceso_factura)
         self.CreFac.show()
 
     def open_view_eme_PagFacId(self):
@@ -98,23 +100,163 @@ class CajeroFacturacion(QtWidgets.QMainWindow):
         self.PagFacDoc.show()
 
     def open_view_eme_BusFac(self):
-        self.BusFac = emerBusFac ()
+        self.BusFac = emerBusFac()
         self.BusFac.set_callback(self.imprimir_tablas)
         self.BusFac.show()
+
+    def imprimir_tablas(self, listas):
+        self.TabFacturas.clearContents()
+        print(listas)
+        self.TabFacturas.show()
+        if listas != None:
+            fila = 0
+            self.TabFacturas.setRowCount(len(listas))
+            for elementos in listas:
+                print(elementos)
+                self.TabFacturas.setItem(fila, 0, QtWidgets.QTableWidgetItem((str(elementos[0]))))
+                self.TabFacturas.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(elementos[1].strftime("%H:%M"))))
+                self.TabFacturas.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(elementos[2].strftime("%Y-%m-%d"))))
+                self.TabFacturas.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(elementos[3])))
+                self.TabFacturas.setItem(fila, 4, QtWidgets.QTableWidgetItem(str(elementos[4])))
+                self.TabFacturas.setItem(fila, 5, QtWidgets.QTableWidgetItem(str(elementos[5])))
+                self.TabFacturas.setItem(fila, 6, QtWidgets.QTableWidgetItem(str(elementos[6])))
+                self.TabFacturas.setItem(fila, 7, QtWidgets.QTableWidgetItem(str(elementos[7])))
+                self.TabFacturas.setItem(fila, 8, QtWidgets.QTableWidgetItem(str(elementos[8])))
+                self.TabFacturas.setItem(fila, 9, QtWidgets.QTableWidgetItem(str(elementos[9])))
+                self.TabFacturas.setItem(fila, 10, QtWidgets.QTableWidgetItem(str(elementos[10].strftime("%Y-%m-%d"))))
+                self.TabFacturas.setItem(fila, 11, QtWidgets.QTableWidgetItem(str(elementos[11].strftime("%H:%M"))))
+                fila = fila + 1
+        else:
+            print('no encontre')
 
     def crear_ventana(self, retorno):
         self.emer_retorno = emerRetorno()
         self.emer_retorno.imprimir_retorno(retorno)
         self.emer_retorno.show()
 
-    def imprimir_tablas (self,listas):
-        pass
-
-    def recibir_datos (self, usuario_validar):
+    def recibir_datos(self, usuario_validar):
         self.datos_usuario = usuario_validar
+
+    def proceso_factura(self, datos):
+        self.cliente_cobrar = datos[0]
+        self.id_citas_cobrar = datos[1]
+        self.nombres_servicio = datos[2]
+        self.precios_servicio = datos[3]
+        print('llegue a proceso factura')
+        self.hide()
+        self.facProceso = AdminProcesoFactura()
+        self.facProceso.recibir_datos(self.datos_usuario, self.cliente_cobrar, self.id_citas_cobrar,
+                                      self.nombres_servicio, self.precios_servicio)
+        self.facProceso.show()
 
     def cerrar_sesion(self):
         quit()
+
+
+class AdminProcesoFactura(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(AdminProcesoFactura, self).__init__(parent)
+        uic.loadUi('Front/cajero/cajeroFacturacionAgregarPro.ui', self)
+
+
+        self.botCliCaj.clicked.connect(self.open_view_caj_fac)
+        self.botFacCaj.clicked.connect(self.open_view_caj_fac)
+        self.botInvCaj.clicked.connect(self.open_view_caj_fac)
+        self.botCerCaj.clicked.connect(self.cerrar_sesion)
+
+        self.botAgrProFac.clicked.connect(self.agregar_producto_factura)
+        self.botCreFac.clicked.connect(self.generar_factura)
+        self.botCerAdm.clicked.connect(self.cerrar_sesion)
+
+        self.cajInventavio = None
+        self.cajFactu = None
+
+    def open_view_caj_fac(self):
+        sender_button_Caj_fac = self.sender()
+
+        if sender_button_Caj_fac == self.botInvCaj:
+            self.hide()
+            self.cajInventavio = CajeroInventario()
+            self.cajInventavio.recibir_datos(self.datos_usuario)
+            self.cajInventavio.show()
+        elif sender_button_Caj_fac == self.botFacCaj:
+            self.hide()
+            self.cajFactu = CajeroFacturacion()
+            self.cajFactu.recibir_datos(self.datos_usuario)
+            self.cajFactu.show()
+        elif sender_button_Caj_fac == self.botCliCaj:
+            self.hide()
+            self.cajClien = CajeroClientes()
+            self.cajClien.recibir_datos(self.datos_usuario)
+            self.cajClien.show()
+
+    def recibir_datos(self, usuario_validar, cliente_cobrar, id_citas_cobrar, nombres_servicio, precios_servicio):
+        self.datos_usuario = usuario_validar
+        self.cliente_facturar = cliente_cobrar
+        self.id_citas = id_citas_cobrar
+        self.nom_ser = nombres_servicio
+        self.pre_ser = precios_servicio
+        self.imprimir_tabla_ser(cliente_cobrar, id_citas_cobrar, nombres_servicio, precios_servicio)
+        self.fila = 0
+
+    def imprimir_tabla_ser (self, cliente_cobrar, id_citas_cobrar, nombres_servicio, precios_servicio ):
+        self.TabServicios.clearContents()
+        self.TabServicios.show()
+        if cliente_cobrar != None:
+            fila = 0
+            self.TabServicios.setRowCount(len(nombres_servicio))
+            for citas, nombres, precios in zip(id_citas_cobrar, nombres_servicio, precios_servicio):
+                self.TabServicios.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(cliente_cobrar)))
+                self.TabServicios.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(nombres)))
+                self.TabServicios.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(precios)))
+                fila = fila + 1
+        else:
+            print('no encontre')
+
+
+    def imprimir_tabla_pro(self, datos):
+
+        self.TabInventario.clearContents()
+        self.pres_pro = []
+        self.pres_pro.append(datos[3])
+        self.noms_pro = []
+        self.noms_pro.append(datos[2])
+        self.cans_pro = []
+        self.cans_pro.append(datos[4])
+        self.ids_pro = []
+        self.ids_pro.append(datos[1])
+        self.fila = 0
+        self.TabInventario.setRowCount(len(self.ids_pro))
+        for id, nombre, precio, cantidad  in zip(self.ids_pro, self.noms_pro, self.pres_pro, self.cans_pro):
+            self.TabInventario.setItem(self.fila, 0, QtWidgets.QTableWidgetItem(str(id)))
+            self.TabInventario.setItem(self.fila, 1, QtWidgets.QTableWidgetItem(str(nombre)))
+            self.TabInventario.setItem(self.fila, 2, QtWidgets.QTableWidgetItem(str(precio)))
+            self.TabInventario.setItem(self.fila, 3, QtWidgets.QTableWidgetItem(str(cantidad)))
+            self.fila = self.fila + 1
+        else:
+            print('no encontre')
+
+    def agregar_producto_factura (self):
+        self.agr_pro_fac = emerAgrProFac()
+        self.agr_pro_fac.set_callback(self.imprimir_tabla_pro)
+        self.agr_pro_fac.show()
+
+
+    def generar_factura (self):
+        self.ids_pro = []
+        self.facturas = Facturas()
+        self.retorno_creacion = self.facturas.agr_fac_con_ser(self.pres_pro, self.noms_pro, self.cans_pro, self.id_pro, self.id_citas, self.cliente_facturar, self.nom_ser, self.pre_ser)
+        self.crear_ventana(self.retorno_creacion)
+
+    def crear_ventana(self, retorno):
+        self.emer_retorno = emerRetorno()
+        self.emer_retorno.imprimir_retorno(retorno)
+        self.emer_retorno.show()
+
+    def cerrar_sesion(self):
+        quit()
+
 
 class CajeroInventario(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -153,20 +295,36 @@ class CajeroInventario(QtWidgets.QMainWindow):
 
     def open_view_eme_BusPro(self):
         self.BusPro = emerBuscPro()
-        self.BusPro.set_callback(self.imprimir_tabla_filas)
+        self.BusPro.set_callback(self.imprimir_tabla)
         self.BusPro.show()
 
     def open_view_eme_MosTodPro(self):
         self.inventario = Inventario()
-        self.ret_inv = self.inventario.consultar_inverntario()
-        self.imprimir_tabla(self.ret_inv)
+        inv_comp = self.inventario.consultar_inverntario()
+        self.imprimir_tabla_filas(inv_comp)
 
     def crear_ventana(self, retorno):
         self.emer_retorno = emerRetorno()
         self.emer_retorno.imprimir_retorno(retorno)
         self.emer_retorno.show()
 
+    def imprimir_tabla(self, lista):
+        self.TabInventario.clearContents()
+        print(lista)
+        self.TabInventario.show()
+        self.TabInventario.setRowCount(1)
+        if lista != None:
+            fila = 0
+            self.TabInventario.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(lista[0])))
+            self.TabInventario.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(lista[1])))
+            self.TabInventario.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(lista[2])))
+            self.TabInventario.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(lista[3])))
+
+        else:
+            print('no encontre')
+
     def imprimir_tabla_filas(self, listas):
+        print(listas)
         self.TabInventario.clearContents()
         print(listas)
         self.TabInventario.show()
@@ -182,20 +340,6 @@ class CajeroInventario(QtWidgets.QMainWindow):
                 fila = fila + 1
         else:
             print('no encontre')
-
-    def imprimir_tabla(self, lista):
-        self.TabInventario.clearContents()
-        self.TabInventario.show()
-        if lista != None:
-            fila = 0
-            self.TabInventario.setRowCount(len(lista))
-            self.TabInventario.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(lista[0])))
-            self.TabInventario.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(lista[1])))
-            self.TabInventario.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(lista[2])))
-            self.TabInventario.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(lista[3])))
-        else:
-            print('no encontre')
-
 
     def recibir_datos(self, usuario_validar):
         self.datos_usuario = usuario_validar

@@ -316,7 +316,7 @@
       <string>Facturación</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="botCanDia">
+    <widget class="QPushButton" name="botCreFac">
      <property name="geometry">
       <rect>
        <x>790</x>

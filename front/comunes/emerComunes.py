@@ -206,9 +206,10 @@ class emerBuscUsu(QtWidgets.QMainWindow):
     def buscar_usuario_funcion(self):
         self.id_usu = self.LUsuBus.text()
         self.hide()
-        self.retorno_cam_con = self.instancia.verificar_usuario(self.id_usu)
+        self.retorno_bus_usu = self.instancia.verificar_usuario(self.id_usu)
+        print(self.retorno_bus_usu)
         if self.callback:
-            self.callback(self.retorno_cam_con)
+            self.callback(self.retorno_bus_usu)
 
     def set_callback(self, callback):
         self.callback = callback
@@ -254,6 +255,7 @@ class emerCanCitaId(QtWidgets.QMainWindow):
     def cancelar_cita_funcion(self):
         self.id_cit_can = self.LIdCanCit.text()
         self.agenda = Agendas()
+        self.hide()
         self.retorno_can_cit = self.agenda.cancelar_cita_exacta(self.id_cit_can)
         if self.callback:
             self.callback(self.retorno_can_cit)
@@ -277,7 +279,6 @@ class emerRetorno(QtWidgets.QMainWindow):
 
     def funcion_ok (self):
         self.close()
-
 
 class emerPagFacId(QtWidgets.QMainWindow):
 
@@ -341,7 +342,7 @@ class emerValTot(QtWidgets.QMainWindow):
         print('llegue a imprimir_retorno_2')
         print(retorno_emer)
         print(variable_ok)
-        self.LValTot.setText(variable_ok)
+        self.LValTot.setText(str(retorno_emer))
         self.documento = variable_ok
 
     def funcion_ok (self):

@@ -206,10 +206,7 @@ class Facturas():
         try:
             with conexion.cursor() as cursor:
                 cursor.execute("SELECT * FROM facturas WHERE documento_cliente = %s AND pagado = %s", (cliente_buscar, False))
-                facturas_credito = cursor.fetchall()
-                print('Las facturas que debe en este momento son las siguientes: ')
-            for factura_credito in facturas_credito:
-                print(factura_credito)
+            facturas_credito = cursor.fetchall()
             return facturas_credito
 
         except psycopg2.Error as e:
@@ -226,7 +223,7 @@ class Facturas():
                     consulta = "UPDATE informe_servicios SET estado = %s WHERE id_factura_ser = %s"
                     cursor.execute(consulta, (True, id_factura))
             conexion.commit()
-            print('Se efectuo el pago de las facturas')
+            return ('Se efectuo el pago de las facturas')
         except psycopg2.Error as e:
-            print("Ocurrió un error al pagar: ", e)
+            return ("Ocurrió un error al pagar: ", e)
         pass

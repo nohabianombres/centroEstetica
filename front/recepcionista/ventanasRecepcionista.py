@@ -184,6 +184,8 @@ class RecepcionistaAgenda(QtWidgets.QMainWindow):
             self.recClientes.recibir_datos(self.datos_usuario)
             self.recClientes.show()
 
+
+
     def open_view_eme_AgrCit(self):
         self.AgrCit = emerAgrCita()
         self.AgrCit.set_callback(self.crear_ventana)
@@ -194,11 +196,9 @@ class RecepcionistaAgenda(QtWidgets.QMainWindow):
         self.BusCit.set_callback(self.imprimir_tabla_filas)
         self.BusCit.show()
 
-
     def open_view_eme_CanCita(self):
-        self.CanCita = emerCanCita()
-        self.CanCita.set_callback(self.imprimir_tabla_filas)
-        self.CanCita.set_callback(self.open_view_emerIdCitCan)
+        self.CanCita = emerCanCitaId()
+        self.CanCita.set_callback(self.crear_ventana)
         self.CanCita.show()
 
     def imprimir_tabla_filas(self, listas):
@@ -221,23 +221,27 @@ class RecepcionistaAgenda(QtWidgets.QMainWindow):
                 self.TabAgenda.setItem(fila, 8, QtWidgets.QTableWidgetItem(str(elementos[8])))
                 self.TabAgenda.setItem(fila, 9, QtWidgets.QTableWidgetItem(str(elementos[9])))
                 fila = fila + 1
+            return listas
         else:
             print('no encontre')
+
+
 
     def crear_ventana(self, retorno):
         self.emer_retorno = emerRetorno()
         self.emer_retorno.imprimir_retorno(retorno)
         self.emer_retorno.show()
 
-    def open_view_emerIdCitCan(self, a):
-        self.IdCitCan = emerCanCitaId()
+    def open_view_emerIdCitCan(self,a):
+        self.CanCita.hide()
+        self.IdCitCan = emerCanCitaId ()
         self.IdCitCan.set_callback(self.crear_ventana)
         self.IdCitCan.show()
 
-    def recibir_datos(self, usuario_validar):
+    def recibir_datos (self, usuario_validar):
         self.datos_usuario = usuario_validar
 
-    def cerrar_sesion(self):
+    def cerrar_sesion (self):
         quit()
 
 
@@ -348,6 +352,7 @@ class RecepcionistaUsuarios(QtWidgets.QMainWindow):
         self.botUsuRec.clicked.connect(self.open_view_rec_usu)
         self.botBusUsu.clicked.connect(self.open_view_emer_bus_usu)
         self.botCerRec.clicked.connect(self.cerrar_sesion)
+        self.botMosTod.clicked.connect(self.open_view_MosTod)
 
         self.recServicios = None
         self.recAgenda = None

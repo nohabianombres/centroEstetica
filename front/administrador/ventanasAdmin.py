@@ -153,9 +153,9 @@ class AdminInventario(QtWidgets.QMainWindow):
         self.BusPro.show()
 
     def open_view_eme_MosTodPro(self):
-        self.inventario = Inventario ()
+        self.inventario = Inventario()
         inv_comp = self.inventario.consultar_inverntario()
-        self.imprimir_tablas_filas(inv_comp)
+        self.imprimir_tabla_filas(inv_comp)
 
     def open_view_eme_ModProPre(self):
         self.ModProPre = emerModProPre()
@@ -174,7 +174,9 @@ class AdminInventario(QtWidgets.QMainWindow):
 
     def imprimir_tabla(self, lista):
         self.TabInventario.clearContents()
+        print(lista)
         self.TabInventario.show()
+        self.TabInventario.setRowCount(1)
         if lista != None:
             fila = 0
             self.TabInventario.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(lista[0])))
@@ -186,6 +188,7 @@ class AdminInventario(QtWidgets.QMainWindow):
             print('no encontre')
 
     def imprimir_tabla_filas(self, listas):
+        print(listas)
         self.TabInventario.clearContents()
         print(listas)
         self.TabInventario.show()
@@ -409,10 +412,8 @@ class AdminAgenda(QtWidgets.QMainWindow):
         self.BusCit.show()
 
     def open_view_eme_CanCita(self):
-        self.CanCita = emerCanCita()
-        self.citas = self.CanCita.set_callback(self.imprimir_tabla_filas)
-        if self.citas:
-            self.open_view_emerIdCitCan(self.citas)
+        self.CanCita = emerCanCitaId()
+        self.CanCita.set_callback(self.crear_ventana)
         self.CanCita.show()
 
     def imprimir_tabla_filas(self, listas):
@@ -647,7 +648,7 @@ class AdminFacturacion(QtWidgets.QMainWindow):
         self.PagFacDoc.show()
 
     def open_view_eme_BusFac(self):
-        self.BusFac = emerBusFac ()
+        self.BusFac = emerBusFac()
         self.BusFac.set_callback(self.imprimir_tablas)
         self.BusFac.show()
 
@@ -824,9 +825,8 @@ class AdminUsuarios(QtWidgets.QMainWindow):
         self.botFacAdm.clicked.connect(self.open_view_9)
 
         self.botAgrUsu.clicked.connect(self.open_view_emer_cre_usu)
-        self.botBusUsu.clicked.connect(self.open_view_emer_cre_usu)
+        self.botBusUsu.clicked.connect(self.open_view_emer_bus_usu)
         self.botCamCon.clicked.connect(self.open_view_emer_cam_con)
-        self.botMosTod.clicked.connect(self.open_view_emer_cre_usu)
 
         self.adInventario = None
         self.adServicios = None
@@ -903,31 +903,25 @@ class AdminUsuarios(QtWidgets.QMainWindow):
         self.TabUsuarios.show()
         if listas != None:
             fila = 0
-            self.TabUsuarios.setRowCount(len(listas))
-            for elementos in listas:
-                print(elementos)
-                self.TabUsuarios.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(elementos[0])))
-                self.TabUsuarios.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(elementos[1])))
-                self.TabUsuarios.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(elementos[2])))
-                self.TabUsuarios.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(elementos[3])))
-                self.TabUsuarios.setItem(fila, 4, QtWidgets.QTableWidgetItem(str(elementos[4])))
-                self.TabUsuarios.setItem(fila, 5, QtWidgets.QTableWidgetItem(str(elementos[5])))
-                self.TabUsuarios.setItem(fila, 6, QtWidgets.QTableWidgetItem(str(elementos[6])))
-                self.TabUsuarios.setItem(fila, 7, QtWidgets.QTableWidgetItem(str(elementos[7])))
-                fila = fila + 1
+            self.TabUsuarios.setRowCount(1)
+            self.TabUsuarios.setItem(fila, 0, QtWidgets.QTableWidgetItem(str(listas[0])))
+            self.TabUsuarios.setItem(fila, 1, QtWidgets.QTableWidgetItem(str(listas[1])))
+            self.TabUsuarios.setItem(fila, 2, QtWidgets.QTableWidgetItem(str(listas[2])))
+            self.TabUsuarios.setItem(fila, 3, QtWidgets.QTableWidgetItem(str(listas[3])))
+            self.TabUsuarios.setItem(fila, 4, QtWidgets.QTableWidgetItem(str(listas[4])))
+            self.TabUsuarios.setItem(fila, 5, QtWidgets.QTableWidgetItem(str(listas[5])))
+            self.TabUsuarios.setItem(fila, 6, QtWidgets.QTableWidgetItem(str(listas[6])))
+            self.TabUsuarios.setItem(fila, 7, QtWidgets.QTableWidgetItem(str(listas[7])))
         else:
             print('no encontre')
 
     def recibir_datos(self, usuario_validar):
         self.datos_usuario = usuario_validar
-        print(self.datos_usuario)
 
     def cerrar_sesion (self):
         quit()
 
-
 class AdminProcesoFactura(QtWidgets.QMainWindow):
-
     def __init__(self, parent=None):
         super(AdminProcesoFactura, self).__init__(parent)
         uic.loadUi('Front/administrador/adminFacturacionAgregarPro.ui', self)
@@ -949,7 +943,6 @@ class AdminProcesoFactura(QtWidgets.QMainWindow):
         self.adFacturas = None
         self.adUsuarios = None
         self.adClientes = None
-
 
     def cerrar_sesion(self):
         quit()
